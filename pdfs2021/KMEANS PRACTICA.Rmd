@@ -1,0 +1,105 @@
+---
+title: "Kmeans"
+author: "Alejandro Chain"
+date: "22/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+data("USArrests")
+df<- USArrests
+##Para eliminar missing values
+df<- na.omit(df)
+
+# Estandarizamos todas las variables para que el algoritmo no tenga que depender de ningua unidad de medida
+
+df<- scale(df)
+class(df)
+
+```
+# ahora cargamos los paquetes que vamos a usar 
+```{r}
+# para el clustering vamos a usar "cluster"+
+#install.packages("cluster")
+#para los graficos de ggplot mas especificos usamos factorextra
+#install.packages("factoextra")
+library("factoextra")
+library("cluster")
+```
+# Distance matrix computation (matriz de distancias)
+```{r}
+set.seed(123)
+ss<- sample(1:50,15)
+ss
+df<- USArrests[ss,]
+df
+
+df.scaled<- scale(df) 
+
+```
+# Distancia Euclidiana
+```{r}
+dist.eucl<- dist(df.scaled, method="euclidean")
+class(dist.eucl)
+dist.eucl2<- as.matrix(dist.eucl)
+dist.eucl2
+```
+# Medidas de distancia basadas en correlaciones
+```{r}
+dist.corr<- get_dist(df.scaled, method = "pearson") # tambien puede ser "spearman" "kendall"
+
+```
+
+# para los casos en que los datos son no numericos (alfanumricos) por ejemplo, se puede utilizar algo llamado "Gower's metric", el cual se calcula a traves de la función daisy()
+
+# ahora si, visualización de estas distancias
+
+```{r}
+fviz_dist(dist.eucl)
+
+```
+
+# k- means clustering
+```{r}
+# preparamos  la base de datos, estandarizandola
+
+data("USArrests")
+df<- scale(USArrests)
+head(df,n = 5)
+class(df)
+
+#Luego, como elegimos el numero optimo de  clusters??¿¿ excelente pregunta papirrin, bueno eso es lo que resolveremos a 0ontinuaciin:
+
+# uno de los indicadores mas famosos es el within sum of square, o las uma de cuadrados dentro de cada cluster, la cual se va iterando con distintos numeros de clusters para ver como un aumento en un k=1 disminuye esta suma con rendimientos marginales decrtecientes,
+
+factoextra::fviz_nbclust(df,kmeans, method="wss")
+
+```
+# Computando las k-means
+```{r}
+# como siempre el algoritmo de kmeans empieza con un numero random de centroides, se recomienda setear una semilla
+
+set.seed(123)
+
+# Para un kmeans de 4 clusters serà de la sioguente forma::
+# el nstar=25 siignifica que utilizará  25 numeros random para empezar con el entrenamienty eligirá el que de menor suma interior de cuadradois.
+
+km.res<- kmeans(df,centers = 4,nstart = 25,iter.max = 25)
+km.res
+nomenclador<- km.res$cluster
+
+# Podemos calcualr las medias de las variables en niveles para cada cluster
+
+aggregate(USArrests, by=list(cluster=km.res$cluster), mean)
+
+# podemos agregar una variable categorca a la base originial
+
+dd<- cbind(USArrests, cluster=km.res$cluster)
+head(dd)
+
+```
+
+
