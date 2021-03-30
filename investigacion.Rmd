@@ -1,0 +1,19 @@
+---
+title: "Investigación"
+author: "Alejandro Chaín"
+date: "30/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(eph)
+```
+
+```{r}
+ephi<- get_microdata(year=2018:2019, trimester = 1:4, type = "individual")
+ephh <- get_microdata(year=2020, trimester = 3, type = "hogar")
+eph3t<- left_join(ephi, ephh)
+bind_rows(eph3t,eph2t)
+```
+
