@@ -8,12 +8,76 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(eph)
+library(tidyverse)
+library(readxl)
 ```
 
 ```{r}
-ephi<- get_microdata(year=2018:2019, trimester = 1:4, type = "individual")
-ephh <- get_microdata(year=2020, trimester = 3, type = "hogar")
-eph3t<- left_join(ephi, ephh)
-bind_rows(eph3t,eph2t)
+## Individual
+ephi<- get_microdata(year=2017:2019, trimester = 1:4, type = "individual")
+ephi<- ephi %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+### 2016 
+ephi2<- get_microdata(year=2016, trimester = 2:4, type = "individual")
+ephi2<- ephi2 %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+
+ephi<- bind_rows(ephi,ephi2)
+ephi<- ephi %>% arrange(-ANO4, -TRIMESTRE)
+
+## Hogar
+ephh<- get_microdata(year=2017:2019, trimester = 1:4, type = "hogar")
+ephh<- ephh %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+### 2016 
+ephh2<- get_microdata(year=2016, trimester = 2:4, type = "hogar")
+ephh2<- ephh2 %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+
+ephh<- bind_rows(ephh,ephh2)
+ephh<- ephh %>% arrange(-ANO4, -TRIMESTRE)
+
+### mergeado
+
+ephtotal<- left_join(ephi,ephh)
+
+### aglomerado
+aglomerado<- read_excel("aglomerado.xlsx",sheet = 4)
+
+### provincia
+
+provincia<- read.csv("provincias.csv", sep=",", header = T)
+provincia1<- provincia %>% select(PROVINCIA,CH15_COD)
+provincia2<- provincia %>% select(PROVINCIA,CH16_COD)
+
+ephtotal<- left_join(ephtotal,aglomerado)
+```
+
+
+```{r}
+ephinmi<- ephtotal %>% filter(CH15==3) 
+ephinmi<- left_join(ephinmi, provincia)
+prueba<- ephinmi %>% filter(is.na(PROVINCIA))
+prueba<- prueba %>% select(CH15, CH15_COD, PROVINCIA)
+
+
+prueba<- ephinmi %>% filter(!is.na(PROVINCIA)) %>% group_by(PROVINCIA) %>% summarise(formattable::percent((total_migrantes=sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(PROVINCIA)])),2))
+
+prueba2<- ephinmi %>% filter(!is.na(PROVINCIA) & CH06>=18) %>% group_by(PROVINCIA) %>% summarise(formattable::percent((total_migrantes=sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(PROVINCIA) & CH06>=18])),2))
+
+prueba3<- ephinmi %>% filter(!is.na(PROVINCIA) & CH06>=18) %>% group_by(AGLOMERADO2) %>% 
+  summarise(sum(PONDERA))
+
+ephnuevoinmi<- ephtotal %>% filter(CH16==3) 
+ephnuevoinmi<- left_join(ephnuevoinmi, provincia2)
+
+prueba<- ephnuevoinmi %>% filter(!is.na(PROVINCIA))
+prueba<- prueba %>% filter(!is.na(PROVINCIA)) %>% group_by(PROVINCIA) %>% summarise(formattable::percent((total_migrantes=sum(PONDERA)/sum(prueba$PONDERA)),2)) 
+
+
 ```
 
