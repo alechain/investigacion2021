@@ -48,13 +48,60 @@ ephtotal<- left_join(ephi,ephh)
 ### aglomerado
 aglomerado<- read_excel("aglomerado.xlsx",sheet = 4)
 
+### Sector
+sectorcaes<- read.csv("SECTORESCAES.csv", sep=",", header = T, encoding = "UTF-8", colClasses = "character")
+
 ### provincia
 
 provincia<- read.csv("provincias.csv", sep=",", header = T)
 provincia1<- provincia %>% select(PROVINCIA,CH15_COD)
 provincia2<- provincia %>% select(PROVINCIA,CH16_COD)
 
+ephtotal<- ephtotal %>% filter(ESTADO!=0) %>%  mutate(Sexo=as.character(CH04),
+                      Sexo=case_when(Sexo=="1" ~ "Hombres",
+                                       Sexo=="2" ~ "Mujeres"),
+                      PP04D_COD = case_when(nchar(PP04D_COD) == 5 ~ PP04D_COD,
+                                              nchar(PP04D_COD) == 4 ~ paste0("0", PP04D_COD),
+                                              nchar(PP04D_COD) == 3 ~ paste0("00", PP04D_COD),
+                                              nchar(PP04D_COD) == 2 ~ paste0("000", PP04D_COD),
+                                              nchar(PP04D_COD) == 1 ~ paste0("0000", PP04D_COD)),
+                        CALIFICACION = substr(PP04D_COD, 5, 5),                      
+                        JERARQUIA = substr(PP04D_COD, 3, 3),
+                        JERARQUIA = case_when(JERARQUIA=="0" ~ "Dirección",
+                                              JERARQUIA=="2" ~ "Jefes",
+                                              JERARQUIA=="1" ~ "Cuentapropia",
+                                              JERARQUIA=="3" ~ "Trabajadores\nAsalariados"),
+                        JERARQUIA = factor(JERARQUIA, c("Dirección", "Jefes", "Trabajadores\nAsalariados", "Cuentapropia")),
+                        PEA= case_when(ESTADO==3 ~ 0,
+                                       ESTADO==4 ~ 0,
+                                       ESTADO==1 ~ 1,
+                                       ESTADO==2 ~ 1),
+                        PP04D_COD = as.character(PP04D_COD),
+    
+                        CALIFICACION = case_when(CALIFICACION=="1" ~ "Profesionales",
+                                                   CALIFICACION=="2" ~ "Técnicos",
+                                                   CALIFICACION=="3" ~ "Operativos",
+                                                   CALIFICACION=="4" ~ "No Calificados"),
+                        CALIFICACION = factor(CALIFICACION, c("No Calificados", "Operativos", "Técnicos", "Profesionales")),
+                          PP04B_COD=as.character(PP04B_COD),
+                          PP04B_COD=case_when(nchar(PP04B_COD)==4~PP04B_COD,
+                                              nchar(PP04B_COD)==1~ paste0("0",PP04B_COD,"00"),
+                                              nchar(PP04B_COD)==2~ paste0(PP04B_COD,"00"),
+                                              nchar(PP04B_COD)==3~ paste0("0",PP04B_COD)),
+                          SECTOR= substr(PP04B_COD,1,2),
+                          HORASSEM=PP3E_TOT+PP3F_TOT,
+                          niveled=case_when(NIVEL_ED==1 | NIVEL_ED==7 ~ "Sin\ninstrucción",
+                                            NIVEL_ED %in% c(2,3) ~ "Primario\nCompleto",
+                                            NIVEL_ED %in% c(4,5)~ "Secundario\nCompleto",
+                                            NIVEL_ED == 6 ~ "Superior/Universitario\ncompleto"),
+                          niveled=factor(niveled, levels = c("Sin\ninstrucción","Primario\nCompleto","Secundario\nCompleto","Superior/Universitario\ncompleto")))
+  
+
+
 ephtotal<- left_join(ephtotal,aglomerado)
+ephtotal<- left_join(ephtotal, sectorcaes)
+
+
 ```
 
 
@@ -63,6 +110,14 @@ ephinmi<- ephtotal %>% filter(CH15==3)
 ephinmi<- left_join(ephinmi, provincia)
 prueba<- ephinmi %>% filter(is.na(PROVINCIA))
 prueba<- prueba %>% select(CH15, CH15_COD, PROVINCIA)
+
+ephinmi %>% filter(!is.na(SECTOR_ACT)) %>% group_by(SECTOR_ACT) %>% summarise(porcentaje=formattable::percent (sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(SECTOR_ACT)]))) %>% arrange(-porcentaje)
+
+ephinmi %>% filter(!is.na(CALIFICACION)) %>% group_by(CALIFICACION) %>% summarise(porcentaje=formattable::percent (sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(CALIFICACION)]))) %>% arrange(-porcentaje)
+
+# en ctes
+califctes<- ephinmi %>% filter(!is.na(CALIFICACION) & PROVINCIA=="Corrientes")
+califctes  %>% group_by(CALIFICACION) %>% summarise(total=sum(PONDERA)/sum(califctes$PONDERA))%>% arrange(-total)
 
 
 prueba<- ephinmi %>% filter(!is.na(PROVINCIA)) %>% group_by(PROVINCIA) %>% summarise(formattable::percent((total_migrantes=sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(PROVINCIA)])),2))
