@@ -1,0 +1,34 @@
+---
+title: "Macro preparacion"
+author: "Alejandro Chaín"
+date: "16/4/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(writexl)
+```
+```{r}
+setwd("/home/alejandrochain/Documentos/GitHub/investigacion2021/macrolocalizacion")
+desocu<- read.csv("desocupacion_para_r.csv", header=T, sep=",")
+level<- c(names(desocu))
+level<-level[3:length(level)]
+desocu<- desocu %>% pivot_longer(-c(provincias,aglomerados))
+desocu$name<- factor(desocu$name, levels = level)
+desocu<-desocu %>% group_by(provincias, name) %>% summarise(media_desocu=mean(value))
+desocu<- desocu %>% pivot_wider(names_from = "name", values_from="media_desocu")
+
+writexl::write_xlsx(x = desocu,path = "desocupados_definitivo.xlsx")
+
+activ<- read.csv("actividad_para_r.csv", header=T, sep=",")
+level<- c(names(activ))
+level<-level[3:length(level)]
+activ<- activ %>% pivot_longer(-c(provincias,aglomerados))
+activ$name<- factor(activ$name, levels = level)
+activ<-activ %>% group_by(provincias, name) %>% summarise(media_activ=mean(value))
+activ<- activ %>% pivot_wider(names_from = "name", values_from="media_activ")
+
+writexl::write_xlsx(x = activ,path = "activ_definitivo.xlsx")
+```
+
