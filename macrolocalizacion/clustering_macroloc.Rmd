@@ -1,23 +1,30 @@
 ---
 title: "Macrolocalizacion de regiones con K-means"
-output:
-  html_document:
-    df_print: paged
+header-includes:
+  - \usepackage[spanish]{babel}
+output: 
+  pdf_document:
+    toc: true
 ---
-```{r}
+```{r echo = FALSE, warning=FALSE, error=FALSE, message=FALSE, include=FALSE}
 setwd("/home/alejandrochain/Documentos/GitHub/investigacion2021/macrolocalizacion")
+knitr::opts_chunk$set(echo = FALSE, dev="cairo_pdf")
 library(readr)
 library(tidyverse)
 library(factoextra)
 library(cluster)
 library(fpc)
-
-
+#estos sirven para formatear pa latex
+library(stargazer)
+library(xtable)
+library(extrafont)
+library(eph)
+library(readxl)
 ```
 
 ## Carga de datos
 Para comenzar, cargamos los datos de las variables sociales y economicas que definen a las distintas provincias de la Argentina.
-```{r}
+```{r echo = FALSE, warning=FALSE, error=FALSE, message=FALSE}
 datos<- read_csv("macroloc_para_r.csv",col_names = T, row.names(1))
 datos3<- datos %>% select(-Provincia)
 row.names(datos3)<- datos$Provincia
@@ -25,57 +32,137 @@ datos4<- datos3
 #datos<- datos %>% mutate(`Densidad poblacional: Hab/km² (2010)`=log(`Densidad poblacional: Hab/km² (2010)`))
 ```
 
-##Normalización de la base de datos
+## Normalización de la base de datos
 Ahora normalizamos la base de datos para lograr coherencia en la aplicación de K-means, debido a quen trabajamos con distintas escalas de datos.
-```{r}
+```{r echo = FALSE, warning=FALSE, error=FALSE}
 datos3<-datos3 %>% select(-c(`Densidad poblacional: Hab/km² (2010)`))
 datos_norm<- scale(datos3)
 ```
 ## Número de clusters óptimo
-Verificamos el numero de clusters optimos a través de el Within sum of square
-```{r}
-factoextra::fviz_nbclust(datos_norm,kmeans, method="wss")
+Verificamos el numero de clusters optimos a través de el Within-cluster sum of square, el cual es un indicador que mide la suma de las distancias entre las variables dentro de  los cluster y sus centroides, la idea es minimizar esta discrepancia dentro de cada grupo, teniendo en cuenta el trade-off que implica cuando este es mínimo, el cual es el caso en que el numero de clusters es igual al número de variables a clusterizar, en donde si tenemos j observaciones, el numero de clusters sería tal que j=k, y no se estaría dando ninguna información relevante a los efectos de poder resumir caracteristicas comunes entre los grupos.
+
+\begin {center}
+$WCSS=\sum_{i=1}^{N_{C}} \sum_{\textbf{x}\in Ci} distancia(\textbf{x},\bar {\textbf x} _{\textbf{Ci}})$ 
+\end {center}
+```{r echo = FALSE, warning=FALSE, error=FALSE}
+factoextra::fviz_nbclust(datos_norm,kmeans, method="wss")+ geom_vline(xintercept = 3, colour="RED", linetype="dotted") + theme_classic() + labs(title="Numero óptimo de clusters") + xlab("Número de clusters") + ylab("WSS")+ theme(text=element_text(family = "LM Roman 10"), title = element_text(face = "bold"))
 
 ```
-
-Obtenemos que el numero óptimo de clusters se encuentra en torno al **número 2**.
+Obtenemos que el numero óptimo de clusters se encuentra en torno al **número 3**, debido a que la contribución marginal de aumentar el numero de  clusters a 4, no aportaría una reducción muy elevada al **WSS**, y seguiriamos perdiendo generalidad en la clusterización de los grupos sin una ganancia significativa de similitud dentro de los grupos.
 
 ## Cómputo de las K-means 
-Setearemos una semilla para el cálculo de los centroides iniciales del algoritmo de K-means y procederemos a realizar el cálculo de los clusters a través de 25 iteraciones, eligiendo la que de menor numero de WSS.
-```{r}
+Setearemos una semilla para el cálculo de los centroides iniciales del algoritmo de K-means y procederemos a realizar el cálculo de los clusters a través de 1000 iteraciones, eligiendo la que de menor numero de WSS.
+```{r echo = FALSE, warning=FALSE, error=FALSE}
 set.seed(1118)
-km_clusters<- kmeans(datos_norm,centers = 2,iter.max = 1000)
+km_clusters<- kmeans(datos_norm,centers = 3,iter.max = 1000,nstart = 2000)
 nomenclador<- km_clusters$cluster
 ```
 Podemos ver la media de los parámetros para cada uno de los clusters
-```{r}
-aggregate(datos3,by = list(cluster=km_clusters$cluster),FUN = median)
+```{r echo = FALSE, warning=FALSE, error=FALSE}
+resumen_cluster<-aggregate(datos3,by = list(cluster=km_clusters$cluster),FUN = median)
+resumen_g<-resumen_cluster %>% pivot_longer(-cluster)
+resumen2<-data.frame(t(resumen_cluster)) 
+resumen2<- resumen2 %>% rename("Cluster 1"=X1,"Cluster 2"=X2, "Cluster 3"=X3) %>% rownames_to_column()
+resumen2<- resumen2 %>% rename("Indicadores"=rowname)
+resumen2<- resumen2 %>% filter(Indicadores!="cluster")
+resumen2$`Cluster 1`<- formattable::comma((resumen2$`Cluster 1`),2)
+resumen2$`Cluster 2`<- formattable::comma((resumen2$`Cluster 2`),2)
+resumen2$`Cluster 3`<- formattable::comma((resumen2$`Cluster 3`),2)
+resumen2$`Cluster 1`[1]<- formattable::comma((resumen2$`Cluster 1`[1]),0)
+resumen2$`Cluster 2`[1]<- formattable::comma((resumen2$`Cluster 2`[1]),0)
+resumen2$`Cluster 3`[1]<- formattable::comma((resumen2$`Cluster 3`[1]),0)
+
+
+kableExtra::kable(resumen2,format = "markdown",caption = "Resumen de indicadores por cluster")
+#xtable(resumen2, type="latex",auto = TRUE)
 ```
 agregamos a la base de datos original la denominación de cada cluster
-```{r}
+```{r include=FALSE}
+#agregamos a la base de datos original la denominación de cada cluster
+
 datos<- cbind(datos,cluster=nomenclador)
 clustersprov<-datos %>% select(Provincia,cluster)
 datos %>% group_by(cluster) %>% summarise(habitantes=sum(`Habitantes (2010)`))
 datos %>% group_by(cluster) %>% summarise(Provincia)
+datos<- datos %>% mutate(Provincia=case_when(Provincia=="Tierra del Fuego, Antártida e Islas del Atlántico Sur (4)"~ "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+                                             TRUE~Provincia)) %>% arrange(Provincia)
 ```
-```{r}
+```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center'}
 fviz_cluster(km_clusters, data = datos4,
-palette = c("#2E9FDF", "#00AFBB", "#E7B800", "#FC4E07"),
+palette = c("RED", "BLUE","GREEN"),
 ellipse.type = "euclid", # Concentration ellipse
 star.plot = TRUE, # Add segments from centroids to items
 repel = TRUE, # Avoid label overplotting (slow)
-ggtheme = theme_minimal()
-)
+ labelsize = 6, ) + theme_classic(base_family ="LM Roman 10" ) + labs(title="Plot de clusters resultantes de la macrolocalización") + theme(text=element_text(family = "LM Roman 10"), title = element_text(face = "bold"))
 ```
+Se puede ver claramente la diferencia en la similitud de los tres grupos, siendo solamente la Capital Federal la única que presenta mayor disimilitud con respecto a su cluster, lo cual indica que esta capital lleva una dinámica socio-económica muy peculiar con respecto al promedio de las provincias argentinas, inclusive considerablemente distinta que las provincias con la cual ostenta mayor similitud.
+```{r include=FALSE}
 
+ephtotal<- read_rds("ephtotal.Rds")
+### provincia
+
+provincia<- read.csv("provincias.csv", sep=",", header = T)
+provincia<- provincia %>% arrange(PROVINCIA)
+provincia1<- provincia %>% select(PROVINCIA,CH15_COD)
+provincia2<- provincia %>% select(PROVINCIA,CH16_COD)
+#
+nombredato<- datos %>% select(Provincia)
+nombredato
+
+name_prov_para_datos<-bind_cols(nombredato, provincia) %>% select(-PROVINCIA)
+datos<- left_join(datos,name_prov_para_datos)
+#
+cluster_nombres_eph<- datos %>% select(c("Provincia","cluster","CH15_COD","CH16_COD"))
+cluster_nombres_eph<- cluster_nombres_eph %>% rename("PROVINCIA"=Provincia)
+cluster_nombres_eph_ch15<-cluster_nombres_eph %>% select(PROVINCIA,CH15_COD, cluster)
+##############################################################################################
+ephinmi<- ephtotal %>% filter(CH15==3) 
+ephinmi<- left_join(ephinmi, cluster_nombres_eph_ch15) 
+prueba<- ephinmi %>% filter(is.na(PROVINCIA))
+prueba<- prueba %>% select(CH15, CH15_COD, PROVINCIA)
+
+ephinmi %>% filter(!is.na(SECTOR_ACT)) %>% group_by(SECTOR_ACT) %>% summarise(porcentaje=formattable::percent (sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(SECTOR_ACT)]))) %>% arrange(-porcentaje)
+
+ephinmi %>% filter(!is.na(CALIFICACION)) %>% group_by(CALIFICACION) %>% summarise(porcentaje=formattable::percent (sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(CALIFICACION)]))) %>% arrange(-porcentaje)
+
+# en ctes
+califctes<- ephinmi %>% filter(!is.na(CALIFICACION) & PROVINCIA=="Corrientes")
+califctes  %>% group_by(CALIFICACION) %>% summarise(total=sum(PONDERA)/sum(califctes$PONDERA))%>% arrange(-total)
+
+
+prueba<- ephinmi %>% filter(!is.na(PROVINCIA)) %>% group_by(PROVINCIA) %>% summarise(formattable::percent((total_migrantes=sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(PROVINCIA)])),2))
+
+prueba2<- ephinmi %>% filter(!is.na(PROVINCIA) & CH06>=18) %>% group_by(PROVINCIA) %>% summarise(formattable::percent((total_migrantes=sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(PROVINCIA) & CH06>=18])),2))
+
+prueba3<- ephinmi %>% filter(!is.na(PROVINCIA) & CH06>=18) %>% group_by(AGLOMERADO2) %>% 
+  summarise(sum(PONDERA))
+
+ephnuevoinmi<- ephtotal %>% filter(CH16==3) 
+ephnuevoinmi<- left_join(ephnuevoinmi, provincia2)
+
+prueba<- ephnuevoinmi %>% filter(!is.na(PROVINCIA))
+prueba<- prueba %>% filter(!is.na(PROVINCIA)) %>% group_by(PROVINCIA) %>% summarise(formattable::percent((total_migrantes=sum(PONDERA)/sum(prueba$PONDERA)),2)) 
+```
+## Flujos migratorios entre clusters
+```{r include=FALSE}
+ephinmi<- ephinmi %>% filter(!is.na(PROVINCIA))
+prov_por_aglo<- read_csv("provincias_por_aglomerado.csv")
+ephinmi<- left_join(ephinmi,prov_por_aglo)
+```
+Dentro de los cluster, existen provincias de las cuales salen gran cantidad de inmigrantes, al igual que existen provincias que son receptoras de estos mismos, en primer lugar caracterizaremos cual es el cluster con mayor nivel de *expulsion* de inmigrantes interprovinciales.
 ```{r}
-fviz_nbclust(datos_norm,pam,method="silhouette")
+cuadro_2<-ephinmi %>% group_by("Cluster"=cluster) %>% summarise("Porcentaje"=formattable::percent((sum(PONDERA)/sum(ephinmi$PONDERA))))
+kableExtra::kable(cuadro_2,format = "markdown",caption = "Porcentaje de migrantes por cluster")
+```
+Se puede notar que las provincias del *cluster Nº3* son las que mayor nivel de expulsión poseen, seguidas por las provincias pertenecientes al cluster Nº2, y por úlitmo se encuentran las pertenecientes al cluster Nº3.
+
+```{r echo = FALSE, warning=FALSE, error=FALSE}
 
 ```
-```{r}
-pam_cluster<- pam(datos_norm,2)
 
-datospam<- bind_cols(datos,clusters_pam=pam_cluster$clustering)
-datospam %>% group_by(clusters_pam) %>% summarise(Provincia)
-```
+
+
+
+
+
 

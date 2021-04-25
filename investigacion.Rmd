@@ -100,8 +100,7 @@ ephtotal<- ephtotal %>% filter(ESTADO!=0) %>%  mutate(Sexo=as.character(CH04),
 
 ephtotal<- left_join(ephtotal,aglomerado)
 ephtotal<- left_join(ephtotal, sectorcaes)
-
-
+#saveRDS(ephtotal, file = "ephtotal.Rds")
 ```
 
 
