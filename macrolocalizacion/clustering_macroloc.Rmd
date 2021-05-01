@@ -263,6 +263,21 @@ En primer lugar se analizará si existen microdeterminantes dentro de las caract
 En el universo de habitantes de una determinada región/cluster, pueden existir caracteristicas determinadas que diferencien de manera significativa entre las personas que nacieron  y decidieron quedarse en la misma región, de las que si bien nacieron en la misma región, optaron por migrar hacia otra. A continuación se realizará un análisis diferenciando por cluster de características socioeconómicas de las personas que nacieron en un mismo cluster, con el fin de determinar si existen diferencias entre los migrantes y los no migrantes.
 
 ```{r}
+#Creación de regresores (feature engineerirng)
+ephtotal<- ephtotal %>% mutate(hombre=case_when(Sexo=="Hombres"~1,
+                                                                    Sexo=="Mujeres"~0),
+                                                   edad=case_when(CH06=="-1" ~ as.integer(1),
+                                                                  TRUE ~ CH06),
+                                                   edad2=(edad)^2,
+                                                   ledad=log(edad),
+                                                   medio=case_when(niveled=="Secundario\nCompleto"~ 1,
+                                                                    TRUE ~ 0),
+                                                   alto=case_when(niveled=="Superior/Universitario\ncompleto"~ 1,
+                                                                    TRUE ~ 0)
+                                                   )
+```
+
+```{r}
 cluster1_expulsion<- left_join(ephtotal,cluster_destino)  
 cluster1_expulsion<- left_join(cluster1_expulsion,cluster_nombres_eph_ch15)
 cluster1_expulsion<- cluster1_expulsion %>%  filter(cluster_destino==1 | cluster_origen==1)
@@ -271,8 +286,35 @@ cluster1_expulsion<- cluster1_expulsion %>% mutate(inmigrante=case_when(cluster_
                                                                         cluster_destino==1 & CH15 %in% c(1,2) ~0))
 cluster1_expulsion<- cluster1_expulsion %>% filter(!is.na(inmigrante))
 
-
+cluster_exp1<- glm(inmigrante ~ hombre + edad + edad2  + medio + alto ,data = cluster1_expulsion,family = "binomial")
+summary(cluster_exp1)
 ```
+```{r}
+cluster2_expulsion<- left_join(ephtotal,cluster_destino)  
+cluster2_expulsion<- left_join(cluster2_expulsion,cluster_nombres_eph_ch15)
+cluster2_expulsion<- cluster2_expulsion %>%  filter(cluster_destino==2 | cluster_origen==2)
+cluster2_expulsion<- cluster2_expulsion %>% filter(CH15%in% c(1,2,3))
+cluster2_expulsion<- cluster2_expulsion %>% mutate(inmigrante=case_when(cluster_origen==2  &  CH15==3 ~1,
+                                                                        cluster_destino==2 & CH15 %in% c(1,2) ~0))
+cluster2_expulsion<- cluster2_expulsion %>% filter(!is.na(inmigrante))
+
+cluster_exp2<- glm(inmigrante ~ hombre + edad + edad2  + medio + alto ,data = cluster2_expulsion,family = "binomial")
+summary(cluster_exp2)
+```
+```{r}
+cluster3_expulsion<- left_join(ephtotal,cluster_destino)  
+cluster3_expulsion<- left_join(cluster3_expulsion,cluster_nombres_eph_ch15)
+cluster3_expulsion<- cluster3_expulsion %>%  filter(cluster_destino==3 | cluster_origen==3)
+cluster3_expulsion<- cluster3_expulsion %>% filter(CH15%in% c(1,2,3))
+cluster3_expulsion<- cluster3_expulsion %>% mutate(inmigrante=case_when(cluster_origen==3  &  CH15==3 ~1,
+                                                                        cluster_destino==3 & CH15 %in% c(1,2) ~0))
+cluster3_expulsion<- cluster3_expulsion %>% filter(!is.na(inmigrante))
+
+cluster_exp3<- glm(inmigrante ~ hombre + edad + edad2  + medio + alto ,data = cluster3_expulsion,family = "binomial")
+summary(cluster_exp3)
+```
+
+
 
 
 
