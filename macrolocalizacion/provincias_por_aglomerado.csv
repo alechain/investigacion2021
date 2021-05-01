@@ -1,33 +1,33 @@
-provincias,AGLOMERADO
-BUENOS AIRES,3
-CABA,32
-CHUBUT,9
-ENTRE RIOS,14
-CORRIENTES,12
-FORMOSA,15
-CATAMARCA,22
-CORDOBA,13
-BUENOS AIRES,2
-MENDOZA,10
-ENTRE RIOS,6
-CHACO,8
-SANTA FE,4
-SAN JUAN,27
-SAN LUIS,26
-SANTA FE,5
-TUCUMAN,29
-JUJUY,19
-LA RIOJA,25
-BUENOS AIRES,34
-NEUQUEN,17
-BUENOS AIRES,33
-MISIONES,7
-CHUBUT,91
-CORDOBA,36
-SANTA CRUZ,20
-SALTA,23
-BUENOS AIRES,38
-LA PAMPA,30
-SANTIAGO DEL ESTERO,18
-TIERRA DEL FUEGO,31
-RIO NEGRO,93
+provincia_destino,AGLOMERADO
+Buenos Aires,3
+Buenos Aires,2
+Buenos Aires,34
+Buenos Aires,33
+Buenos Aires,38
+Ciudad Autónoma de Buenos Aires,32
+Catamarca,22
+Chaco,8
+Chubut,9
+Chubut,91
+Córdoba,13
+Córdoba,36
+Corrientes,12
+Entre Ríos,14
+Entre Ríos,6
+Formosa,15
+Jujuy,19
+La Pampa,30
+La Rioja,25
+Mendoza,10
+Misiones,7
+Neuquén,17
+Río Negro,93
+Salta,23
+San Juan,27
+San Luis,26
+Santa Cruz,20
+Santa Fe,4
+Santa Fe,5
+Santiago del Estero,18
+"Tierra del Fuego, Antártida e Islas del Atlántico Sur",31
+Tucumán,29

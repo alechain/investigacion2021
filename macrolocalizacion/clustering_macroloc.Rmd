@@ -20,6 +20,97 @@ library(xtable)
 library(extrafont)
 library(eph)
 library(readxl)
+color<- c('#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf')
+```
+
+```{r}
+## Individual
+ephi<- get_microdata(year=2017:2019, trimester = 1:4, type = "individual")
+ephi<- ephi %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+### 2016 
+ephi2<- get_microdata(year=2016, trimester = 2:4, type = "individual")
+ephi2<- ephi2 %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+
+ephi<- bind_rows(ephi,ephi2)
+ephi<- ephi %>% arrange(-ANO4, -TRIMESTRE)
+
+## Hogar
+ephh<- get_microdata(year=2017:2019, trimester = 1:4, type = "hogar")
+ephh<- ephh %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+### 2016 
+ephh2<- get_microdata(year=2016, trimester = 2:4, type = "hogar")
+ephh2<- ephh2 %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+
+ephh<- bind_rows(ephh,ephh2)
+ephh<- ephh %>% arrange(-ANO4, -TRIMESTRE)
+
+### mergeado
+
+ephtotal<- left_join(ephi,ephh)
+
+### aglomerado
+aglomerado<- read_excel("aglomerado.xlsx",sheet = 4)
+
+### Sector
+sectorcaes<- read.csv("SECTORESCAES.csv", sep=",", header = T, encoding = "UTF-8", colClasses = "character")
+
+### provincia
+
+provincia<- read.csv("provincias.csv", sep=",", header = T)
+provincia1<- provincia %>% select(PROVINCIA,CH15_COD)
+provincia2<- provincia %>% select(PROVINCIA,CH16_COD)
+
+ephtotal<- ephtotal %>% filter(ESTADO!=0) %>%  mutate(Sexo=as.character(CH04),
+                      Sexo=case_when(Sexo=="1" ~ "Hombres",
+                                       Sexo=="2" ~ "Mujeres"),
+                      PP04D_COD = case_when(nchar(PP04D_COD) == 5 ~ PP04D_COD,
+                                              nchar(PP04D_COD) == 4 ~ paste0("0", PP04D_COD),
+                                              nchar(PP04D_COD) == 3 ~ paste0("00", PP04D_COD),
+                                              nchar(PP04D_COD) == 2 ~ paste0("000", PP04D_COD),
+                                              nchar(PP04D_COD) == 1 ~ paste0("0000", PP04D_COD)),
+                        CALIFICACION = substr(PP04D_COD, 5, 5),                      
+                        JERARQUIA = substr(PP04D_COD, 3, 3),
+                        JERARQUIA = case_when(JERARQUIA=="0" ~ "Dirección",
+                                              JERARQUIA=="2" ~ "Jefes",
+                                              JERARQUIA=="1" ~ "Cuentapropia",
+                                              JERARQUIA=="3" ~ "Trabajadores\nAsalariados"),
+                        JERARQUIA = factor(JERARQUIA, c("Dirección", "Jefes", "Trabajadores\nAsalariados", "Cuentapropia")),
+                        PEA= case_when(ESTADO==3 ~ 0,
+                                       ESTADO==4 ~ 0,
+                                       ESTADO==1 ~ 1,
+                                       ESTADO==2 ~ 1),
+                        PP04D_COD = as.character(PP04D_COD),
+    
+                        CALIFICACION = case_when(CALIFICACION=="1" ~ "Profesionales",
+                                                   CALIFICACION=="2" ~ "Técnicos",
+                                                   CALIFICACION=="3" ~ "Operativos",
+                                                   CALIFICACION=="4" ~ "No Calificados"),
+                        CALIFICACION = factor(CALIFICACION, c("No Calificados", "Operativos", "Técnicos", "Profesionales")),
+                          PP04B_COD=as.character(PP04B_COD),
+                          PP04B_COD=case_when(nchar(PP04B_COD)==4~PP04B_COD,
+                                              nchar(PP04B_COD)==1~ paste0("0",PP04B_COD,"00"),
+                                              nchar(PP04B_COD)==2~ paste0(PP04B_COD,"00"),
+                                              nchar(PP04B_COD)==3~ paste0("0",PP04B_COD)),
+                          SECTOR= substr(PP04B_COD,1,2),
+                          HORASSEM=PP3E_TOT+PP3F_TOT,
+                          niveled=case_when(NIVEL_ED==1 | NIVEL_ED==7 ~ "Sin\ninstrucción",
+                                            NIVEL_ED %in% c(2,3) ~ "Primario\nCompleto",
+                                            NIVEL_ED %in% c(4,5)~ "Secundario\nCompleto",
+                                            NIVEL_ED == 6 ~ "Superior/Universitario\ncompleto"),
+                          niveled=factor(niveled, levels = c("Sin\ninstrucción","Primario\nCompleto","Secundario\nCompleto","Superior/Universitario\ncompleto")))
+  
+
+
+ephtotal<- left_join(ephtotal,aglomerado)
+ephtotal<- left_join(ephtotal, sectorcaes)
 ```
 
 ## Carga de datos
@@ -98,7 +189,7 @@ repel = TRUE, # Avoid label overplotting (slow)
 Se puede ver claramente la diferencia en la similitud de los tres grupos, siendo solamente la Capital Federal la única que presenta mayor disimilitud con respecto a su cluster, lo cual indica que esta capital lleva una dinámica socio-económica muy peculiar con respecto al promedio de las provincias argentinas, inclusive considerablemente distinta que las provincias con la cual ostenta mayor similitud.
 ```{r include=FALSE}
 
-ephtotal<- read_rds("ephtotal.Rds")
+#ephtotal<- read_rds("ephtotal.Rds")
 ### provincia
 
 provincia<- read.csv("provincias.csv", sep=",", header = T)
@@ -113,50 +204,73 @@ name_prov_para_datos<-bind_cols(nombredato, provincia) %>% select(-PROVINCIA)
 datos<- left_join(datos,name_prov_para_datos)
 #
 cluster_nombres_eph<- datos %>% select(c("Provincia","cluster","CH15_COD","CH16_COD"))
-cluster_nombres_eph<- cluster_nombres_eph %>% rename("PROVINCIA"=Provincia)
-cluster_nombres_eph_ch15<-cluster_nombres_eph %>% select(PROVINCIA,CH15_COD, cluster)
+cluster_nombres_eph<- cluster_nombres_eph %>% rename(provincia_origen=Provincia, cluster_origen=cluster)
+cluster_nombres_eph_ch15<-cluster_nombres_eph %>% select(provincia_origen,CH15_COD, cluster_origen)
 ##############################################################################################
 ephinmi<- ephtotal %>% filter(CH15==3) 
 ephinmi<- left_join(ephinmi, cluster_nombres_eph_ch15) 
-prueba<- ephinmi %>% filter(is.na(PROVINCIA))
-prueba<- prueba %>% select(CH15, CH15_COD, PROVINCIA)
 
 ephinmi %>% filter(!is.na(SECTOR_ACT)) %>% group_by(SECTOR_ACT) %>% summarise(porcentaje=formattable::percent (sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(SECTOR_ACT)]))) %>% arrange(-porcentaje)
 
 ephinmi %>% filter(!is.na(CALIFICACION)) %>% group_by(CALIFICACION) %>% summarise(porcentaje=formattable::percent (sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(CALIFICACION)]))) %>% arrange(-porcentaje)
 
-# en ctes
-califctes<- ephinmi %>% filter(!is.na(CALIFICACION) & PROVINCIA=="Corrientes")
-califctes  %>% group_by(CALIFICACION) %>% summarise(total=sum(PONDERA)/sum(califctes$PONDERA))%>% arrange(-total)
-
-
-prueba<- ephinmi %>% filter(!is.na(PROVINCIA)) %>% group_by(PROVINCIA) %>% summarise(formattable::percent((total_migrantes=sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(PROVINCIA)])),2))
-
-prueba2<- ephinmi %>% filter(!is.na(PROVINCIA) & CH06>=18) %>% group_by(PROVINCIA) %>% summarise(formattable::percent((total_migrantes=sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(PROVINCIA) & CH06>=18])),2))
-
-prueba3<- ephinmi %>% filter(!is.na(PROVINCIA) & CH06>=18) %>% group_by(AGLOMERADO2) %>% 
-  summarise(sum(PONDERA))
-
-ephnuevoinmi<- ephtotal %>% filter(CH16==3) 
-ephnuevoinmi<- left_join(ephnuevoinmi, provincia2)
-
-prueba<- ephnuevoinmi %>% filter(!is.na(PROVINCIA))
-prueba<- prueba %>% filter(!is.na(PROVINCIA)) %>% group_by(PROVINCIA) %>% summarise(formattable::percent((total_migrantes=sum(PONDERA)/sum(prueba$PONDERA)),2)) 
 ```
 ## Flujos migratorios entre clusters
 ```{r include=FALSE}
-ephinmi<- ephinmi %>% filter(!is.na(PROVINCIA))
+ephinmi<- ephinmi %>% filter(!is.na(provincia_origen))
 prov_por_aglo<- read_csv("provincias_por_aglomerado.csv")
-ephinmi<- left_join(ephinmi,prov_por_aglo)
+cluster_destino<- cluster_nombres_eph %>% select(provincia_origen,cluster_origen) %>% rename(provincia_destino=provincia_origen, cluster_destino=cluster_origen)
+cluster_destino<- left_join(prov_por_aglo,cluster_destino)
+
+ephinmi<- left_join(ephinmi,cluster_destino)
 ```
 Dentro de los cluster, existen provincias de las cuales salen gran cantidad de inmigrantes, al igual que existen provincias que son receptoras de estos mismos, en primer lugar caracterizaremos cual es el cluster con mayor nivel de *expulsion* de inmigrantes interprovinciales.
 ```{r}
-cuadro_2<-ephinmi %>% group_by("Cluster"=cluster) %>% summarise("Porcentaje"=formattable::percent((sum(PONDERA)/sum(ephinmi$PONDERA))))
-kableExtra::kable(cuadro_2,format = "markdown",caption = "Porcentaje de migrantes por cluster")
+cuadro_2<-ephinmi %>% group_by("Cluster"=cluster_origen) %>% summarise("Porcentaje"=formattable::percent((sum(PONDERA)/sum(ephinmi$PONDERA))))
+kableExtra::kable(cuadro_2,format = "markdown",caption = "Cluster de origen de los migrantes")
 ```
-Se puede notar que las provincias del *cluster Nº3* son las que mayor nivel de expulsión poseen, seguidas por las provincias pertenecientes al cluster Nº2, y por úlitmo se encuentran las pertenecientes al cluster Nº3.
+Se puede notar que las provincias del **cluster Nº2** son las que mayor nivel de expulsión poseen, seguidas por las provincias pertenecientes al cluster Nº3, y por úlitmo se encuentran las pertenecientes al cluster Nº1.
 
 ```{r echo = FALSE, warning=FALSE, error=FALSE}
+cuadro_3<-ephinmi %>% group_by("Cluster"=cluster_destino) %>% summarise("Porcentaje"=formattable::percent((sum(PONDERA)/sum(ephinmi$PONDERA))))
+kableExtra::kable(cuadro_3,format = "markdown",caption = "Cluster de destino de los migrantes")
+```
+Sin embargo, viendo cuales son los cluster de destino  con mayor porcentaje  de migrantes, encontramos que el **cluster Nº 3** es el que mayor nivel de *atracción* posee por elevada diferencia (`r cuadro_3 %>% filter(Cluster==3) %>% pull()`) 
+
+```{r echo = FALSE, warning=FALSE, error=FALSE}
+cuadro_4<- ephinmi %>% group_by("Provincia"=provincia_destino) %>% summarise("Inmigrantes"=sum(PONDERA))
+cuadro_5<- ephinmi %>% group_by("Provincia"=provincia_origen) %>% summarise("Emigrantes"=sum(PONDERA))
+cuadro_6<- full_join(cuadro_4,cuadro_5)
+######
+prov_aglo<- prov_por_aglo %>% rename(provincia=provincia_destino)
+ephtotal<- left_join(ephtotal, prov_aglo)
+prov_cluster<- clustersprov %>% mutate(Provincia=case_when(Provincia=="Tierra del Fuego, Antártida e Islas del Atlántico Sur (4)"~ "Tierra del Fuego, Antártida e Islas del Atlántico Sur",                              TRUE ~ Provincia))
+#######
+cuadro_7<- ephtotal %>% group_by("Provincia"=provincia) %>% summarise("Poblacion"=sum(PONDERA))
+cuadro_8<- left_join(cuadro_6,cuadro_7)
+cuadro_8<- left_join(cuadro_8,prov_cluster)
+cuadro_8<- cuadro_8 %>% mutate(tasa_inmigracion=Inmigrantes/Poblacion, tasa_emigracion=Emigrantes/Poblacion, tasa_neta=tasa_inmigracion-tasa_emigracion)
+cuadro_8$cluster<- factor(cuadro_8$cluster, levels = c("1","2","3"))
+
+cuadro_8 %>% ggplot(mapping=aes(x=tasa_inmigracion,y = tasa_emigracion, label=Provincia, color=cluster)) + geom_point(show.legend = T) + geom_abline(intercept=-0,slope = 1)+ scale_color_manual(values = color)+ scale_y_continuous(labels = scales::percent_format(),limits = c(0,0.75))+scale_x_continuous(labels = scales::percent_format(),limits = c(0,0.75)) + xlab("Tasa de inmigración") + ylab("Tasa de emigración")+ labs(title = "Tasa de inmigración y emigración por provincia", color="Cluster:")+ ggrepel::geom_text_repel(size=3,family = "LM Roman 10",show.legend = F)+theme(text=element_text(family = "LM Roman 10"),axis.line = element_line(color="BLACK") ,axis.text = element_text(size=7, color = "BLACK") , panel.background = element_blank(),  axis.title = element_text(size=7), title = element_text(face = "bold"))
+```
+
+
+## Definición de migrante según cluster de origen
+En primer lugar se analizará si existen microdeterminantes dentro de las características de los migrantes que porovoquen que ciertas personas con tengan una mayor propensión a migrar desde ciertas localizaciones, es decir, se analizaran los factores de expulsión de los distintos cluster; por otro lado, se realizará un análisis diferenciando el destino de los distintos migrantes, con el fin de establecer los determinantes de atracción de las distintas localizaciones.
+
+## Factores determinantes de expulsión de los migrantes
+En el universo de habitantes de una determinada región/cluster, pueden existir caracteristicas determinadas que diferencien de manera significativa entre las personas que nacieron  y decidieron quedarse en la misma región, de las que si bien nacieron en la misma región, optaron por migrar hacia otra. A continuación se realizará un análisis diferenciando por cluster de características socioeconómicas de las personas que nacieron en un mismo cluster, con el fin de determinar si existen diferencias entre los migrantes y los no migrantes.
+
+```{r}
+cluster1_expulsion<- left_join(ephtotal,cluster_destino)  
+cluster1_expulsion<- left_join(cluster1_expulsion,cluster_nombres_eph_ch15)
+cluster1_expulsion<- cluster1_expulsion %>%  filter(cluster_destino==1 | cluster_origen==1)
+cluster1_expulsion<- cluster1_expulsion %>% filter(CH15%in% c(1,2,3))
+cluster1_expulsion<- cluster1_expulsion %>% mutate(inmigrante=case_when(cluster_origen==1  &  CH15==3 ~1,
+                                                                        cluster_destino==1 & CH15 %in% c(1,2) ~0))
+cluster1_expulsion<- cluster1_expulsion %>% filter(!is.na(inmigrante))
+
 
 ```
 
