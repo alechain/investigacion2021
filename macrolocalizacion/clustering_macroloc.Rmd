@@ -264,6 +264,11 @@ En el universo de habitantes de una determinada región/cluster, pueden existir 
 
 ```{r}
 #Creación de regresores (feature engineerirng)
+deflactor<- read_csv("deflactor.csv")
+ephtotal<- left_join(ephtotal, deflactor)
+ephtotal<- ephtotal %>% mutate(HIJO=case_when(CH03==3~1,
+                                              TRUE ~ 0))
+ephtotal<- ephtotal %>% group_by(ANO4, TRIMESTRE, CODUSU,NRO_HOGAR) %>% mutate(HIJO_HOGAR=sum(HIJO)) %>% ungroup()
 ephtotal<- ephtotal %>% mutate(hombre=case_when(Sexo=="Hombres"~1,
                                                                     Sexo=="Mujeres"~0),
                                                    edad=case_when(CH06=="-1" ~ as.integer(1),
@@ -273,7 +278,17 @@ ephtotal<- ephtotal %>% mutate(hombre=case_when(Sexo=="Hombres"~1,
                                                    medio=case_when(niveled=="Secundario\nCompleto"~ 1,
                                                                     TRUE ~ 0),
                                                    alto=case_when(niveled=="Superior/Universitario\ncompleto"~ 1,
-                                                                    TRUE ~ 0)
+                                                                    TRUE ~ 0),
+                                                    IPCFR=IPCF/DEFLACTOR,
+                                                    IPCFRL=log(IPCFR),
+                                                    OCUPADO=case_when(ESTADO==1 ~ 1,
+                                                                      TRUE ~ 0),
+                                                    PROPIETARIO=case_when(II7==1 | II7==2 ~ 1,
+                                                                          TRUE ~ 0),
+                                                    HIJO_DUMMY=case_when(HIJO_HOGAR==0 ~ 0,
+                                                                         TRUE ~ 1),
+                                                    CASADO= case_when(CH07==1 | CH07==2 ~ 1 ,
+                                                                      TRUE ~ 0)
                                                    )
 ```
 
@@ -281,12 +296,13 @@ ephtotal<- ephtotal %>% mutate(hombre=case_when(Sexo=="Hombres"~1,
 cluster1_expulsion<- left_join(ephtotal,cluster_destino)  
 cluster1_expulsion<- left_join(cluster1_expulsion,cluster_nombres_eph_ch15)
 cluster1_expulsion<- cluster1_expulsion %>%  filter(cluster_destino==1 | cluster_origen==1)
+cluster1_expulsion<- cluster1_expulsion %>% filter(CH03==1)
 cluster1_expulsion<- cluster1_expulsion %>% filter(CH15%in% c(1,2,3))
 cluster1_expulsion<- cluster1_expulsion %>% mutate(inmigrante=case_when(cluster_origen==1  &  CH15==3 ~1,
                                                                         cluster_destino==1 & CH15 %in% c(1,2) ~0))
 cluster1_expulsion<- cluster1_expulsion %>% filter(!is.na(inmigrante))
 
-cluster_exp1<- glm(inmigrante ~ hombre + edad + edad2  + medio + alto ,data = cluster1_expulsion,family = "binomial")
+cluster_exp1<- glm(inmigrante ~ hombre + IPCFR + OCUPADO + CASADO + PROPIETARIO+ HIJO_DUMMY + edad   + medio + alto ,data = cluster1_expulsion,family = "binomial")
 summary(cluster_exp1)
 ```
 ```{r}
@@ -294,11 +310,12 @@ cluster2_expulsion<- left_join(ephtotal,cluster_destino)
 cluster2_expulsion<- left_join(cluster2_expulsion,cluster_nombres_eph_ch15)
 cluster2_expulsion<- cluster2_expulsion %>%  filter(cluster_destino==2 | cluster_origen==2)
 cluster2_expulsion<- cluster2_expulsion %>% filter(CH15%in% c(1,2,3))
+cluster2_expulsion<- cluster2_expulsion %>% filter(CH03==1)
 cluster2_expulsion<- cluster2_expulsion %>% mutate(inmigrante=case_when(cluster_origen==2  &  CH15==3 ~1,
                                                                         cluster_destino==2 & CH15 %in% c(1,2) ~0))
 cluster2_expulsion<- cluster2_expulsion %>% filter(!is.na(inmigrante))
 
-cluster_exp2<- glm(inmigrante ~ hombre + edad + edad2  + medio + alto ,data = cluster2_expulsion,family = "binomial")
+cluster_exp2<- glm(inmigrante ~ hombre + IPCFR+ HIJO_DUMMY  + CASADO+ PROPIETARIO + OCUPADO  +edad + edad2  + medio + alto ,data = cluster2_expulsion,family = "binomial")
 summary(cluster_exp2)
 ```
 ```{r}
@@ -306,12 +323,14 @@ cluster3_expulsion<- left_join(ephtotal,cluster_destino)
 cluster3_expulsion<- left_join(cluster3_expulsion,cluster_nombres_eph_ch15)
 cluster3_expulsion<- cluster3_expulsion %>%  filter(cluster_destino==3 | cluster_origen==3)
 cluster3_expulsion<- cluster3_expulsion %>% filter(CH15%in% c(1,2,3))
+cluster3_expulsion<- cluster3_expulsion %>% filter(CH03==1)
 cluster3_expulsion<- cluster3_expulsion %>% mutate(inmigrante=case_when(cluster_origen==3  &  CH15==3 ~1,
                                                                         cluster_destino==3 & CH15 %in% c(1,2) ~0))
 cluster3_expulsion<- cluster3_expulsion %>% filter(!is.na(inmigrante))
 
-cluster_exp3<- glm(inmigrante ~ hombre + edad + edad2  + medio + alto ,data = cluster3_expulsion,family = "binomial")
+cluster_exp3<- glm(inmigrante ~ hombre + IPCFR + HIJO_DUMMY + CASADO  + OCUPADO + edad + edad2  + medio + alto ,data = cluster3_expulsion,family = "binomial")
 summary(cluster_exp3)
+
 ```
 
 
