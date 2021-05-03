@@ -178,6 +178,7 @@ datos %>% group_by(cluster) %>% summarise(Provincia)
 datos<- datos %>% mutate(Provincia=case_when(Provincia=="Tierra del Fuego, Antártida e Islas del Atlántico Sur (4)"~ "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
                                              TRUE~Provincia)) %>% arrange(Provincia)
 ```
+
 ```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center'}
 fviz_cluster(km_clusters, data = datos4,
 palette = c("RED", "BLUE","GREEN"),
@@ -262,17 +263,30 @@ En primer lugar se analizará si existen microdeterminantes dentro de las caract
 ## Factores determinantes de expulsión de los migrantes
 En el universo de habitantes de una determinada región/cluster, pueden existir caracteristicas determinadas que diferencien de manera significativa entre las personas que nacieron  y decidieron quedarse en la misma región, de las que si bien nacieron en la misma región, optaron por migrar hacia otra. A continuación se realizará un análisis diferenciando por cluster de características socioeconómicas de las personas que nacieron en un mismo cluster, con el fin de determinar si existen diferencias entre los migrantes y los no migrantes.
 
-```{r}
+```{r include=FALSE}
 #Creación de regresores (feature engineerirng)
 deflactor<- read_csv("deflactor.csv")
+canastas<- read.csv("canasta.csv", sep=";", dec=".", header = TRUE)
+
 ephtotal<- left_join(ephtotal, deflactor)
 ephtotal<- ephtotal %>% mutate(HIJO=case_when(CH03==3~1,
                                               TRUE ~ 0))
+
 ephtotal<- ephtotal %>% group_by(ANO4, TRIMESTRE, CODUSU,NRO_HOGAR) %>% mutate(HIJO_HOGAR=sum(HIJO)) %>% ungroup()
+ephtotal<- left_join(ephtotal,eph::adulto_equivalente)
+ephtotal<- left_join(ephtotal,canastas)
+ephtotal<- ephtotal %>% group_by(ANO4, TRIMESTRE, CODUSU,NRO_HOGAR) %>% mutate(EAF=sum(adequi)) %>% ungroup()
+ephtotal<- ephtotal %>% mutate(CBAEQ=CBA*EAF,
+                         CBTEQ=CBT*EAF)
+ephtotal<- ephtotal %>% mutate(condicion=case_when(ITF<CBAEQ ~ "Indigente",
+                                             ITF>=CBAEQ & ITF<CBTEQ ~ "Pobre",
+                                             ITF>=CBTEQ ~ "No Pobre"))
+
+
 ephtotal<- ephtotal %>% mutate(hombre=case_when(Sexo=="Hombres"~1,
                                                                     Sexo=="Mujeres"~0),
                                                    edad=case_when(CH06=="-1" ~ as.integer(1),
-                                                                  TRUE ~ CH06),
+                                                                  TRUE ~ as.integer(CH06)),
                                                    edad2=(edad)^2,
                                                    ledad=log(edad),
                                                    medio=case_when(niveled=="Secundario\nCompleto"~ 1,
@@ -281,15 +295,43 @@ ephtotal<- ephtotal %>% mutate(hombre=case_when(Sexo=="Hombres"~1,
                                                                     TRUE ~ 0),
                                                     IPCFR=IPCF/DEFLACTOR,
                                                     IPCFRL=log(IPCFR),
-                                                    OCUPADO=case_when(ESTADO==1 ~ 1,
+                                                    OCUPADO_BAJO=case_when(ESTADO==1 & CALIFICACION %in% c("No Calificados", "Operativos") ~ 1,
+                                                                      TRUE ~ 0),
+                                                    OCUPADO_ALTO=case_when(ESTADO==1 & CALIFICACION %in% c("Profesionales","Técnicos") ~ 1,
                                                                       TRUE ~ 0),
                                                     PROPIETARIO=case_when(II7==1 | II7==2 ~ 1,
                                                                           TRUE ~ 0),
                                                     HIJO_DUMMY=case_when(HIJO_HOGAR==0 ~ 0,
                                                                          TRUE ~ 1),
                                                     CASADO= case_when(CH07==1 | CH07==2 ~ 1 ,
-                                                                      TRUE ~ 0)
+                                                                      TRUE ~ 0),
+                                                    POBRE=case_when(condicion %in% c("Pobre","Indigente")~1,
+                                                                    TRUE ~ 0),
+                                                    SUBSIDIO=case_when(V5==1 ~ 1,
+                                                                       TRUE ~ 0)
                                                    )
+```
+
+
+```{r}
+inmigrantes_cluster1<- left_join(ephtotal, cluster_destino)
+inmigrantes_cluster1<- left_join(inmigrantes_cluster1,cluster_nombres_eph_ch15)
+inmigrantes_cluster1<- inmigrantes_cluster1 %>% filter(CH03==1 & CH15%in% c(1,2,3))
+inmigrantes_cluster1<- inmigrantes_cluster1 %>%  mutate(inmigrante_oc1=case_when(cluster_origen==1  &  CH15==3 ~1,
+                                                                             TRUE ~0))
+inmigrantes_cluster1 %>% group_by(inmigrante_oc1) %>% count()
+inmoc1<- glm(inmigrante_oc1 ~ edad   + medio + alto ,data = inmigrantes_cluster1,family = "binomial")
+summary(inmoc1)
+```
+```{r}
+inmigrantes_cluster2<- left_join(ephtotal, cluster_destino)
+inmigrantes_cluster2<- left_join(inmigrantes_cluster2,cluster_nombres_eph_ch15)
+inmigrantes_cluster2<- inmigrantes_cluster2 %>% filter(CH03==1 & CH15%in% c(1,2,3))
+inmigrantes_cluster2<- inmigrantes_cluster2 %>%  mutate(inmigrante_oc2=case_when(cluster_origen==2  &  CH15==3 ~1,
+                                                                             TRUE ~0))
+inmigrantes_cluster2 %>% group_by(inmigrante_oc2) %>% count()
+inmoc2<- glm(inmigrante_oc2 ~ hombre + POBRE + OCUPADO_BAJO+OCUPADO_ALTO + CASADO + PROPIETARIO+ HIJO_DUMMY + edad   + medio + alto ,data = inmigrantes_cluster2,family = "binomial")
+summary(inmoc2)
 ```
 
 ```{r}
@@ -302,7 +344,7 @@ cluster1_expulsion<- cluster1_expulsion %>% mutate(inmigrante=case_when(cluster_
                                                                         cluster_destino==1 & CH15 %in% c(1,2) ~0))
 cluster1_expulsion<- cluster1_expulsion %>% filter(!is.na(inmigrante))
 
-cluster_exp1<- glm(inmigrante ~ hombre + IPCFR + OCUPADO + CASADO + PROPIETARIO+ HIJO_DUMMY + edad   + medio + alto ,data = cluster1_expulsion,family = "binomial")
+cluster_exp1<- glm(inmigrante ~  hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + CASADO + PROPIETARIO+ HIJO_DUMMY + edad   + medio + alto ,data = cluster1_expulsion,family = "binomial")
 summary(cluster_exp1)
 ```
 ```{r}
@@ -311,11 +353,11 @@ cluster2_expulsion<- left_join(cluster2_expulsion,cluster_nombres_eph_ch15)
 cluster2_expulsion<- cluster2_expulsion %>%  filter(cluster_destino==2 | cluster_origen==2)
 cluster2_expulsion<- cluster2_expulsion %>% filter(CH15%in% c(1,2,3))
 cluster2_expulsion<- cluster2_expulsion %>% filter(CH03==1)
-cluster2_expulsion<- cluster2_expulsion %>% mutate(inmigrante=case_when(cluster_origen==2  &  CH15==3 ~1,
+cluster2_expulsion<- cluster2_expulsion %>% mutate(inmigrante=case_when(cluster_origen==2  &  CH15==3 &   cluster_destino!=2~1,
                                                                         cluster_destino==2 & CH15 %in% c(1,2) ~0))
 cluster2_expulsion<- cluster2_expulsion %>% filter(!is.na(inmigrante))
 
-cluster_exp2<- glm(inmigrante ~ hombre + IPCFR+ HIJO_DUMMY  + CASADO+ PROPIETARIO + OCUPADO  +edad + edad2  + medio + alto ,data = cluster2_expulsion,family = "binomial")
+cluster_exp2<- glm(inmigrante ~ hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + CASADO + PROPIETARIO+ HIJO_DUMMY + edad  +edad2 + medio + alto, data= cluster2_expulsion,family = "binomial")
 summary(cluster_exp2)
 ```
 ```{r}
@@ -328,13 +370,63 @@ cluster3_expulsion<- cluster3_expulsion %>% mutate(inmigrante=case_when(cluster_
                                                                         cluster_destino==3 & CH15 %in% c(1,2) ~0))
 cluster3_expulsion<- cluster3_expulsion %>% filter(!is.na(inmigrante))
 
-cluster_exp3<- glm(inmigrante ~ hombre + IPCFR + HIJO_DUMMY + CASADO  + OCUPADO + edad + edad2  + medio + alto ,data = cluster3_expulsion,family = "binomial")
+cluster_exp3<- glm(inmigrante ~ hombre + POBRE + SUBSIDIO +  OCUPADO_BAJO+OCUPADO_ALTO + CASADO + PROPIETARIO+ HIJO_DUMMY + edad   + medio + alto ,data = cluster3_expulsion,family = "binomial")
 summary(cluster_exp3)
 
 ```
-
-
-
+\begin{table}[!htbp] \centering 
+  \caption{} 
+  \label{} 
+\begin{tabular}{@{\extracolsep{5pt}}lccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-4} 
+\\[-1.8ex] & \multicolumn{3}{c}{inmigrante} \\ 
+\\[-1.8ex] & (1) & (2) & (3)\\ 
+\hline \\[-1.8ex] 
+ hombre & $-$0.027 & 0.073$^{***}$ & 0.044$^{**}$ \\ 
+  & (0.042) & (0.018) & (0.020) \\ 
+  & & & \\ 
+ POBRE & 0.148$^{***}$ & $-$0.016 & $-$0.440$^{***}$ \\ 
+  & (0.041) & (0.017) & (0.020) \\ 
+  & & & \\ 
+ OCUPADO\_BAJO & $-$0.143$^{***}$ & $-$0.127$^{***}$ & $-$0.097$^{***}$ \\ 
+  & (0.047) & (0.019) & (0.023) \\ 
+  & & & \\ 
+ OCUPADO\_ALTO & $-$0.226$^{***}$ & $-$0.127$^{***}$ & $-$0.066$^{**}$ \\ 
+  & (0.061) & (0.027) & (0.027) \\ 
+  & & & \\ 
+ CASADO & 0.068 & 0.064$^{***}$ & $-$0.054$^{***}$ \\ 
+  & (0.043) & (0.018) & (0.020) \\ 
+  & & & \\ 
+ PROPIETARIO & $-$0.267$^{***}$ & $-$0.493$^{***}$ & 0.010 \\ 
+  & (0.039) & (0.017) & (0.019) \\ 
+  & & & \\ 
+ HIJO\_DUMMY & $-$0.411$^{***}$ & $-$0.388$^{***}$ & 0.008 \\ 
+  & (0.039) & (0.017) & (0.019) \\ 
+  & & & \\ 
+ edad & 0.013$^{***}$ & 0.010$^{***}$ & 0.007$^{***}$ \\ 
+  & (0.001) & (0.001) & (0.001) \\ 
+  & & & \\ 
+ medio & 0.208$^{***}$ & $-$0.318$^{***}$ & 0.263$^{***}$ \\ 
+  & (0.042) & (0.018) & (0.020) \\ 
+  & & & \\ 
+ alto & 0.540$^{***}$ & $-$0.371$^{***}$ & 0.368$^{***}$ \\ 
+  & (0.055) & (0.025) & (0.024) \\ 
+  & & & \\ 
+ Constant & $-$2.063$^{***}$ & $-$1.229$^{***}$ & $-$2.069$^{***}$ \\ 
+  & (0.097) & (0.041) & (0.047) \\ 
+  & & & \\ 
+\hline \\[-1.8ex] 
+Observations & 25,044 & 116,512 & 118,754 \\ 
+Log Likelihood & $-$10,640.860 & $-$56,345.440 & $-$49,797.470 \\ 
+Akaike Inf. Crit. & 21,303.720 & 112,712.900 & 99,616.950 \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
 
 
 
