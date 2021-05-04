@@ -261,7 +261,7 @@ cuadro_8 %>% ggplot(mapping=aes(x=tasa_inmigracion,y = tasa_emigracion, label=Pr
 En primer lugar se analizará si existen microdeterminantes dentro de las características de los migrantes que porovoquen que ciertas personas con tengan una mayor propensión a migrar desde ciertas localizaciones, es decir, se analizaran los factores de expulsión de los distintos cluster; por otro lado, se realizará un análisis diferenciando el destino de los distintos migrantes, con el fin de establecer los determinantes de atracción de las distintas localizaciones.
 
 ## Factores determinantes de expulsión de los migrantes
-En el universo de habitantes de una determinada región/cluster, pueden existir caracteristicas determinadas que diferencien de manera significativa entre las personas que nacieron  y decidieron quedarse en la misma región, de las que si bien nacieron en la misma región, optaron por migrar hacia otra. A continuación se realizará un análisis diferenciando por cluster de características socioeconómicas de las personas que nacieron en un mismo cluster, con el fin de determinar si existen diferencias entre los migrantes y los no migrantes.
+En el universo de habitantes de una determinada región/cluster, pueden existir caracteristicas determinadas que diferencien de manera significativa entre las personas que nacieron  y decidieron quedarse en la misma región, de las que si bien nacieron en la misma región, optaron por migrar hacia otra. A continuación se realizará un análisis diferenciando por cluster  de características socioeconómicas de los migrantes y no migrantes  que nacieron en un mismo cluster, con el fin de determinar si existen diferencias significativas entre ellos.
 
 ```{r include=FALSE}
 #Creación de regresores (feature engineerirng)
@@ -305,6 +305,7 @@ ephtotal<- ephtotal %>% mutate(hombre=case_when(Sexo=="Hombres"~1,
                                                                          TRUE ~ 1),
                                                     CASADO= case_when(CH07==1 | CH07==2 ~ 1 ,
                                                                       TRUE ~ 0),
+                                                    CASADO_C_HIJO=CASADO*HIJO_DUMMY,
                                                     POBRE=case_when(condicion %in% c("Pobre","Indigente")~1,
                                                                     TRUE ~ 0),
                                                     SUBSIDIO=case_when(V5==1 ~ 1,
@@ -312,42 +313,20 @@ ephtotal<- ephtotal %>% mutate(hombre=case_when(Sexo=="Hombres"~1,
                                                    )
 ```
 
-
-```{r}
-inmigrantes_cluster1<- left_join(ephtotal, cluster_destino)
-inmigrantes_cluster1<- left_join(inmigrantes_cluster1,cluster_nombres_eph_ch15)
-inmigrantes_cluster1<- inmigrantes_cluster1 %>% filter(CH03==1 & CH15%in% c(1,2,3))
-inmigrantes_cluster1<- inmigrantes_cluster1 %>%  mutate(inmigrante_oc1=case_when(cluster_origen==1  &  CH15==3 ~1,
-                                                                             TRUE ~0))
-inmigrantes_cluster1 %>% group_by(inmigrante_oc1) %>% count()
-inmoc1<- glm(inmigrante_oc1 ~ edad   + medio + alto ,data = inmigrantes_cluster1,family = "binomial")
-summary(inmoc1)
-```
-```{r}
-inmigrantes_cluster2<- left_join(ephtotal, cluster_destino)
-inmigrantes_cluster2<- left_join(inmigrantes_cluster2,cluster_nombres_eph_ch15)
-inmigrantes_cluster2<- inmigrantes_cluster2 %>% filter(CH03==1 & CH15%in% c(1,2,3))
-inmigrantes_cluster2<- inmigrantes_cluster2 %>%  mutate(inmigrante_oc2=case_when(cluster_origen==2  &  CH15==3 ~1,
-                                                                             TRUE ~0))
-inmigrantes_cluster2 %>% group_by(inmigrante_oc2) %>% count()
-inmoc2<- glm(inmigrante_oc2 ~ hombre + POBRE + OCUPADO_BAJO+OCUPADO_ALTO + CASADO + PROPIETARIO+ HIJO_DUMMY + edad   + medio + alto ,data = inmigrantes_cluster2,family = "binomial")
-summary(inmoc2)
-```
-
-```{r}
+```{r include = FALSE}
 cluster1_expulsion<- left_join(ephtotal,cluster_destino)  
 cluster1_expulsion<- left_join(cluster1_expulsion,cluster_nombres_eph_ch15)
 cluster1_expulsion<- cluster1_expulsion %>%  filter(cluster_destino==1 | cluster_origen==1)
 cluster1_expulsion<- cluster1_expulsion %>% filter(CH03==1)
 cluster1_expulsion<- cluster1_expulsion %>% filter(CH15%in% c(1,2,3))
-cluster1_expulsion<- cluster1_expulsion %>% mutate(inmigrante=case_when(cluster_origen==1  &  CH15==3 ~1,
+cluster1_expulsion<- cluster1_expulsion %>% mutate(inmigrante=case_when(cluster_origen==1  &  CH15==3 &   cluster_destino!=1 ~1,
                                                                         cluster_destino==1 & CH15 %in% c(1,2) ~0))
 cluster1_expulsion<- cluster1_expulsion %>% filter(!is.na(inmigrante))
 
-cluster_exp1<- glm(inmigrante ~  hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + CASADO + PROPIETARIO+ HIJO_DUMMY + edad   + medio + alto ,data = cluster1_expulsion,family = "binomial")
+cluster_exp1<- glm(inmigrante ~  hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + CASADO + CASADO_C_HIJO+PROPIETARIO+ HIJO_DUMMY + edad + edad2  + medio + alto ,data = cluster1_expulsion,family = "binomial")
 summary(cluster_exp1)
 ```
-```{r}
+```{r include = FALSE}
 cluster2_expulsion<- left_join(ephtotal,cluster_destino)  
 cluster2_expulsion<- left_join(cluster2_expulsion,cluster_nombres_eph_ch15)
 cluster2_expulsion<- cluster2_expulsion %>%  filter(cluster_destino==2 | cluster_origen==2)
@@ -357,22 +336,25 @@ cluster2_expulsion<- cluster2_expulsion %>% mutate(inmigrante=case_when(cluster_
                                                                         cluster_destino==2 & CH15 %in% c(1,2) ~0))
 cluster2_expulsion<- cluster2_expulsion %>% filter(!is.na(inmigrante))
 
-cluster_exp2<- glm(inmigrante ~ hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + CASADO + PROPIETARIO+ HIJO_DUMMY + edad  +edad2 + medio + alto, data= cluster2_expulsion,family = "binomial")
+cluster_exp2<- glm(inmigrante ~ hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + CASADO + CASADO_C_HIJO+ PROPIETARIO+ HIJO_DUMMY + edad  +edad2 + medio + alto, data= cluster2_expulsion,family = "binomial")
 summary(cluster_exp2)
 ```
-```{r}
+```{r include = FALSE}
 cluster3_expulsion<- left_join(ephtotal,cluster_destino)  
 cluster3_expulsion<- left_join(cluster3_expulsion,cluster_nombres_eph_ch15)
 cluster3_expulsion<- cluster3_expulsion %>%  filter(cluster_destino==3 | cluster_origen==3)
 cluster3_expulsion<- cluster3_expulsion %>% filter(CH15%in% c(1,2,3))
 cluster3_expulsion<- cluster3_expulsion %>% filter(CH03==1)
-cluster3_expulsion<- cluster3_expulsion %>% mutate(inmigrante=case_when(cluster_origen==3  &  CH15==3 ~1,
+cluster3_expulsion<- cluster3_expulsion %>% mutate(inmigrante=case_when(cluster_origen==3  &  CH15==3 &   cluster_destino!=3 ~1,
                                                                         cluster_destino==3 & CH15 %in% c(1,2) ~0))
 cluster3_expulsion<- cluster3_expulsion %>% filter(!is.na(inmigrante))
 
-cluster_exp3<- glm(inmigrante ~ hombre + POBRE + SUBSIDIO +  OCUPADO_BAJO+OCUPADO_ALTO + CASADO + PROPIETARIO+ HIJO_DUMMY + edad   + medio + alto ,data = cluster3_expulsion,family = "binomial")
+cluster_exp3<- glm(inmigrante ~ hombre + POBRE + SUBSIDIO +  OCUPADO_BAJO+OCUPADO_ALTO + CASADO+ CASADO_C_HIJO + PROPIETARIO+ HIJO_DUMMY + edad  +edad2 + medio + alto ,data = cluster3_expulsion,family = "binomial")
 summary(cluster_exp3)
-
+```
+```{r include= FALSE}
+#Grafico de regresiones en stargazer
+stargazer(cluster_exp1,cluster_exp2, cluster_exp3)
 ```
 \begin{table}[!htbp] \centering 
   \caption{} 
@@ -385,51 +367,94 @@ summary(cluster_exp3)
 \\[-1.8ex] & \multicolumn{3}{c}{inmigrante} \\ 
 \\[-1.8ex] & (1) & (2) & (3)\\ 
 \hline \\[-1.8ex] 
- hombre & $-$0.027 & 0.073$^{***}$ & 0.044$^{**}$ \\ 
-  & (0.042) & (0.018) & (0.020) \\ 
+ hombre & $-$0.014 & 0.033 & 0.120$^{***}$ \\ 
+  & (0.046) & (0.020) & (0.025) \\ 
   & & & \\ 
- POBRE & 0.148$^{***}$ & $-$0.016 & $-$0.440$^{***}$ \\ 
-  & (0.041) & (0.017) & (0.020) \\ 
+ POBRE & 0.257$^{***}$ & 0.088$^{***}$ & $-$0.475$^{***}$ \\ 
+  & (0.044) & (0.020) & (0.025) \\ 
   & & & \\ 
- OCUPADO\_BAJO & $-$0.143$^{***}$ & $-$0.127$^{***}$ & $-$0.097$^{***}$ \\ 
-  & (0.047) & (0.019) & (0.023) \\ 
+ SUBSIDIO & $-$0.225$^{***}$ & $-$0.553$^{***}$ & 0.325$^{***}$ \\ 
+  & (0.071) & (0.031) & (0.038) \\ 
   & & & \\ 
- OCUPADO\_ALTO & $-$0.226$^{***}$ & $-$0.127$^{***}$ & $-$0.066$^{**}$ \\ 
-  & (0.061) & (0.027) & (0.027) \\ 
+ OCUPADO\_BAJO & $-$0.099$^{*}$ & $-$0.006 & $-$0.178$^{***}$ \\ 
+  & (0.052) & (0.023) & (0.029) \\ 
   & & & \\ 
- CASADO & 0.068 & 0.064$^{***}$ & $-$0.054$^{***}$ \\ 
-  & (0.043) & (0.018) & (0.020) \\ 
+ OCUPADO\_ALTO & $-$0.191$^{***}$ & $-$0.100$^{***}$ & $-$0.131$^{***}$ \\ 
+  & (0.067) & (0.033) & (0.034) \\ 
   & & & \\ 
- PROPIETARIO & $-$0.267$^{***}$ & $-$0.493$^{***}$ & 0.010 \\ 
-  & (0.039) & (0.017) & (0.019) \\ 
+ CASADO & 0.137$^{**}$ & 0.097$^{***}$ & 0.009 \\ 
+  & (0.062) & (0.028) & (0.033) \\ 
   & & & \\ 
- HIJO\_DUMMY & $-$0.411$^{***}$ & $-$0.388$^{***}$ & 0.008 \\ 
-  & (0.039) & (0.017) & (0.019) \\ 
+ CASADO\_C\_HIJO & $-$0.145$^{*}$ & 0.025 & $-$0.235$^{***}$ \\ 
+  & (0.081) & (0.037) & (0.044) \\ 
   & & & \\ 
- edad & 0.013$^{***}$ & 0.010$^{***}$ & 0.007$^{***}$ \\ 
-  & (0.001) & (0.001) & (0.001) \\ 
+ PROPIETARIO & $-$0.234$^{***}$ & $-$0.527$^{***}$ & 0.080$^{***}$ \\ 
+  & (0.043) & (0.019) & (0.023) \\ 
   & & & \\ 
- medio & 0.208$^{***}$ & $-$0.318$^{***}$ & 0.263$^{***}$ \\ 
-  & (0.042) & (0.018) & (0.020) \\ 
+ HIJO\_DUMMY & $-$0.341$^{***}$ & $-$0.360$^{***}$ & 0.110$^{***}$ \\ 
+  & (0.058) & (0.027) & (0.034) \\ 
   & & & \\ 
- alto & 0.540$^{***}$ & $-$0.371$^{***}$ & 0.368$^{***}$ \\ 
-  & (0.055) & (0.025) & (0.024) \\ 
+ edad & $-$0.001 & $-$0.001 & 0.064$^{***}$ \\ 
+  & (0.007) & (0.003) & (0.004) \\ 
   & & & \\ 
- Constant & $-$2.063$^{***}$ & $-$1.229$^{***}$ & $-$2.069$^{***}$ \\ 
-  & (0.097) & (0.041) & (0.047) \\ 
+ edad2 & 0.0001$^{**}$ & 0.0001$^{***}$ & $-$0.001$^{***}$ \\ 
+  & (0.0001) & (0.00003) & (0.00004) \\ 
+  & & & \\ 
+ medio & 0.169$^{***}$ & $-$0.481$^{***}$ & 0.304$^{***}$ \\ 
+  & (0.045) & (0.021) & (0.025) \\ 
+  & & & \\ 
+ alto & 0.505$^{***}$ & $-$0.601$^{***}$ & 0.488$^{***}$ \\ 
+  & (0.060) & (0.030) & (0.030) \\ 
+  & & & \\ 
+ Constant & $-$2.015$^{***}$ & $-$1.279$^{***}$ & $-$3.848$^{***}$ \\ 
+  & (0.176) & (0.081) & (0.105) \\ 
   & & & \\ 
 \hline \\[-1.8ex] 
-Observations & 25,044 & 116,512 & 118,754 \\ 
-Log Likelihood & $-$10,640.860 & $-$56,345.440 & $-$49,797.470 \\ 
-Akaike Inf. Crit. & 21,303.720 & 112,712.900 & 99,616.950 \\ 
+Observations & 24,400 & 110,543 & 111,681 \\ 
+Log Likelihood & $-$9,396.855 & $-$45,578.040 & $-$35,125.640 \\ 
+Akaike Inf. Crit. & 18,821.710 & 91,184.090 & 70,279.290 \\ 
 \hline 
 \hline \\[-1.8ex] 
 \textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
 \end{tabular} 
 \end{table} 
+```{r include=FALSE}
+cluster1_atraccion<- left_join(ephtotal,cluster_destino)  
+cluster1_atraccion<- left_join(cluster1_atraccion,cluster_nombres_eph_ch15)
+cluster1_atraccion <- cluster1_atraccion %>% filter(CH15==3)
+cluster1_atraccion<- cluster1_atraccion %>% mutate(inmigrante=case_when(cluster_destino==1 ~1,
+                                                                        (cluster_destino==2 | cluster_destino==3)~0)) 
+cluster1_atraccion<- cluster1_atraccion %>% filter(!is.na(inmigrante))
 
+cluster1_atraccion %>% group_by(inmigrante) %>% count()
 
+cluster_atr1<- glm(inmigrante ~ hombre + POBRE + SUBSIDIO +  OCUPADO_BAJO+OCUPADO_ALTO + CASADO + PROPIETARIO+ HIJO_DUMMY + edad   + medio + alto ,data = cluster1_atraccion,family = "binomial")
+summary(cluster_atr1)
+```
+```{r include=FALSE}
+cluster2_atraccion<- left_join(ephtotal,cluster_destino)  
+cluster2_atraccion<- left_join(cluster2_atraccion,cluster_nombres_eph_ch15)
+cluster2_atraccion <- cluster2_atraccion %>% filter(CH15==3)
+cluster2_atraccion<- cluster2_atraccion %>% mutate(inmigrante=case_when(cluster_destino==2 ~1,
+                                                                        (cluster_destino==1 | cluster_destino==3)~0)) 
+cluster2_atraccion<- cluster2_atraccion %>% filter(!is.na(inmigrante))
 
+cluster2_atraccion %>% group_by(inmigrante) %>% count()
 
+cluster_atr2<- glm(inmigrante ~ hombre + POBRE + SUBSIDIO +  OCUPADO_BAJO+OCUPADO_ALTO + CASADO + PROPIETARIO+ HIJO_DUMMY + edad  + edad2 + medio + alto ,data = cluster2_atraccion,family = "binomial")
+summary(cluster_atr2)
+```
 
+```{r include=FALSE}
+cluster3_atraccion<- left_join(ephtotal,cluster_destino)  
+cluster3_atraccion<- left_join(cluster3_atraccion,cluster_nombres_eph_ch15)
+cluster3_atraccion <- cluster3_atraccion %>% filter(CH15==3)
+cluster3_atraccion<- cluster3_atraccion %>% mutate(inmigrante=case_when(cluster_destino==3 ~1,
+                                                                        (cluster_destino==1 | cluster_destino==2)~0)) 
+cluster3_atraccion<- cluster3_atraccion %>% filter(!is.na(inmigrante))
 
+cluster3_atraccion %>% group_by(inmigrante) %>% count()
+
+cluster_atr3<- glm(inmigrante ~ hombre + POBRE + SUBSIDIO +  OCUPADO_BAJO+OCUPADO_ALTO + CASADO + PROPIETARIO+ HIJO_DUMMY + edad   + medio + alto ,data = cluster3_atraccion,family = "binomial")
+summary(cluster_atr3)
+```
