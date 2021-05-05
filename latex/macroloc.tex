@@ -11,31 +11,70 @@
 \title{Macrolocalización con K-means}
 \begin{document}
 \maketitle
-\begin{table}[ht]
-\centering
-\small
-\begin{tabular}{llrr}
-  \hline
- & Indicadores & cluster 1 & cluster 2 \\ 
-  \hline
-1 & Habitantes (2010) & 1738929.00 & 681055.00 \\ 
-  2 & tasa promocion efectiva secundaria (2017) & 80.80 & 78.60 \\ 
-  3 & promedio mortalidad infantil 2016-2019 & 8.00 & 9.60 \\ 
-  4 & Homicidios dolosos promedio (2016-2019 & 6.20 & 4.20 \\ 
-  5 & Muertes en Accidentes Viales promedio (2016-2019 & 8.40 & 14.90 \\ 
-  6 & Robos (excluye los agravados por el resultado de lesiones y/o muertes) promedio (2016-2019 & 1380.40 & 676.30 \\ 
-  7 & Robos agravados por el resultado de lesiones y/o muertes  promedio (2016-2019 & 15.40 & 2.40 \\ 
-  8 & Violaciones promedio (2016-2019 & 9.00 & 11.80 \\ 
-  9 & exportaciones promedio (2016-2019) en USD & 1528.20 & 759.50 \\ 
-  10 & Demanda de MWH energía electrica (2016) & 3.70 & 2.10 \\ 
-  11 & Pobreza Promedio2017-2019 & 26.10 & 32.00 \\ 
-  12 & Tasa actividad Promedio 2017-2019 & 44.90 & 42.60 \\ 
-  13 & cantidad empresas 2016-2017 & 1735.98 & 844.92 \\ 
-  14 & remuneracion  real trab registrados priv (2016-2019) & 18644.53 & 15021.98 \\ 
-  15 & Porcentaje empleados en Agricultura, ganadería, pesca y actividades extractivas (2016-2019) & 0.06 & 0.13 \\ 
-  16 & Porcentaje empleados en Comercio, servicios, electricidad, gas, agua y construccion (2016-2019) & 0.70 & 0.69 \\ 
-  17 & Porcentaje empleados en Industria (2016-2019) & 0.18 & 0.14 \\ 
-   \hline
-\end{tabular}
-\end{table}
+
+\begin{table}[!htbp] \centering 
+  \caption{} 
+  \label{} 
+\small 
+\begin{tabular}{@{\extracolsep{5pt}}lccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{3}{c}{\textit{Variable dependiente:}} \\ 
+\cline{2-4} 
+\\[-1.8ex] & \multicolumn{3}{c}{Inmigrante} \\ 
+\\[-1.8ex] & (Cluster 1) & (Cluster 2) & (Cluster 3)\\ 
+\hline \\[-1.8ex] 
+ Hombre & $-$0.014 & 0.033 & 0.120$^{***}$ \\ 
+  & (0.046) & (0.020) & (0.025) \\ 
+  & & & \\ 
+ Pobre & 0.257$^{***}$ & 0.088$^{***}$ & $-$0.475$^{***}$ \\ 
+  & (0.044) & (0.020) & (0.025) \\ 
+  & & & \\ 
+ Subsidio & $-$0.225$^{***}$ & $-$0.553$^{***}$ & 0.325$^{***}$ \\ 
+  & (0.071) & (0.031) & (0.038) \\ 
+  & & & \\ 
+ Ocupado/a Baja Calif. & $-$0.099$^{*}$ & $-$0.006 & $-$0.178$^{***}$ \\ 
+  & (0.052) & (0.023) & (0.029) \\ 
+  & & & \\ 
+ Ocupado/a Alta Calif. & $-$0.191$^{***}$ & $-$0.100$^{***}$ & $-$0.131$^{***}$ \\ 
+  & (0.067) & (0.033) & (0.034) \\ 
+  & & & \\ 
+ Casado/a & 0.137$^{**}$ & 0.097$^{***}$ & 0.009 \\ 
+  & (0.062) & (0.028) & (0.033) \\ 
+  & & & \\ 
+ Casado/a Con Hijo & $-$0.145$^{*}$ & 0.025 & $-$0.235$^{***}$ \\ 
+  & (0.081) & (0.037) & (0.044) \\ 
+  & & & \\ 
+  Hijo/a & $-$0.341$^{***}$ & $-$0.360$^{***}$ & 0.110$^{***}$ \\ 
+  & (0.058) & (0.027) & (0.034) \\
+  & & & \\ 
+ Propietario/a vivienda & $-$0.234$^{***}$ & $-$0.527$^{***}$ & 0.080$^{***}$ \\ 
+  & (0.043) & (0.019) & (0.023) \\ 
+  & & & \\ 
+ Edad & $-$0.001 & $-$0.001 & 0.064$^{***}$ \\ 
+  & (0.007) & (0.003) & (0.004) \\ 
+  & & & \\ 
+ Edad$^2$ & 0.0001$^{**}$ & 0.0001$^{***}$ & $-$0.001$^{***}$ \\ 
+  & (0.0001) & (0.00003) & (0.00004) \\ 
+  & & & \\ 
+ Nivel Educativo Medio & 0.169$^{***}$ & $-$0.481$^{***}$ & 0.304$^{***}$ \\ 
+  & (0.045) & (0.021) & (0.025) \\ 
+  & & & \\ 
+ Nivel\_Educativo\_Alto & 0.505$^{***}$ & $-$0.601$^{***}$ & 0.488$^{***}$ \\ 
+  & (0.060) & (0.030) & (0.030) \\ 
+  & & & \\ 
+ Constante & $-$2.015$^{***}$ & $-$1.279$^{***}$ & $-$3.848$^{***}$ \\ 
+  & (0.176) & (0.081) & (0.105) \\ 
+  & & & \\ 
+\hline \\[-1.8ex] 
+Observaciones(n) & 24,400 & 110,543 & 111,681 \\ 
+Log Likelihood & $-$9,396.855 & $-$45,578.040 & $-$35,125.640 \\ 
+Akaike Inf. Crit. & 18,821.710 & 91,184.090 & 70,279.290 \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Nota:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
+
 \end{document}
+

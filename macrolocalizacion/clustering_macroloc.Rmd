@@ -305,7 +305,12 @@ ephtotal<- ephtotal %>% mutate(hombre=case_when(Sexo=="Hombres"~1,
                                                                          TRUE ~ 1),
                                                     CASADO= case_when(CH07==1 | CH07==2 ~ 1 ,
                                                                       TRUE ~ 0),
-                                                    CASADO_C_HIJO=CASADO*HIJO_DUMMY,
+                                                    SOLTERO_C_HIJO=case_when(CASADO==0 & HIJO_DUMMY==1~1,
+                                                                             TRUE~0),
+                                                    CASADO_S_HIJO=case_when(CASADO==1 & HIJO_DUMMY==0~ 1,
+                                                                            TRUE ~ 0),
+                                                    CASADO_C_HIJO=case_when(CASADO==1 & HIJO_DUMMY==1~1,
+                                                                            TRUE~0),
                                                     POBRE=case_when(condicion %in% c("Pobre","Indigente")~1,
                                                                     TRUE ~ 0),
                                                     SUBSIDIO=case_when(V5==1 ~ 1,
@@ -323,8 +328,12 @@ cluster1_expulsion<- cluster1_expulsion %>% mutate(inmigrante=case_when(cluster_
                                                                         cluster_destino==1 & CH15 %in% c(1,2) ~0))
 cluster1_expulsion<- cluster1_expulsion %>% filter(!is.na(inmigrante))
 
-cluster_exp1<- glm(inmigrante ~  hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + CASADO + CASADO_C_HIJO+PROPIETARIO+ HIJO_DUMMY + edad + edad2  + medio + alto ,data = cluster1_expulsion,family = "binomial")
+cluster_exp1<- glm(inmigrante ~  hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto ,data = cluster1_expulsion,family = binomial(link="logit"))
+
 summary(cluster_exp1)
+clus<-margins::margins(cluster_exp1, type="link")
+plot(clus)
+margins::cplot(cluster_exp1,"SUBSIDIO") 
 ```
 ```{r include = FALSE}
 cluster2_expulsion<- left_join(ephtotal,cluster_destino)  
@@ -336,9 +345,11 @@ cluster2_expulsion<- cluster2_expulsion %>% mutate(inmigrante=case_when(cluster_
                                                                         cluster_destino==2 & CH15 %in% c(1,2) ~0))
 cluster2_expulsion<- cluster2_expulsion %>% filter(!is.na(inmigrante))
 
-cluster_exp2<- glm(inmigrante ~ hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + CASADO + CASADO_C_HIJO+ PROPIETARIO+ HIJO_DUMMY + edad  +edad2 + medio + alto, data= cluster2_expulsion,family = "binomial")
+cluster_exp2<- glm(inmigrante ~ hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO + edad  +edad2 + medio + alto, data= cluster2_expulsion,family = "binomial")
 summary(cluster_exp2)
+margins::margins(cluster_exp2)
 ```
+
 ```{r include = FALSE}
 cluster3_expulsion<- left_join(ephtotal,cluster_destino)  
 cluster3_expulsion<- left_join(cluster3_expulsion,cluster_nombres_eph_ch15)
@@ -354,70 +365,76 @@ summary(cluster_exp3)
 ```
 ```{r include= FALSE}
 #Grafico de regresiones en stargazer
-stargazer(cluster_exp1,cluster_exp2, cluster_exp3)
+stargazer(cluster_exp1,cluster_exp2, cluster_exp3,font.size = "small")
 ```
 \begin{table}[!htbp] \centering 
   \caption{} 
   \label{} 
+\small 
 \begin{tabular}{@{\extracolsep{5pt}}lccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
- & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ 
+ & \multicolumn{3}{c}{\textit{Variable dependiente:}} \\ 
 \cline{2-4} 
-\\[-1.8ex] & \multicolumn{3}{c}{inmigrante} \\ 
-\\[-1.8ex] & (1) & (2) & (3)\\ 
+\\[-1.8ex] & \multicolumn{3}{c}{Inmigrante} \\ 
+\\[-1.8ex] & (Cluster 1) & (Cluster 2) & (Cluster 3)\\ 
 \hline \\[-1.8ex] 
- hombre & $-$0.014 & 0.033 & 0.120$^{***}$ \\ 
+ Hombre & $-$0.014 & 0.033 & 0.120$^{***}$ \\ 
   & (0.046) & (0.020) & (0.025) \\ 
   & & & \\ 
- POBRE & 0.257$^{***}$ & 0.088$^{***}$ & $-$0.475$^{***}$ \\ 
+ Pobre & 0.257$^{***}$ & 0.088$^{***}$ & $-$0.475$^{***}$ \\ 
   & (0.044) & (0.020) & (0.025) \\ 
   & & & \\ 
- SUBSIDIO & $-$0.225$^{***}$ & $-$0.553$^{***}$ & 0.325$^{***}$ \\ 
+ Subsidio & $-$0.225$^{***}$ & $-$0.553$^{***}$ & 0.325$^{***}$ \\ 
   & (0.071) & (0.031) & (0.038) \\ 
   & & & \\ 
- OCUPADO\_BAJO & $-$0.099$^{*}$ & $-$0.006 & $-$0.178$^{***}$ \\ 
+ Ocupado/a Baja Calif. & $-$0.099$^{*}$ & $-$0.006 & $-$0.178$^{***}$ \\ 
   & (0.052) & (0.023) & (0.029) \\ 
   & & & \\ 
- OCUPADO\_ALTO & $-$0.191$^{***}$ & $-$0.100$^{***}$ & $-$0.131$^{***}$ \\ 
+ Ocupado/a Alta Calif. & $-$0.191$^{***}$ & $-$0.100$^{***}$ & $-$0.131$^{***}$ \\ 
   & (0.067) & (0.033) & (0.034) \\ 
   & & & \\ 
- CASADO & 0.137$^{**}$ & 0.097$^{***}$ & 0.009 \\ 
+ Casado/a & 0.137$^{**}$ & 0.097$^{***}$ & 0.009 \\ 
   & (0.062) & (0.028) & (0.033) \\ 
   & & & \\ 
- CASADO\_C\_HIJO & $-$0.145$^{*}$ & 0.025 & $-$0.235$^{***}$ \\ 
+ Casado/a Con Hijo & $-$0.145$^{*}$ & 0.025 & $-$0.235$^{***}$ \\ 
   & (0.081) & (0.037) & (0.044) \\ 
   & & & \\ 
- PROPIETARIO & $-$0.234$^{***}$ & $-$0.527$^{***}$ & 0.080$^{***}$ \\ 
+  Hijo/a & $-$0.341$^{***}$ & $-$0.360$^{***}$ & 0.110$^{***}$ \\ 
+  & (0.058) & (0.027) & (0.034) \\
+  & & & \\ 
+ Propietario/a vivienda & $-$0.234$^{***}$ & $-$0.527$^{***}$ & 0.080$^{***}$ \\ 
   & (0.043) & (0.019) & (0.023) \\ 
   & & & \\ 
- HIJO\_DUMMY & $-$0.341$^{***}$ & $-$0.360$^{***}$ & 0.110$^{***}$ \\ 
-  & (0.058) & (0.027) & (0.034) \\ 
-  & & & \\ 
- edad & $-$0.001 & $-$0.001 & 0.064$^{***}$ \\ 
+ Edad & $-$0.001 & $-$0.001 & 0.064$^{***}$ \\ 
   & (0.007) & (0.003) & (0.004) \\ 
   & & & \\ 
- edad2 & 0.0001$^{**}$ & 0.0001$^{***}$ & $-$0.001$^{***}$ \\ 
+ Edad$^2$ & 0.0001$^{**}$ & 0.0001$^{***}$ & $-$0.001$^{***}$ \\ 
   & (0.0001) & (0.00003) & (0.00004) \\ 
   & & & \\ 
- medio & 0.169$^{***}$ & $-$0.481$^{***}$ & 0.304$^{***}$ \\ 
+ Nivel Educativo Medio & 0.169$^{***}$ & $-$0.481$^{***}$ & 0.304$^{***}$ \\ 
   & (0.045) & (0.021) & (0.025) \\ 
   & & & \\ 
- alto & 0.505$^{***}$ & $-$0.601$^{***}$ & 0.488$^{***}$ \\ 
+ Nivel Educativo Alto & 0.505$^{***}$ & $-$0.601$^{***}$ & 0.488$^{***}$ \\ 
   & (0.060) & (0.030) & (0.030) \\ 
   & & & \\ 
- Constant & $-$2.015$^{***}$ & $-$1.279$^{***}$ & $-$3.848$^{***}$ \\ 
+ Constante & $-$2.015$^{***}$ & $-$1.279$^{***}$ & $-$3.848$^{***}$ \\ 
   & (0.176) & (0.081) & (0.105) \\ 
   & & & \\ 
 \hline \\[-1.8ex] 
-Observations & 24,400 & 110,543 & 111,681 \\ 
+Observaciones(n) & 24,400 & 110,543 & 111,681 \\ 
 Log Likelihood & $-$9,396.855 & $-$45,578.040 & $-$35,125.640 \\ 
 Akaike Inf. Crit. & 18,821.710 & 91,184.090 & 70,279.290 \\ 
 \hline 
 \hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\textit{Nota:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
 \end{tabular} 
 \end{table} 
+
+```{r}
+
+```
+
 ```{r include=FALSE}
 cluster1_atraccion<- left_join(ephtotal,cluster_destino)  
 cluster1_atraccion<- left_join(cluster1_atraccion,cluster_nombres_eph_ch15)
@@ -428,8 +445,9 @@ cluster1_atraccion<- cluster1_atraccion %>% filter(!is.na(inmigrante))
 
 cluster1_atraccion %>% group_by(inmigrante) %>% count()
 
-cluster_atr1<- glm(inmigrante ~ hombre + POBRE + SUBSIDIO +  OCUPADO_BAJO+OCUPADO_ALTO + CASADO + PROPIETARIO+ HIJO_DUMMY + edad   + medio + alto ,data = cluster1_atraccion,family = "binomial")
+cluster_atr1<- glm(inmigrante ~ hombre + POBRE + SUBSIDIO +  OCUPADO_BAJO+OCUPADO_ALTO + CASADO + PROPIETARIO+ HIJO_DUMMY + edad   + medio + alto ,data = cluster1_atraccion,family = binomial(link="probit"))
 summary(cluster_atr1)
+margins::margins(cluster_atr1)
 ```
 ```{r include=FALSE}
 cluster2_atraccion<- left_join(ephtotal,cluster_destino)  
