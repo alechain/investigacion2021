@@ -330,10 +330,6 @@ cluster1_expulsion<- cluster1_expulsion %>% filter(!is.na(inmigrante))
 
 cluster_exp1<- glm(inmigrante ~  hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto ,data = cluster1_expulsion,family = binomial(link="logit"))
 
-summary(cluster_exp1)
-clus<-margins::margins(cluster_exp1, type="link")
-plot(clus)
-margins::cplot(cluster_exp1,"SUBSIDIO") 
 ```
 ```{r include = FALSE}
 cluster2_expulsion<- left_join(ephtotal,cluster_destino)  
@@ -345,9 +341,7 @@ cluster2_expulsion<- cluster2_expulsion %>% mutate(inmigrante=case_when(cluster_
                                                                         cluster_destino==2 & CH15 %in% c(1,2) ~0))
 cluster2_expulsion<- cluster2_expulsion %>% filter(!is.na(inmigrante))
 
-cluster_exp2<- glm(inmigrante ~ hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO + edad  +edad2 + medio + alto, data= cluster2_expulsion,family = "binomial")
-summary(cluster_exp2)
-margins::margins(cluster_exp2)
+cluster_exp2<- glm(inmigrante ~  hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto, data= cluster2_expulsion,family = binomial(link = "logit"))
 ```
 
 ```{r include = FALSE}
@@ -360,8 +354,7 @@ cluster3_expulsion<- cluster3_expulsion %>% mutate(inmigrante=case_when(cluster_
                                                                         cluster_destino==3 & CH15 %in% c(1,2) ~0))
 cluster3_expulsion<- cluster3_expulsion %>% filter(!is.na(inmigrante))
 
-cluster_exp3<- glm(inmigrante ~ hombre + POBRE + SUBSIDIO +  OCUPADO_BAJO+OCUPADO_ALTO + CASADO+ CASADO_C_HIJO + PROPIETARIO+ HIJO_DUMMY + edad  +edad2 + medio + alto ,data = cluster3_expulsion,family = "binomial")
-summary(cluster_exp3)
+cluster_exp3<- glm(inmigrante ~  hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto,data = cluster3_expulsion,family = binomial(link = "logit"))
 ```
 ```{r include= FALSE}
 #Grafico de regresiones en stargazer
@@ -379,57 +372,67 @@ stargazer(cluster_exp1,cluster_exp2, cluster_exp3,font.size = "small")
 \\[-1.8ex] & \multicolumn{3}{c}{Inmigrante} \\ 
 \\[-1.8ex] & (Cluster 1) & (Cluster 2) & (Cluster 3)\\ 
 \hline \\[-1.8ex] 
- Hombre & $-$0.014 & 0.033 & 0.120$^{***}$ \\ 
-  & (0.046) & (0.020) & (0.025) \\ 
+ Hombre & 0.008 & 0.031 & 0.121$^{***}$ \\ 
+  & (0.037) & (0.020) & (0.027) \\ 
   & & & \\ 
- Pobre & 0.257$^{***}$ & 0.088$^{***}$ & $-$0.475$^{***}$ \\ 
-  & (0.044) & (0.020) & (0.025) \\ 
+ Pobre & 0.449$^{***}$ & 0.058$^{***}$ & $-$0.476$^{***}$ \\ 
+  & (0.035) & (0.020) & (0.026) \\ 
   & & & \\ 
- Subsidio & $-$0.225$^{***}$ & $-$0.553$^{***}$ & 0.325$^{***}$ \\ 
-  & (0.071) & (0.031) & (0.038) \\ 
+ Subsidio & $-$0.125$^{**}$ & $-$0.591$^{***}$ & 0.325$^{***}$ \\ 
+  & (0.052) & (0.033) & (0.040) \\ 
   & & & \\ 
- Ocupado/a Baja Calif. & $-$0.099$^{*}$ & $-$0.006 & $-$0.178$^{***}$ \\ 
-  & (0.052) & (0.023) & (0.029) \\ 
+ Ocupado/a baja calif. & $-$0.092$^{**}$ & 0.004 & $-$0.190$^{***}$ \\ 
+  & (0.041) & (0.023) & (0.031) \\ 
   & & & \\ 
- Ocupado/a Alta Calif. & $-$0.191$^{***}$ & $-$0.100$^{***}$ & $-$0.131$^{***}$ \\ 
-  & (0.067) & (0.033) & (0.034) \\ 
+ Ocupado/a alta calif. & $-$0.248$^{***}$ & $-$0.030 & $-$0.177$^{***}$ \\ 
+  & (0.057) & (0.032) & (0.036) \\ 
   & & & \\ 
- Casado/a & 0.137$^{**}$ & 0.097$^{***}$ & 0.009 \\ 
-  & (0.062) & (0.028) & (0.033) \\ 
+ Soltero/a con Hijo/a & $-$0.311$^{***}$ & $-$0.388$^{***}$ & 0.092$^{**}$ \\ 
+  & (0.048) & (0.027) & (0.036) \\ 
   & & & \\ 
- Casado/a Con Hijo & $-$0.145$^{*}$ & 0.025 & $-$0.235$^{***}$ \\ 
-  & (0.081) & (0.037) & (0.044) \\ 
+ Casado/a sin Hijo/a & 0.193$^{***}$ & 0.109$^{***}$ & 0.002 \\ 
+  & (0.052) & (0.027) & (0.035) \\ 
   & & & \\ 
-  Hijo/a & $-$0.341$^{***}$ & $-$0.360$^{***}$ & 0.110$^{***}$ \\ 
-  & (0.058) & (0.027) & (0.034) \\
+ Casado/a con Hijo/a & $-$0.249$^{***}$ & $-$0.254$^{***}$ & $-$0.116$^{***}$ \\ 
+  & (0.045) & (0.024) & (0.032) \\ 
   & & & \\ 
- Propietario/a vivienda & $-$0.234$^{***}$ & $-$0.527$^{***}$ & 0.080$^{***}$ \\ 
-  & (0.043) & (0.019) & (0.023) \\ 
+ Propietario/a de Vivienda & $-$0.214$^{***}$ & $-$0.545$^{***}$ & 0.087$^{***}$ \\ 
+  & (0.035) & (0.019) & (0.025) \\ 
   & & & \\ 
- Edad & $-$0.001 & $-$0.001 & 0.064$^{***}$ \\ 
-  & (0.007) & (0.003) & (0.004) \\ 
+ Edad & 0.043$^{***}$ & $-$0.007$^{**}$ & 0.064$^{***}$ \\ 
+  & (0.006) & (0.003) & (0.005) \\ 
   & & & \\ 
- Edad$^2$ & 0.0001$^{**}$ & 0.0001$^{***}$ & $-$0.001$^{***}$ \\ 
+ Edad$^2$ & $-$0.0002$^{***}$ & 0.0002$^{***}$ & $-$0.001$^{***}$ \\ 
   & (0.0001) & (0.00003) & (0.00004) \\ 
   & & & \\ 
- Nivel Educativo Medio & 0.169$^{***}$ & $-$0.481$^{***}$ & 0.304$^{***}$ \\ 
-  & (0.045) & (0.021) & (0.025) \\ 
+ Nivel Educativo Medio & $-$0.112$^{***}$ & $-$0.337$^{***}$ & 0.267$^{***}$ \\ 
+  & (0.037) & (0.021) & (0.027) \\ 
   & & & \\ 
- Nivel Educativo Alto & 0.505$^{***}$ & $-$0.601$^{***}$ & 0.488$^{***}$ \\ 
-  & (0.060) & (0.030) & (0.030) \\ 
+ Nivel Educativo Alto & 0.131$^{**}$ & $-$0.436$^{***}$ & 0.406$^{***}$ \\ 
+  & (0.052) & (0.029) & (0.033) \\ 
   & & & \\ 
- Constante & $-$2.015$^{***}$ & $-$1.279$^{***}$ & $-$3.848$^{***}$ \\ 
-  & (0.176) & (0.081) & (0.105) \\ 
+ Constante & $-$2.672$^{***}$ & $-$1.280$^{***}$ & $-$3.888$^{***}$ \\ 
+  & (0.154) & (0.080) & (0.112) \\ 
   & & & \\ 
 \hline \\[-1.8ex] 
-Observaciones(n) & 24,400 & 110,543 & 111,681 \\ 
-Log Likelihood & $-$9,396.855 & $-$45,578.040 & $-$35,125.640 \\ 
-Akaike Inf. Crit. & 18,821.710 & 91,184.090 & 70,279.290 \\ 
+Observaciones(n) & 26,688 & 110,337 & 110,180 \\ 
+Log Likelihood & $-$13,238.230 & $-$45,180.400 & $-$31,683.570 \\ 
+Akaike Inf. Crit. & 26,504.470 & 90,388.810 & 63,395.150 \\ 
 \hline 
 \hline \\[-1.8ex] 
 \textit{Nota:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
 \end{tabular} 
 \end{table} 
+
+Los factores determinantes de expulsión de los migrantes varían dependiendo del cluster que se esté tomando a consideración, el sexo no es un factor determinante de expulsión para los cluster 1 y 2, sin embargo, si lo es para el cluster 3, en el cual los hombres que nacieron en el mismo tienen una mayor probabilidad de migrar que las mujeres; la edad, por otro lado, tiene una relación cuadrática, lo que indica que para el cluster 1 y 3, la probabildiad de migrar aumenta conforme la persona es mayor, pero cada año que pasa esta probabilidad crece a tasa decreciente,lo que genera que cada año que pase la probabilidad sea cada vez menor, por otro lado, en el cluster 2 esta relación es inversa, la probabilidad es negativa para las personas con mayor edad, pero conforme la edad vá aumentando, esta reducción marginal en la probabilidad va disminuyendo.
+La incidencia en la pobreza es un factor determinante significativo en la migración en los tres clusters, para los cluster 1 y 2 las personas pobres que nacieron en los mismos tienen una mayor probabilidad de abandonar sus provincias de origen, mientras que la incidencia en la pobreza para los oriundos del cluster 3 tiene un efecto totalmente inverso, reduciendo al probabilidad de abandonar su provincia natal.
+La recepción de susidios o ayudas por parte del gobierno, instituciones, iglesias, etc, tiene un impacto significativo en la probabilidad de migracion en los tres clusters, pero nuevamente se puede ver un patron diferenciado entre los cluster 1 y 2, en donde la recepción de un subsidio disminuye la probabibilidad de ser migrante, mientras que en el cluster 3 el efecto es contrario, en donde la recepción de esta transferencia económica aumenta la probabilidad de abandonar la provincia de origen.
+En cuanto a la condición de ocupación y la calificación del trabajo, los cluster 1 y 3 tienen efectos similares en cuanto a este factor determinante de la migración, en donde la probabilidad de migrar se reduce en presencia de un trabajo de baja calificación, y aún mas si este es de calificación alta en comparacion con un estado de inactividad o desocupación, sin embargo, estos factor no son significativos para el cluster 2.
+
+otro factor relevante a la hora de analizar los factores de expulsión de los cluster es la organización familiar, en este caso, en el cluster 1 y 2 ser soltero con hijos disminuye la porbabilidad de abandonar la provincia de origen en comparación con una persona soltera sin hijos (en adelante grupo base), mientras que en el cluster 3 el efecto es inverso, donde ser soltero con hijos aumenta la probabildiad de migrar, en relación con el grupo base.
+La similitud entre el cluster 1 y 2 se vuelve a repetir si consideramos el auimento en la probabildiad de ser migrante en el caso de ser estar en pareja SIN hijos, en comparación el grupo base, en donde la condición de estar en pareja reforzaría la decisión de migración, lo cual queda revertido en el caso de las personas que estan casadas pero con hijos, el cual para todos los cluster es un factor determinante negativo que reduce la probabilidad de migrar en relación al grupo base y es estadísticamente significativo.
+La propiedad de la vivienda es otro factor que tiene efectos diferenciados en la decisión de migración dependiendo del cluster que se esté analizando, para los cluster 1 y 2, el hecho de ser propietario/a de la vivienda reduce la probabilidad de ser un migrante con origen en estas provincias, sin embargo, para el cluster 3 este efecto es inverso, el cual indica que la propiedad de la vivienda aumenta la probailidad de haber abandonado su provincia de origen.
+Por último se analiza el efecto que tiene la educación en la expulsión de la provincia de origen, para los  cluster 1 y 2 una persona con nivel educativo medio (secundaria completa) tiene menor probabildiad de haber abandonado la provincia de origen enrelación con una persona con un nivel educativo bajo (en adelante grupo base), sin embargo, para el cluster 3 esta probabildiad es inversa, en donde una persona con nivel educativo medio tiene una mayor probabilidad de ser migrante en relación al grupo base, las cosas cambian si se considera un nivel educativo alto (educación superior o universitaria), en donde para el cluster 1 y 3 la probabildiad de ser migrante aumenta en comparación con el grupo base, generando una expulsión de personas con elevado nivel educativo, lo cual es inverso en el cluster 2, el cual la probabildiad de migrar se reduce en comparación con el grupo base si se posee un nivel educativo superior o universitario .
 
 ```{r}
 
