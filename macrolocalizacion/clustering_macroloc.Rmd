@@ -20,6 +20,10 @@ library(xtable)
 library(extrafont)
 library(eph)
 library(readxl)
+library(sf)
+library(tmap)
+library(tmaptools)
+
 color<- c('#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf')
 ```
 
@@ -188,12 +192,13 @@ repel = TRUE, # Avoid label overplotting (slow)
  labelsize = 6, ) + theme_classic(base_family ="LM Roman 10" ) + labs(title="Plot de clusters resultantes de la macrolocalización") + theme(text=element_text(family = "LM Roman 10"), title = element_text(face = "bold"))
 ```
 Se puede ver claramente la diferencia en la similitud de los tres grupos, siendo solamente la Capital Federal la única que presenta mayor disimilitud con respecto a su cluster, lo cual indica que esta capital lleva una dinámica socio-económica muy peculiar con respecto al promedio de las provincias argentinas, inclusive considerablemente distinta que las provincias con la cual ostenta mayor similitud.
+
 ```{r include=FALSE}
 
 #ephtotal<- read_rds("ephtotal.Rds")
 ### provincia
 
-provincia<- read.csv("provincias.csv", sep=",", header = T)
+provincia<- read.csv("provincias.csv", sep=",", header = T, encoding = "UTF-8")
 provincia<- provincia %>% arrange(PROVINCIA)
 provincia1<- provincia %>% select(PROVINCIA,CH15_COD)
 provincia2<- provincia %>% select(PROVINCIA,CH16_COD)
@@ -254,6 +259,20 @@ cuadro_8<- cuadro_8 %>% mutate(tasa_inmigracion=Inmigrantes/Poblacion, tasa_emig
 cuadro_8$cluster<- factor(cuadro_8$cluster, levels = c("1","2","3"))
 
 cuadro_8 %>% ggplot(mapping=aes(x=tasa_inmigracion,y = tasa_emigracion, label=Provincia, color=cluster)) + geom_point(show.legend = T) + geom_abline(intercept=-0,slope = 1)+ scale_color_manual(values = color)+ scale_y_continuous(labels = scales::percent_format(),limits = c(0,0.75))+scale_x_continuous(labels = scales::percent_format(),limits = c(0,0.75)) + xlab("Tasa de inmigración") + ylab("Tasa de emigración")+ labs(title = "Tasa de inmigración y emigración por provincia", color="Cluster:")+ ggrepel::geom_text_repel(size=3,family = "LM Roman 10",show.legend = F)+theme(text=element_text(family = "LM Roman 10"),axis.line = element_line(color="BLACK") ,axis.text = element_text(size=7, color = "BLACK") , panel.background = element_blank(),  axis.title = element_text(size=7), title = element_text(face = "bold"), legend.key = element_blank())
+```
+
+```{r}
+### Mapa de migraciony emigracion por provincia
+
+datos_mapa_prov<- st_read( "./mapa/gadm36_ARG_1.shp")
+datos_mapa_prov<- datos_mapa_prov %>% rename(Provincia=NAME_1)
+
+datos_mapa_prov<- datos_mapa_prov %>% mutate(Provincia=case_when(Provincia=="Ciudad de Buenos Aires"  ~ "Ciudad Autónoma de Buenos Aires",
+                                                       Provincia=="Tierra del Fuego"  ~"Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+                                                       TRUE~Provincia))
+datos_mapa_prov<- inner_join(datos_mapa_prov, cuadro_8)
+
+ ggplot(datos_mapa_prov) + geom_sf(aes(fill=log(Inmigrantes))) + scale_fill_viridis()
 ```
 
 
