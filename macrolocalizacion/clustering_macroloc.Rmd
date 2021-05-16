@@ -146,9 +146,9 @@ Factores económicos de macrolocalización:
 
 ## Numero de clusters óptimo
 Para comenzar con la división en regiones de las provincias argentinas, es necesario definir el nivel optimo de aglomeración de acuerdo a los macrofactores elegidos, es decir, definir el numero de regiones en que serán divididas las provincias argentinas.
-Para esta aglomeración se utilizará el algoritmo de K-medias (*K-means*), y el indicador a utiliar para definir el numero de regiones óptimas será el *Within-cluster sum of square (WSS)*.
+Para esta aglomeración se utilizará el algoritmo de K-medias (*K-means*), y el indicador a utilizar para definir el numero de regiones óptimas será el *Within-cluster sum of square (WSS)*.
 
-El WSS es un indicador que mide la suma de las distancias entre las variables dentro de  los cluster y sus centroides, en donde el objetivo es es minimizar dicha discrepancia dentro de cada grupo, teniendo en cuenta el *trade-off* que implica cuando este es mínimo, el cual es el caso en que el numero de clusters es igual al número de variables a clusterizar, en donde si tenemos j observaciones, el numero de clusters sería tal que j=k, y no se estaría dando ninguna información relevante a los efectos de poder resumir caracteristicas comunes entre los grupos, esto provoca que se tenga que tomar una decisión en el numero de regiones óptimas, tal que las provincias dentro de cada cluster sean lo más similares posibles en términos de factores de macrolozalización, pero teniendo en cuenta que una división muy extensa de regiones pierde utilidad analítica a los efectos de definir zonas con caracterísiticas similares para un posterior análisis de movilidad regional.
+El WSS es un indicador que mide la suma de las distancias al cuadrado entre las variables dentro de  los cluster y sus centroides, en donde el objetivo es minimizar dicha discrepancia dentro de cada grupo, teniendo en cuenta el *trade-off* que implica cuando este es mínimo, el cual es el caso en que el numero de clusters es igual al número de variables a clusterizar, en donde si tenemos j observaciones, el numero de clusters k sería tal que j=k, y no se estaría dando ninguna información relevante a los efectos de poder resumir caracteristicas comunes entre los grupos, esto provoca que se tenga que tomar una decisión en el numero de regiones óptimas, tal que las provincias dentro de cada cluster sean lo más similares posibles en términos de los factores de macrolozalización, pero teniendo en cuenta que una división muy extensa en regiones pierde utilidad analítica a los efectos de definir zonas con caracterísiticas similares para un posterior análisis de movilidad regional.
 
 \begin {center}
 $WCSS=\sum_{i=1}^{N_{C}} \sum_{\textbf{x}\in Ci} distancia(\textbf{x},\bar {\textbf x} _{\textbf{Ci}})$ 
@@ -175,9 +175,10 @@ datos_norm<- scale(datos3)
 factoextra::fviz_nbclust(datos_norm,kmeans, method="wss")+ geom_vline(xintercept = 3, colour="RED", linetype="dotted") + theme_classic() + labs(title="Numero óptimo de clusters") + xlab("Número de clusters") + ylab("WSS")+ theme(text=element_text(family = "LM Roman 10"), title = element_text(face = "bold"))
 
 ```
-Obtenemos que el numero óptimo de clusters se encuentra en torno al **número 3**, debido a que la contribución marginal de aumentar el numero de  clusters a 4, no aportaría una reducción muy elevada al **WSS**, y seguiriamos perdiendo generalidad en la clusterización de los grupos sin una ganancia significativa de similitud dentro de los grupos.
+Luego de realizar el cálculo del *WSS* se obtiene que el numero óptimo de regiones se encuentra en torno al **3**, debido a que la contribución marginal de aumentar el numero de  clusters a 4, no aportaría una reducción muy elevada al **WSS**, y seguiriamos perdiendo generalidad en la regionalización de las provincias sin una ganancia significativa de similitud dentro de las regiones.
 
-## Cómputo de las K-means 
+## Regiones 
+Una vez obtenido el número de regiones óptimas se procede 
 Se realiza un seteo de una semilla para el cálculo de los centroides iniciales del algoritmo de K-means y se procederá a realizar el cálculo de los clusters a través de 1000 iteraciones, eligiendo la que arroje un menor numero de WSS.
 ```{r echo = FALSE, warning=FALSE, error=FALSE}
 set.seed(1118)
