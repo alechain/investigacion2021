@@ -6,11 +6,12 @@ header-includes:
   - \usepackage[spanish]{babel}
 output: 
   pdf_document:
-    toc: true
+fontsize: 11pt
+indent: TRUE
 ---
 ```{r echo = FALSE, warning=FALSE, error=FALSE, message=FALSE, include=FALSE}
 setwd("/home/alejandrochain/Documentos/GitHub/investigacion2021/macrolocalizacion")
-knitr::opts_chunk$set(echo = FALSE, dev="cairo_pdf")
+knitr::opts_chunk$set(echo = FALSE, dev="cairo_pdf", fig.cap = TRUE)
 library(readr)
 library(tidyverse)
 library(factoextra)
@@ -118,6 +119,8 @@ ephtotal<- ephtotal %>% filter(ESTADO!=0) %>%  mutate(Sexo=as.character(CH04),
 ephtotal<- left_join(ephtotal,aglomerado)
 ephtotal<- left_join(ephtotal, sectorcaes)
 ```
+\pagebreak
+
 # Introducción
 En el estudio de los determinantes de las migraciones interprovinciales se pueden encontrar distintos niveles de factores según la generalidad del impacto que tengan en las personas que habitan un determinado espacio geográfico, por un lado se encuentran factores que son comunes a toda la población de una determinada comunidad, que son conocidos como macrofactores, estos pueden ser políticos, sociales, económicos y demográficos, por el otro, se puden encontrar los microfactores, estos son características individuales que actúan como “mediadores” en la decisión migratoria e impactan de manera distinta dependiendo de los macrofactores que configuran los potenciales destinos u orígenes de migración.
 
@@ -132,7 +135,7 @@ Teniendo en cuenta esta problemática y las teorías de aglomeración espacial d
 Dicha simplificación tiene su base en la consideración de que  zonas altamente pobladas generan una mayor “atracción” debido a la mayor diversidad de bienes y de salarios reales mas elevados, mientras que las empresas se ven altamente beneficiadas a causa del amplio mercado local que se genera lo que permite que incurran en menores costos de transporte, al mismo tiempo que se benefician de las economías de escala y de los encadenamientos hacia adelante y hacia atrás que producen la concentración industrial, esto conlleva a que se generen procesos migratorios hacia áreas determinadas que comparten características en términos de estructuras productivas, funcionamiento del mercado laboral, distribución del factor trabajo entre sectores de actividad económica, costos de transporte, salario real, y por ende, otros determinantes sociales y culturales que son consecuencia de los efectos de la aglomeración espacial.
 
 
-# Clusters de aglomeración
+# Regiones 
 
 ## Macrofactores
  Para la selección de los macro factores (Jana Kuhnt, 2019) de aglomeración de las provincias de Argentina se optó por clasificarlos en factores sociodemográficos y económicos, se tomó como parámetros base el trabajo de Martín Cicowiez (2003) y se los amplió en pos de reflejar las variables compartidas según las teorías de aglomeración productiva de la nueva geografía económica, a continuación se dará una breve descripción de los mismos.
@@ -148,6 +151,7 @@ Factores sociodemográficos de macrolocalización:
 * Homicidios, robos, robos agravados, violaciones y muertes en accidentes de tránsito cada 100.000 habitantes: estas variables tienen como fuente el Sistema Nacional de Información Criminal del ministerio de seguridad de la nación y se utiliza para aproximar el nivel de seguridad social y jurídica de cada una de las provincias.
 
 Factores económicos de macrolocalización:
+
 * Exportaciones per cápita promedio: Este indicador obtenido del Origen provincial de las exportaciones argentinas (OPEX) INDEC permite exponer el nivel de integración al comercio internacional de las provincias y su capacidad de producir bienes transables, con el efecto que tiene en la definición de los salarios reales en los mercados laborales provinciales.
 
 * Demanda de energía eléctrica en MwH per-cápita: Este indicador obtenido de CAMMESA permite aproximar el nivel de actividad de cada provincia, siendo que una gran parte de este consumo se da por parte de industrias y comercios.
@@ -160,18 +164,21 @@ Factores económicos de macrolocalización:
 
 * Porcentaje de empleados en los distintos sectores de actividad: esta variable que tiene como fuente al Observatorio de Empleo y Dinámicas Empresariales del Ministerio de Trabajo, Empleo y Seguridad Social demuestra el peso de los distintos sectores de actividad como generadores de empleo en las provincias y  demarca las diferencias en las estructuras productivas que existen entre ellas, esto significa que en algunas puede existir un mayor porcentaje de empleo proveniente de la Agricultura, ganadería, pesca y actividades extractivas (sector primario extractivo), en otras del sector de Comercio, servicios, electricidad, gas, agua y construcción (sector terciario de servicios) y en otras del sector industrial (sector secundario).
 
-## Numero de clusters óptimo
+## Cantidad óptima 
+
 Para comenzar con la división en regiones de las provincias argentinas, es necesario definir el nivel optimo de aglomeración de acuerdo a los macrofactores elegidos, es decir, definir el numero de regiones en que serán divididas las provincias argentinas.
 
 Para esta aglomeración se utilizará el algoritmo de K-medias (*K-means*), y el indicador a utilizar para definir el numero de regiones óptimas será el *Within-cluster sum of square (WSS)*.
 
-El WSS es un indicador que mide la suma de las distancias al cuadrado entre las variables dentro de  los cluster y sus centroides, en donde el objetivo es minimizar dicha discrepancia dentro de cada grupo, teniendo en cuenta el *trade-off* que implica cuando este es mínimo, el cual es el caso en que el numero de clusters es igual al número de variables a clusterizar, en donde si tenemos j observaciones, el numero de clusters k sería tal que j=k, y no se estaría dando ninguna información relevante a los efectos de poder resumir caracteristicas comunes entre los grupos, esto provoca que se tenga que tomar una decisión en el numero de regiones óptimas, tal que las provincias dentro de cada cluster sean lo más similares posibles en términos de los factores de macrolozalización, pero teniendo en cuenta que una división muy extensa en regiones pierde utilidad analítica a los efectos de definir zonas con caracterísiticas similares para un posterior análisis de movilidad regional.
-
+\vspace{5mm}
 \begin {center}
 $WCSS=\sum_{i=1}^{N_{C}} \sum_{\textbf{x}\in Ci} distancia(\textbf{x},\bar {\textbf x} _{\textbf{Ci}})$ 
 \end {center}
+\vspace{5mm}
 
-```{r echo = FALSE, warning=FALSE, error=FALSE, message=FALSE, include=FALSE}
+El WSS es un indicador que mide la suma de las distancias al cuadrado entre las variables dentro de  los cluster y sus centroides, en donde el objetivo es minimizar dicha discrepancia dentro de cada grupo, teniendo en cuenta el *trade-off* que implica cuando este es mínimo, el cual es el caso en que el numero de clusters es igual al número de variables a clusterizar, en donde si tenemos j observaciones, el numero de clusters k sería tal que j=k, y no se estaría dando ninguna información relevante a los efectos de poder resumir caracteristicas comunes entre los grupos, esto provoca que se tenga que tomar una decisión en el numero de regiones óptimas, tal que las provincias dentro de cada cluster sean lo más similares posibles en términos de los factores de macrolozalización, pero teniendo en cuenta que una división muy extensa en regiones pierde utilidad analítica a los efectos de definir zonas con caracterísiticas similares para un posterior análisis de movilidad regional.
+
+```{r include=FALSE}
 ## Carga de datos
 ##Para comenzar, cargamos los datos de las variables sociales y economicas que definen a las distintas provincias de la Argentina.
 datos<- read_csv("macroloc_para_r.csv",col_names = T, row.names(1))
@@ -181,20 +188,20 @@ datos4<- datos3
 #datos<- datos %>% mutate(`Densidad poblacional: Hab/km² (2010)`=log(`Densidad poblacional: Hab/km² (2010)`))
 ```
 
-```{r echo = FALSE, warning=FALSE, error=FALSE}
+```{r include=FALSE}
 ## Normalización de la base de datos
 #Ahora normalizamos la base de datos para lograr coherencia en la aplicación de K-means, debido a quen trabajamos con distintas escalas de #datos.
 datos3<-datos3 %>% select(-c(`Densidad poblacional: Hab/km² (2010)`))
 datos_norm<- scale(datos3)
 ```
 
-```{r echo = FALSE, warning=FALSE, error=FALSE}
-factoextra::fviz_nbclust(datos_norm,kmeans, method="wss")+ geom_vline(xintercept = 3, colour="RED", linetype="dotted") + theme_classic() + labs(title="Numero óptimo de clusters") + xlab("Número de clusters") + ylab("WSS")+ theme(text=element_text(family = "LM Roman 10"), title = element_text(face = "bold"))
-
+```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center',fig.cap="Numero óptimo de clusters"}
+factoextra::fviz_nbclust(datos_norm,kmeans, method="wss")+ geom_vline(xintercept = 3, colour="RED", linetype="dotted") + theme_classic() + labs(title="") + xlab("Número de clusters") + ylab("WSS")+ theme(text=element_text(family = "LM Roman 10"), title = element_text(face = "bold"))
 ```
+
 Luego de realizar el cálculo del *WSS* se obtiene que el numero óptimo de regiones se encuentra en torno a **tres**, debido a que la contribución marginal de aumentar el numero de  clusters a cuatro, no aportaría una reducción muy elevada al **WSS**, y se seguiría perdiendo generalidad en la regionalización de las provincias sin una ganancia significativa de similitud dentro de las regiones.
 
-## Regiones 
+## Aglomeración de provincias
 
 Una vez obtenido el número de regiones óptimas se procede a asignar a las provincias a las regiones que pertenecen, dependiendo de la similitud que poseen con respecto a los macrofactores definidos anteriormente.
 
@@ -242,19 +249,21 @@ datos<- datos %>% mutate(Provincia=case_when(Provincia=="Tierra del Fuego, Antá
 names(km_clusters[1])
 ```
 
-```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center'}
+```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center',fig.cap="regiones resultantes de la macrolocalización"}
 fviz_cluster(km_clusters, data = datos4,
 palette = c("RED", "BLUE","GREEN"),
 ellipse.type = "euclid", # Concentration ellipse
 star.plot = TRUE, # Add segments from centroids to items
 repel = TRUE, # Avoid label overplotting (slow)
- labelsize = 6,) + theme_classic(base_family ="LM Roman 10" ) + labs(title="Plot de regiones resultantes de la macrolocalización") + theme(text=element_text(family = "LM Roman 10"), title = element_text(face = "bold"))
+ labelsize = 6,) + theme_classic(base_family ="LM Roman 10" ) + labs(title="") + theme(text=element_text(family = "LM Roman 10"), title = element_text(face = "bold"))
 ```
+
 Una vez ejecutado el algoritmo, se obtiene la division de las provincias de Argentina en tres regiones bien definidas, las cuales comparten similitudes en los parámetros definidos en la macrolozalización.
 
 Se puede ver claramente la diferencia en la similitud de los tres grupos, siendo solamente la Capital Federal la única que presenta mayor disimilitud con respecto a su región, lo cual indica que esta  lleva una dinámica socio-económica muy peculiar con respecto al promedio de las provincias argentinas, inclusive considerablemente distinta que las provincias con la cual ostenta mayor similitud.
 
 A continuación se muestra la distribución geográfica de las regiones definidas anteriormente.
+
 ```{r include=FALSE}
 
 #ephtotal<- read_rds("ephtotal.Rds")
@@ -321,54 +330,74 @@ datos_mapa_prov<- datos_mapa_prov %>% mutate(Provincia=case_when(Provincia=="Ciu
 cuadro_9<- cuadro_8 %>% mutate(tasa_inmigracion=formattable::percent(tasa_inmigracion),tasa_emigracion=formattable::percent(tasa_emigracion))
 datos_mapa_prov<- inner_join(datos_mapa_prov, cuadro_9)
 ```
-```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center'}
+```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center', fig.cap="Macrolocalización de regiones por provincia"}
 mapa_cluster<- ggplot(data = datos_mapa_prov) + geom_sf(aes(fill=cluster),color="BLACK", size=0.2 ) + labs(fill="Regiones:") + scale_fill_manual(values=color)+ theme(text=element_text(family="LM Roman 10"), panel.background = element_blank() , axis.text = element_blank(), axis.ticks = element_blank())
 mapa_cluster
 ```
+
 Para completar el análisis, se presenta un resumen de los macrofactores que representan en promedio a cada región, es decir, cuales son las características compartidas entre las provincias que provocaron que sean parte de un mismo aglomerado.
 
 
-```{r}
-kableExtra::kable(resumen2,format = "markdown",caption = "Resumen de indicadores por regiones")
+```{r echo=FALSE, warning=FALSE, error=FALSE}
+kableExtra::kable(resumen2, caption = "Resumen de indicadores por regiones",format='markdown')
 ```
 La **región 1** se caracteriza en terminos sociales por una tasa de promoción secundaria relativamente baja, en comparación con las otras regiones, una leve mortalidad infantil, una alta tasa de robos agravados, homocidios dolosos y violaciones cada 100.000 habitantes y un nivel moderado de robos no agravados y muertes en accidentes viales cada 100.000 habitantes.
-En cuanto a términos económicos, esta región se caracteriza por tener la mejor integración a los mercados internacionales con la mayor cantidad de exportaciones per-cápita. En cuanto al nivel de actividad, posee elevados niveles de consumo  de energía electrica per-cápita, la tasa de actividad promedio y la cantidad relativa de empresas es la segunda más elevada de las tres regiones, el salario real es el más alto, con amplia diferencia, de las tres regiones y la tasa de pobreza es la más baja de las tres. Por último, se caracteriza por una predominancia del sector terciario, seguido del sector primario (Agricultura, ganadería, pesca y actividades extractivas) y por último, con un porcentaje considerablemente menor, el sector secundario (industrial).
+En cuanto a términos económicos, esta región se caracteriza por tener la mejor integración a los mercados internacionales con la mayor cantidad de exportaciones per-cápita. 
+En cuanto al nivel de actividad, posee elevados niveles de consumo  de energía electrica per-cápita, la tasa de actividad promedio y la cantidad relativa de empresas es la segunda más elevada de las tres regiones, el salario real es el más alto, con amplia diferencia, de las tres regiones y la tasa de pobreza es la más baja de las tres. Por último, se caracteriza por una predominancia del sector terciario, seguido del sector primario (Agricultura, ganadería, pesca y actividades extractivas) y por último, con un porcentaje considerablemente menor, el sector secundario (industrial).
 
 La **región 2** se caracteriza en terminos sociales por una moderada tasa de promoción secundaria, en comparación con las otras regiones, una elevada tasa mortalidad infantil, una baja tasa de robos (agravados y no agravados) y homocidios dolosos cada 100.000 habitantes, un nivel moderado de violaciones cada 100.000 habitantes y una elevada tasa de muertes en accidentes viales cada 100.000 habitantes. 
-En cuanto a factores económicos, esta región se caracteriza por tener una pésima integración a los mercados internacionales con la más baja cantidad de exportaciones per-cápita, en cuanto a los niveles de actividad, posee los menores niveles de consumo  de energía electrica per-cápita, la menor tasa de actividad promedio, la menor cantidad relativa de empresas, el salario real es el más bajo de las tres regiones y la tasa de pobreza es la más alta de las tres, dejandola en el último puesto en términos de desempeño económico en términos relativos. Por último, se caracteriza, al igual que las otras dos regiones, por una predominancia del sector terciario, seguido del sector secundario (industrial) y dejando en último lugar al sector primario (Agricultura, ganadería, pesca y actividades extractivas).
+En cuanto a factores económicos, esta región se caracteriza por tener una pésima integración a los mercados internacionales con la más baja cantidad de exportaciones per-cápita, en cuanto a los niveles de actividad, posee los menores niveles de consumo  de energía electrica per-cápita, la menor tasa de actividad promedio, la menor cantidad relativa de empresas, el salario real es el más bajo de las tres regiones y la tasa de pobreza es la más alta de las tres, dejandola en el último puesto en términos de desempeño económico en términos relativos. 
+Por último, se caracteriza, al igual que las otras dos regiones, por una predominancia del sector terciario, seguido del sector secundario (industrial) y dejando en último lugar al sector primario (Agricultura, ganadería, pesca y actividades extractivas).
 
 La **región 3** se caracteriza en terminos sociales por una elevada tasa de promoción secundaria, en comparación con las otras regiones, una moderada tasa mortalidad infantil, muy similar a la región 2, una moderada tasa de robos agravados y homocidios dolosos cada 100.000 habitantes, un nivel bajo en términos relativos de violaciones y muertes en accidentes viales cada 100.000 habitantes y una elevada tasa de robos no agravados. 
 En cuanto a factores económicos, esta región se caracteriza por tener un desempeño intermedio en términos de integración a los mercados internacionales, con una cantidad de exportaciones per-cápita en dolares que se encuentra en un término medio entre las dos regiones restantes, en cuanto a los niveles de actividad, posee el segundo mayor nivel de consumo  de energía electrica per-cápita, la mayor tasa de actividad promedio, la mayor cantidad relativa de empresas cada 100.000 habitantes, un nivel intermedio de salario real  y una tasa de pobreza que se encuentra como la segunda más baja de las tres regiones. Por último, se caracteriza, al igual que las otras dos regiones, por una predominancia del sector terciario, seguido del sector secundario (industrial) y dejando en último lugar, con amplia diferencia, al sector primario (Agricultura, ganadería, pesca y actividades extractivas).
 
 
-## Flujos migratorios entre regiones
+## Flujos migratorios 
 
 Dentro de las regiones existen provincias de las cuales salen gran cantidad de inmigrantes, al igual que existen provincias que son receptoras de estos mismos, en primer lugar se caracterizará a las regiones según el nivel de *expulsion* de inmigrantes interprovinciales.
 ```{r}
 cuadro_2<-ephinmi %>% group_by("Región"=cluster_origen) %>% summarise("Porcentaje"=formattable::percent((sum(PONDERA)/sum(ephinmi$PONDERA))))
 kableExtra::kable(cuadro_2,format = "markdown",caption = "Regiones de origen de los migrantes")
 ```
-Se puede notar que las provincias del **cluster Nº2** son las que mayor nivel de expulsión poseen, seguidas por las provincias pertenecientes al cluster Nº3, y por úlitmo se encuentran las pertenecientes al cluster Nº1.
+Se puede notar que las provincias de la  **Región Nº2** son las que mayor nivel de expulsión poseen, seguidas por las provincias pertenecientes a la Región Nº3, y por úlitmo se encuentran las pertenecientes a la Región Nº1.
 
 ```{r echo = FALSE, warning=FALSE, error=FALSE}
-cuadro_3<-ephinmi %>% group_by("Cluster"=cluster_destino) %>% summarise("Porcentaje"=formattable::percent((sum(PONDERA)/sum(ephinmi$PONDERA))))
-kableExtra::kable(cuadro_3,format = "markdown",caption = "Cluster de destino de los migrantes")
+cuadro_3<-ephinmi %>% group_by("Región"=cluster_destino) %>% summarise("Porcentaje"=formattable::percent((sum(PONDERA)/sum(ephinmi$PONDERA))))
+kableExtra::kable(cuadro_3,format = "markdown",caption = "Regiones de destino de los migrantes")
 ```
-Sin embargo, viendo cuales son los cluster de destino  con mayor porcentaje  de migrantes, encontramos que el **cluster Nº 3** es el que mayor nivel de *atracción* posee por elevada diferencia (`r cuadro_3 %>% filter(Cluster==3) %>% pull()`) 
+Sin embargo, analizando cuales son las regiones de destino  con mayor porcentaje  de migrantes, encontramos que la **Región Nº 3** es la que mayor nivel de *atracción* posee por elevada diferencia (`r cuadro_3 %>% filter("Región"==3) %>% pull()`), seguida por la Región Nº2 y en último lugar la Región Nº1.
 
-```{r echo = FALSE, warning=FALSE, error=FALSE}
-cuadro_8 %>% ggplot(mapping=aes(x=tasa_inmigracion,y = tasa_emigracion, label=Provincia, color=cluster)) + geom_point(show.legend = T) + geom_abline(intercept=-0,slope = 1)+ scale_color_manual(values = color)+ scale_y_continuous(labels = scales::percent_format(),limits = c(0,0.75))+scale_x_continuous(labels = scales::percent_format(),limits = c(0,0.75)) + xlab("Tasa de inmigración") + ylab("Tasa de emigración")+ labs(title = "Tasa de inmigración y emigración por provincia", color="Cluster:")+ ggrepel::geom_text_repel(size=3,family = "LM Roman 10",show.legend = F)+theme(text=element_text(family = "LM Roman 10"),axis.line = element_line(color="BLACK") ,axis.text = element_text(size=7, color = "BLACK") , panel.background = element_blank(),  axis.title = element_text(size=7), title = element_text(face = "bold"), legend.key = element_blank())
+Esta relación entre regiones con mayor atracción y expulsión de migrantes tambien puede ser vista a nivel de provincias, para ello se definen dos tasas a considerar:
+\vspace{5mm}
+\begin{itemize}
+ \item $Tasa\ de\ emigración\ de\ la\ Provincia\ "X"= \frac{Cantidad\ de\ migrantes\ nativos\ de\ la\ Provincia\ "X"}{Cantidad\ de\ habitantes\ de\ la\ Provincia\ "X"}$
+ \item $Tasa\ de\ inmigración\ de\ la\ Provincia\ "X"= \frac{Cantidad\ de\ migrantes\ no\ nativos\  que\ habitan\ la\ Provincia\ "X"}{Cantidad\ de\ habitantes\ de\ la\ Provincia\ "X"}$
+\end{itemize}
+\vspace{5mm}
+
+En el siguiente gráfico se puede observar la relación entre la tasa de emigración e inmigración de las provincias, diferenciando por la región a la cual pertenecen.
+
+```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center', fig.cap="Tasa de inmigración y emigración por provincia"}
+cuadro_8 %>% ggplot(mapping=aes(x=tasa_inmigracion,y = tasa_emigracion, label=Provincia, color=cluster)) + geom_point(show.legend = T) + geom_abline(intercept=-0,slope = 1)+ scale_color_manual(values = color)+ scale_y_continuous(labels = scales::percent_format(),limits = c(0,0.75))+scale_x_continuous(labels = scales::percent_format(),limits = c(0,0.75)) + xlab("Tasa de inmigración") + ylab("Tasa de emigración")+ labs(title = "", color="Región:")+ ggrepel::geom_text_repel(size=3,family = "LM Roman 10",show.legend = F)+theme(text=element_text(family = "LM Roman 10"),axis.line = element_line(color="BLACK") ,axis.text = element_text(size=7, color = "BLACK") , panel.background = element_blank(),  axis.title = element_text(size=7), title = element_text(face = "bold"), legend.key = element_blank())
 ```
-```{r fig.align='center'}
+La bisectriz divide el plano en dos zonas, todas las provincias que se encuentran por encima de ella son aquellas en la que la tasa de emigración es superior a la tasa de inmigración, mientras que las que se encuentran por debajo, son quellas en la que existe una mayor tasa de inmigración que de emigración. 
+
+Las provincias pertenecientes a la Región Nº2 se ubican en casi su totalidad por encima de la bisectriz, indicando que son provincias en donde la expulsión de migrantes es mucho mayor que la atracción de los mismos, por otro lado, las provincias de la Región Nº 1 tienen una mayor tendencia a ubicarse por debajo de la linea diagonal, en donde la atracción de migrantes es mayor que la expulsión en casi la totalidad de las provincias, con excepción de Tucumán, y por último, en la Región Nº3 se pueden encontrar tres provincias que se encuentran por debajo de la diagonal, en donde la atracción de migrantes es mayor que su nivel de expulsión (Buenos Aires, Ciudad Autónoma de Buenos Aires y Tierra del Fuego) y otras tres que se encuentran con tasa de inmigración y emigración muy similares, con diferencias muy leves a favor de la tasa de emigración.
+
+```{r fig.align='center' ,  fig.cap="Tasas de emigración e inmigración por provincia"}
 mapa_inmigracion<-ggplot(data = datos_mapa_prov) + geom_sf(aes(fill=tasa_inmigracion),color="BLACK", size=0.2 ) + viridis::scale_fill_viridis(label=scales::percent) + labs(fill="Tasa de inmigración:") + theme(text=element_text(family="LM Roman 10"), panel.background = element_blank() , axis.text = element_blank(), axis.ticks = element_blank()) 
 mapa_emigracion<- ggplot(data = datos_mapa_prov) + geom_sf(aes(fill=tasa_emigracion),color="BLACK", size=0.2 ) + viridis::scale_fill_viridis(label=scales::percent) + labs(fill="Tasa de emigración:") + theme(text=element_text(family="LM Roman 10"), panel.background = element_blank() , axis.text = element_blank(), axis.ticks = element_blank()) 
 gridExtra::grid.arrange(mapa_emigracion,mapa_inmigracion, ncol=2)
 ```
+En el Mapa Nº2 se observa la diferencia en la distribución de las provincias con mayor tasaa de migración e inmigración, las provincias de Chaco, Corrientes y Rio Negro son las que mayores tasa de emigración poseen, mientras que en el Sur de la Argentina se encuentran las provincias en donde la tasa de inmigración es mas elevada, con provincias como Tierra del Fuego, Santa Cruz y Neuquén.
 
-## Definición de migrante según cluster de origen
+# Microfactores
+
+## Factores determinantes de la expulsión
+
 En primer lugar se analizará si existen microdeterminantes dentro de las características de los migrantes que porovoquen que ciertas personas con tengan una mayor propensión a migrar desde ciertas localizaciones, es decir, se analizaran los factores de expulsión de los distintos cluster; por otro lado, se realizará un análisis diferenciando el destino de los distintos migrantes, con el fin de establecer los determinantes de atracción de las distintas localizaciones.
 
-## Factores determinantes de expulsión de los migrantes
 En el universo de habitantes de una determinada región/cluster, pueden existir caracteristicas determinadas que diferencien de manera significativa entre las personas que nacieron  y decidieron quedarse en la misma región, de las que si bien nacieron en la misma región, optaron por migrar hacia otra. A continuación se realizará un análisis diferenciando por cluster  de características socioeconómicas de los migrantes y no migrantes  que nacieron en un mismo cluster, con el fin de determinar si existen diferencias significativas entre ellos.
 
 ```{r include=FALSE}
@@ -548,7 +577,8 @@ La propiedad de la vivienda es otro factor que tiene efectos diferenciados en la
 
 Por último se analiza el efecto que tiene la educación en la expulsión de la provincia de origen, para el  cluster 1  una persona con nivel educativo medio (secundaria completa) tiene menor probabildiad de haber abandonado la provincia de origen en relación con una persona con un nivel educativo bajo (en adelante grupo base), sin embargo, para los cluster 2 y 3 esta probabildiad es inversa, en donde una persona con nivel educativo medio tiene una mayor probabilidad de ser migrante en relación al grupo base, misma relación se repite si se considera una persona con nivel educativo alto (educación superior o universitaria), en donde para el cluster 1 y 3 la probabildiad de ser migrante aumenta en comparación con el grupo base, generando una expulsión de personas con elevado nivel educativo, lo cual es inverso en el cluster 2, el cual la probabildiad de migrar se reduce en comparación con el grupo base si se posee un nivel educativo superior o universitario .
 
-## Factores determinantes de atracción de los migrantes
+## Factores determinantes de la atracción
+
 El deseo de migrar es distinto a la acción de migración, entre el deseo y el hecho existen multiples barreras y condicionantes que impiden su concreción, es por ello que el análisis de los factores que determinarán la atracción de las personas hacia los distintos clusters se realiza con respecto a la muestra en el período de relevancia de personas que efectivamente migraron. 
 
 La distinción se realiza en torno a los factores que determinan que un migrante elija como destino alguno de los clusters, se busca analizar si existen diferencias significativas en las características de un migrante dependiendo del cluster que elige como destino de migración.

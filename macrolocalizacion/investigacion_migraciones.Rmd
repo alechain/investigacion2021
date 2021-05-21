@@ -1,0 +1,204 @@
+---
+title: "Borrador determinantes de las migraciones"
+author: "Alejandro Chaín"
+date: "20/5/2021"
+output: pdf_document
+fontsize: 11pt
+indent: TRUE
+header-includes:
+  - \usepackage[spanish]{babel}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,dev="cairo_pdf", fig.cap = TRUE)
+```
+
+```{r include=FALSE}
+setwd("/home/alejandrochain/Documentos/GitHub/investigacion2021/macrolocalizacion")
+library(readr)
+library(tidyverse)
+library(factoextra)
+library(cluster)
+library(fpc)
+#estos sirven para formatear pa latex
+library(stargazer)
+library(xtable)
+library(extrafont)
+library(eph)
+library(readxl)
+library(sf)
+library(tmap)
+library(tmaptools)
+
+color<- c('#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf')
+
+## Individual
+ephi<- get_microdata(year=2017:2019, trimester = 1:4, type = "individual")
+ephi<- ephi %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+### 2016 
+ephi2<- get_microdata(year=2016, trimester = 2:4, type = "individual")
+ephi2<- ephi2 %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+
+ephi<- bind_rows(ephi,ephi2)
+ephi<- ephi %>% arrange(-ANO4, -TRIMESTRE)
+
+## Hogar
+ephh<- get_microdata(year=2017:2019, trimester = 1:4, type = "hogar")
+ephh<- ephh %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+### 2016 
+ephh2<- get_microdata(year=2016, trimester = 2:4, type = "hogar")
+ephh2<- ephh2 %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+
+ephh<- bind_rows(ephh,ephh2)
+ephh<- ephh %>% arrange(-ANO4, -TRIMESTRE)
+
+### mergeado
+
+ephtotal<- left_join(ephi,ephh)
+
+### aglomerado
+aglomerado<- read_excel("aglomerado.xlsx",sheet = 4)
+
+### Sector
+sectorcaes<- read.csv("SECTORESCAES.csv", sep=",", header = T, encoding = "UTF-8", colClasses = "character")
+
+### provincia
+
+provincia<- read.csv("provincias.csv", sep=",", header = T)
+provincia1<- provincia %>% select(PROVINCIA,CH15_COD)
+provincia2<- provincia %>% select(PROVINCIA,CH16_COD)
+
+ephtotal<- ephtotal %>% filter(ESTADO!=0) %>%  mutate(Sexo=as.character(CH04),
+                      Sexo=case_when(Sexo=="1" ~ "Hombres",
+                                       Sexo=="2" ~ "Mujeres"),
+                      PP04D_COD = case_when(nchar(PP04D_COD) == 5 ~ PP04D_COD,
+                                              nchar(PP04D_COD) == 4 ~ paste0("0", PP04D_COD),
+                                              nchar(PP04D_COD) == 3 ~ paste0("00", PP04D_COD),
+                                              nchar(PP04D_COD) == 2 ~ paste0("000", PP04D_COD),
+                                              nchar(PP04D_COD) == 1 ~ paste0("0000", PP04D_COD)),
+                        CALIFICACION = substr(PP04D_COD, 5, 5),                      
+                        JERARQUIA = substr(PP04D_COD, 3, 3),
+                        JERARQUIA = case_when(JERARQUIA=="0" ~ "Dirección",
+                                              JERARQUIA=="2" ~ "Jefes",
+                                              JERARQUIA=="1" ~ "Cuentapropia",
+                                              JERARQUIA=="3" ~ "Trabajadores\nAsalariados"),
+                        JERARQUIA = factor(JERARQUIA, c("Dirección", "Jefes", "Trabajadores\nAsalariados", "Cuentapropia")),
+                        PEA= case_when(ESTADO==3 ~ 0,
+                                       ESTADO==4 ~ 0,
+                                       ESTADO==1 ~ 1,
+                                       ESTADO==2 ~ 1),
+                        PP04D_COD = as.character(PP04D_COD),
+    
+                        CALIFICACION = case_when(CALIFICACION=="1" ~ "Profesionales",
+                                                   CALIFICACION=="2" ~ "Técnicos",
+                                                   CALIFICACION=="3" ~ "Operativos",
+                                                   CALIFICACION=="4" ~ "No Calificados"),
+                        CALIFICACION = factor(CALIFICACION, c("No Calificados", "Operativos", "Técnicos", "Profesionales")),
+                          PP04B_COD=as.character(PP04B_COD),
+                          PP04B_COD=case_when(nchar(PP04B_COD)==4~PP04B_COD,
+                                              nchar(PP04B_COD)==1~ paste0("0",PP04B_COD,"00"),
+                                              nchar(PP04B_COD)==2~ paste0(PP04B_COD,"00"),
+                                              nchar(PP04B_COD)==3~ paste0("0",PP04B_COD)),
+                          SECTOR= substr(PP04B_COD,1,2),
+                          HORASSEM=PP3E_TOT+PP3F_TOT,
+                          niveled=case_when(NIVEL_ED==1 | NIVEL_ED==7 ~ "Sin\ninstrucción",
+                                            NIVEL_ED %in% c(2,3) ~ "Primario\nCompleto",
+                                            NIVEL_ED %in% c(4,5)~ "Secundario\nCompleto",
+                                            NIVEL_ED == 6 ~ "Superior/Universitario\ncompleto"),
+                          niveled=factor(niveled, levels = c("Sin\ninstrucción","Primario\nCompleto","Secundario\nCompleto","Superior/Universitario\ncompleto")))
+  
+
+
+ephtotal<- left_join(ephtotal,aglomerado)
+ephtotal<- left_join(ephtotal, sectorcaes)
+```
+
+\pagebreak
+
+# Introducción
+
+En el estudio de los determinantes de las migraciones interprovinciales se pueden encontrar distintos niveles de factores según la generalidad del impacto que tengan en las personas que habitan un determinado espacio geográfico, por un lado se encuentran factores que son comunes a toda la población de una determinada comunidad, que son conocidos como macrofactores, estos pueden ser políticos, sociales, económicos y demográficos, por el otro, se puden encontrar los microfactores, estos son características individuales que actúan como "mediadores" en la decisión migratoria e impactan de manera distinta dependiendo de los macrofactores que configuran los potenciales destinos u orígenes de migración.
+
+Este proceso de decisión migratoria consta de una interrelación constante entre los macrofactores y microfactores, que deben ser considerados a la hora de definir los determinantes que llevan a la decisión del éxodo Interprovincial.
+
+En el análisis pormenorizado de las migraciones interprovinciales en la Argentina existen ciertas limitaciones, debido a la elevada cantidad de provincias de origen y destino que surgen de la combinación de los movimientos migratorios, se torna dificultoso encontrar determinantes aislados para cada una de las provincias, esto no solo por la complicación en términos de disponibilidad y volumen de los datos, los cuales se ven ampliamente reducidos a causa de la subdivisión, sino también por el hecho de que se volvería tedioso y desordenado el análisis pormenorizado de ciertas combinaciones migratorias.
+
+Este problema trae ligado el cuestionante sobre cuales son los determinantes óptimos que son compartidos por las provincias y que permiten configurar un macro-entorno en donde se pueda observar dinámicas migratorias similares, una primera respuesta podría ser la típica definición regional del país, pero esta misma peca de ponderar con mayor peso a cuestiones puramente geográficas, y dejan de lado consideraciones desde la visión socio-económica de las regiones.
+
+Teniendo en cuenta esta problemática y las teorías de aglomeración espacial de la nueva geografía económica (Krugman 1994), en donde queda demostrado que, bajo supuestos de mercados de competencia monopolistica, costos de transporte, movilidad factorial y sectores de actividad de económica bien diferenciados, la movilidad de las personas (factor trabajo) converge a la aglomeración de la producción y el consumo en unas pocas regiones con dinámicas productivas similares, ergo, la problemática del análisis pormenorizado de la migraciones interprovinciales puede ser morigerado a través de una aglomeración de las provincias en clusters considerando determinados macrofactores que serán definidos posteriormente en este trabajo.
+
+Dicha simplificación tiene su base en la consideración de que zonas altamente pobladas generan una mayor "atracción" debido a la mayor diversidad de bienes y de salarios reales mas elevados, mientras que las empresas se ven altamente beneficiadas a causa del amplio mercado local que se genera lo que permite que incurran en menores costos de transporte, al mismo tiempo que se benefician de las economías de escala y de los encadenamientos hacia adelante y hacia atrás que producen la concentración industrial, esto conlleva a que se generen procesos migratorios hacia áreas determinadas que comparten características en términos de estructuras productivas, funcionamiento del mercado laboral, distribución del factor trabajo entre sectores de actividad económica, costos de transporte, salario real, y por ende, otros determinantes sociales y culturales que son consecuencia de los efectos de la aglomeración espacial.
+
+# Regiones
+
+## Macrofactores
+
+Para la selección de los macro factores (Jana Kuhnt, 2019) de aglomeración de las provincias de Argentina se optó por clasificarlos en factores sociodemográficos y económicos, se tomó como parámetros base el trabajo de Martín Cicowiez (2003) y se los amplió en pos de reflejar las variables compartidas según las teorías de aglomeración productiva de la nueva geografía económica, a continuación se dará una breve descripción de los mismos.
+
+Factores sociodemográficos de macrolocalización:
+
+-   Cantidad de Habitantes: Esta variable indica la cantidad de habitantes de cada provincia, tiene como fuente el Censo Nacional de Población y Vivienda del INDEC realizado en el año 2010, e intenta representar el tamaño de las distintas provincias en términos poblacionales.
+
+-   Tasa de promoción efectiva secundaria: En esta variable se busca encontrar una aproximación a la calidad y efectividad del aparato educativo en cada provincia, siendo que no solo es importante el acceso a la educación media en términos de tasa de escolarización neta secundaria, sino también la posibilidad de sortear los obstáculos para lograr completar el nivel secundario.
+
+-   Mortalidad infantil: Se calcula como la mortalidad infantil por cada 1000 nacidos vivos según la provincia de residencia de la madre, estos datos tienen como fuente la secretaría de acceso a la salud del ministerio de salud de la Nación Argentina, e intenta mostrar las diferencias y similitudes en el acceso a la salud y a las posibilidades del desarrollo de un proyecto familiar.
+
+-   Homicidios, robos, robos agravados, violaciones y muertes en accidentes de tránsito cada 100.000 habitantes: estas variables tienen como fuente el Sistema Nacional de Información Criminal del ministerio de seguridad de la nación y se utiliza para aproximar el nivel de seguridad social y jurídica de cada una de las provincias.
+
+Factores económicos de macrolocalización:
+
+-   Exportaciones per cápita promedio: Este indicador obtenido del Origen provincial de las exportaciones argentinas (OPEX) INDEC permite exponer el nivel de integración al comercio internacional de las provincias y su capacidad de producir bienes transables, con el efecto que tiene en la definición de los salarios reales en los mercados laborales provinciales.
+
+-   Demanda de energía eléctrica en MwH per-cápita: Este indicador obtenido de CAMMESA permite aproximar el nivel de actividad de cada provincia, siendo que una gran parte de este consumo se da por parte de industrias y comercios.
+
+-   Tasa de actividad promedio: Este indicador, obtenido del INDEC, permite vislumbrar la fuerza de trabajo que existe en cada provincia, siendo que indica el porcentaje de la población total que forma parte de la población económicamente activa.
+
+-   Cantidad de empresas cada 100.000 habitantes: Esta variable, obtenida del GPS de empresas del ministerio de Desarrollo productivo, permite conocer el nivel de concentración de firmas que existe en cada una de las provincias, lo cual afecta directamente al nivel de demanda de trabajo y produce efectos en términos de encadenamientos productivos que pueden beneficiar a las economías de las provincias.
+
+-   Remuneración real de los trabajadores registrados del sector privado: esta remuneración real, que tiene como fuente al Observatorio de Empleo y Dinámicas Empresariales del Ministerio de Trabajo, Empleo y Seguridad Social, indica el valor relativo que tiene el trabajo de las personas que trabajan en las distintas provincias.
+
+-   Porcentaje de empleados en los distintos sectores de actividad: esta variable que tiene como fuente al Observatorio de Empleo y Dinámicas Empresariales del Ministerio de Trabajo, Empleo y Seguridad Social demuestra el peso de los distintos sectores de actividad como generadores de empleo en las provincias y demarca las diferencias en las estructuras productivas que existen entre ellas, esto significa que en algunas puede existir un mayor porcentaje de empleo proveniente de la Agricultura, ganadería, pesca y actividades extractivas (sector primario extractivo), en otras del sector de Comercio, servicios, electricidad, gas, agua y construcción (sector terciario de servicios) y en otras del sector industrial (sector secundario).
+
+## Cantidad óptima
+
+Para comenzar con la división en regiones de las provincias argentinas, es necesario definir el nivel optimo de aglomeración de acuerdo a los macrofactores elegidos, es decir, definir el numero de regiones en que serán divididas las provincias argentinas.
+
+Para esta aglomeración se utilizará el algoritmo de K-medias (*K-means*), y el indicador a utilizar para definir el numero de regiones óptimas será el *Within-cluster sum of square (WSS)*.
+
+```{=tex}
+\vspace{5mm}
+\begin {center}
+$WCSS=\sum_{i=1}^{N_{C}} \sum_{\textbf{x}\in Ci} distancia(\textbf{x},\bar {\textbf x} _{\textbf{Ci}})$ 
+\end {center}
+\vspace{5mm}
+```
+El WSS es un indicador que mide la suma de las distancias al cuadrado entre las variables dentro de los cluster y sus centroides, en donde el objetivo es minimizar dicha discrepancia dentro de cada grupo, teniendo en cuenta el *trade-off* que implica cuando este es mínimo, el cual es el caso en que el numero de clusters es igual al número de variables a clusterizar, en donde si tenemos j observaciones, el numero de clusters k sería tal que j=k, y no se estaría dando ninguna información relevante a los efectos de poder resumir caracteristicas comunes entre los grupos, esto provoca que se tenga que tomar una decisión en el numero de regiones óptimas, tal que las provincias dentro de cada cluster sean lo más similares posibles en términos de los factores de macrolozalización, pero teniendo en cuenta que una división muy extensa en regiones pierde utilidad analítica a los efectos de definir zonas con caracterísiticas similares para un posterior análisis de movilidad regional.
+
+```{r include= FALSE}
+## Carga de datos
+##Para comenzar, cargamos los datos de las variables sociales y economicas que definen a las distintas provincias de la Argentina.
+datos<- read_csv("macroloc_para_r.csv",col_names = T, row.names(1))
+datos3<- datos %>% select(-Provincia)
+row.names(datos3)<- datos$Provincia
+datos4<- datos3
+#datos<- datos %>% mutate(`Densidad poblacional: Hab/km² (2010)`=log(`Densidad poblacional: Hab/km² (2010)`))
+
+## Normalización de la base de datos
+#Ahora normalizamos la base de datos para lograr coherencia en la aplicación de K-means, debido a quen trabajamos con distintas escalas de #datos.
+datos3<-datos3 %>% select(-c(`Densidad poblacional: Hab/km² (2010)`))
+datos_norm<- scale(datos3)
+```
+
+```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center',fig.cap="Numero óptimo de clusters"}
+factoextra::fviz_nbclust(datos_norm,kmeans, method="wss")+ geom_vline(xintercept = 3, colour="RED", linetype="dotted") + theme_classic() + labs(title="") + xlab("Número de clusters") + ylab("WSS")+ theme(text=element_text(family = "LM Roman 10"), title = element_text(face = "bold"))
+```
+
+Luego de realizar el cálculo del *WSS* se obtiene que el numero óptimo de regiones se encuentra en torno a **tres**, debido a que la contribución marginal de aumentar el numero de clusters a cuatro, no aportaría una reducción muy elevada al **WSS**, y se seguiría perdiendo generalidad en la regionalización de las provincias sin una ganancia significativa de similitud dentro de las regiones.
