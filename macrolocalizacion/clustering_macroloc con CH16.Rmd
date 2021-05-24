@@ -1,0 +1,812 @@
+---
+title: "Borrador determinantes de las migraciones interregionales en Argentina"
+author: "Alejandro Chaín"
+date: "19/2/2021"
+header-includes:
+  - \usepackage[spanish]{babel}
+output: 
+  pdf_document:
+fontsize: 11pt
+indent: TRUE
+---
+```{r echo = FALSE, warning=FALSE, error=FALSE, message=FALSE, include=FALSE}
+setwd("/home/alejandrochain/Documentos/GitHub/investigacion2021/macrolocalizacion")
+knitr::opts_chunk$set(echo = FALSE, dev="cairo_pdf", fig.cap = TRUE)
+library(readr)
+library(tidyverse)
+library(factoextra)
+library(cluster)
+library(fpc)
+#estos sirven para formatear pa latex
+library(stargazer)
+library(xtable)
+library(extrafont)
+library(eph)
+library(readxl)
+library(sf)
+library(tmap)
+library(tmaptools)
+
+color<- c('#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf')
+```
+
+```{r include=FALSE}
+## Individual
+ephi<- get_microdata(year=2017:2019, trimester = 1:4, type = "individual")
+ephi<- ephi %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+### 2016 
+ephi2<- get_microdata(year=2016, trimester = 2:4, type = "individual")
+ephi2<- ephi2 %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+
+ephi<- bind_rows(ephi,ephi2)
+ephi<- ephi %>% arrange(-ANO4, -TRIMESTRE)
+
+## Hogar
+ephh<- get_microdata(year=2017:2019, trimester = 1:4, type = "hogar")
+ephh<- ephh %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+### 2016 
+ephh2<- get_microdata(year=2016, trimester = 2:4, type = "hogar")
+ephh2<- ephh2 %>%
+dplyr::select(microdata) %>%
+tidyr::unnest(cols = c(microdata))
+
+ephh<- bind_rows(ephh,ephh2)
+ephh<- ephh %>% arrange(-ANO4, -TRIMESTRE)
+
+### mergeado
+
+ephtotal<- left_join(ephi,ephh)
+
+### aglomerado
+aglomerado<- read_excel("aglomerado.xlsx",sheet = 4)
+
+### Sector
+sectorcaes<- read.csv("SECTORESCAES.csv", sep=",", header = T, encoding = "UTF-8", colClasses = "character")
+
+### provincia
+
+provincia<- read.csv("provincias.csv", sep=",", header = T)
+provincia1<- provincia %>% select(PROVINCIA,CH15_COD)
+provincia2<- provincia %>% select(PROVINCIA,CH16_COD)
+
+ephtotal<- ephtotal %>% filter(ESTADO!=0) %>%  mutate(Sexo=as.character(CH04),
+                      Sexo=case_when(Sexo=="1" ~ "Hombres",
+                                       Sexo=="2" ~ "Mujeres"),
+                      PP04D_COD = case_when(nchar(PP04D_COD) == 5 ~ PP04D_COD,
+                                              nchar(PP04D_COD) == 4 ~ paste0("0", PP04D_COD),
+                                              nchar(PP04D_COD) == 3 ~ paste0("00", PP04D_COD),
+                                              nchar(PP04D_COD) == 2 ~ paste0("000", PP04D_COD),
+                                              nchar(PP04D_COD) == 1 ~ paste0("0000", PP04D_COD)),
+                        CALIFICACION = substr(PP04D_COD, 5, 5),                      
+                        JERARQUIA = substr(PP04D_COD, 3, 3),
+                        JERARQUIA = case_when(JERARQUIA=="0" ~ "Dirección",
+                                              JERARQUIA=="2" ~ "Jefes",
+                                              JERARQUIA=="1" ~ "Cuentapropia",
+                                              JERARQUIA=="3" ~ "Trabajadores\nAsalariados"),
+                        JERARQUIA = factor(JERARQUIA, c("Dirección", "Jefes", "Trabajadores\nAsalariados", "Cuentapropia")),
+                        PEA= case_when(ESTADO==3 ~ 0,
+                                       ESTADO==4 ~ 0,
+                                       ESTADO==1 ~ 1,
+                                       ESTADO==2 ~ 1),
+                        PP04D_COD = as.character(PP04D_COD),
+    
+                        CALIFICACION = case_when(CALIFICACION=="1" ~ "Profesionales",
+                                                   CALIFICACION=="2" ~ "Técnicos",
+                                                   CALIFICACION=="3" ~ "Operativos",
+                                                   CALIFICACION=="4" ~ "No Calificados"),
+                        CALIFICACION = factor(CALIFICACION, c("No Calificados", "Operativos", "Técnicos", "Profesionales")),
+                          PP04B_COD=as.character(PP04B_COD),
+                          PP04B_COD=case_when(nchar(PP04B_COD)==4~PP04B_COD,
+                                              nchar(PP04B_COD)==1~ paste0("0",PP04B_COD,"00"),
+                                              nchar(PP04B_COD)==2~ paste0(PP04B_COD,"00"),
+                                              nchar(PP04B_COD)==3~ paste0("0",PP04B_COD)),
+                          SECTOR= substr(PP04B_COD,1,2),
+                          HORASSEM=PP3E_TOT+PP3F_TOT,
+                          niveled=case_when(NIVEL_ED==1 | NIVEL_ED==7 ~ "Sin\ninstrucción",
+                                            NIVEL_ED %in% c(2,3) ~ "Primario\nCompleto",
+                                            NIVEL_ED %in% c(4,5)~ "Secundario\nCompleto",
+                                            NIVEL_ED == 6 ~ "Superior/Universitario\ncompleto"),
+                          niveled=factor(niveled, levels = c("Sin\ninstrucción","Primario\nCompleto","Secundario\nCompleto","Superior/Universitario\ncompleto")))
+  
+
+
+ephtotal<- left_join(ephtotal,aglomerado)
+ephtotal<- left_join(ephtotal, sectorcaes)
+```
+\pagebreak
+
+# Introducción
+En el estudio de los determinantes de las migraciones interprovinciales se pueden encontrar distintos niveles de factores según la generalidad del impacto que tengan en las personas que habitan un determinado espacio geográfico, por un lado se encuentran factores que son comunes a toda la población de una determinada comunidad, que son conocidos como macrofactores, estos pueden ser políticos, sociales, económicos y demográficos, por el otro, se puden encontrar los microfactores, estos son características individuales que actúan como “mediadores” en la decisión migratoria e impactan de manera distinta dependiendo de los macrofactores que configuran los potenciales destinos u orígenes de migración.
+
+Este proceso de decisión migratoria consta de una interrelación constante entre los macrofactores y microfactores, que deben ser considerados a la hora de definir los determinantes que llevan a la decisión del éxodo Interprovincial.
+
+En el análisis pormenorizado de las migraciones interprovinciales en la Argentina existen ciertas  limitaciones, debido a la elevada cantidad de provincias de origen y destino que surgen de la combinación de los movimientos migratorios, se torna dificultoso encontrar determinantes aislados para cada una de las provincias, esto no solo por la complicación en términos de disponibilidad y volumen de los datos, los cuales se ven ampliamente reducidos a causa de la subdivisión, sino también por el hecho de que se volvería tedioso y desordenado el análisis pormenorizado de ciertas combinaciones migratorias.
+
+Este problema trae ligado el cuestionante sobre cuales son los  determinantes óptimos que son compartidos por las  provincias y  que permiten configurar un macro-entorno en donde se pueda  observar dinámicas migratorias similares, una primera respuesta podría ser la típica definición regional del país, pero esta misma peca de ponderar con mayor peso a cuestiones puramente geográficas, y dejan de lado consideraciones desde la visión socio-económica de las regiones.
+
+Teniendo en cuenta esta problemática y las teorías de aglomeración espacial de la nueva geografía económica (Krugman 1994), en donde queda demostrado que, bajo supuestos de mercados de competencia monopolistica, costos de transporte, movilidad factorial y sectores de actividad de económica bien diferenciados, la movilidad de las personas (factor trabajo) converge a la aglomeración de la producción y el consumo en unas pocas regiones con dinámicas productivas similares, ergo, la problemática del análisis pormenorizado de la migraciones interprovinciales puede ser morigerado a través de una aglomeración de las provincias en clusters considerando determinados macrofactores que serán definidos posteriormente en este trabajo. 
+
+Dicha simplificación tiene su base en la consideración de que  zonas altamente pobladas generan una mayor “atracción” debido a la mayor diversidad de bienes y de salarios reales mas elevados, mientras que las empresas se ven altamente beneficiadas a causa del amplio mercado local que se genera lo que permite que incurran en menores costos de transporte, al mismo tiempo que se benefician de las economías de escala y de los encadenamientos hacia adelante y hacia atrás que producen la concentración industrial, esto conlleva a que se generen procesos migratorios hacia áreas determinadas que comparten características en términos de estructuras productivas, funcionamiento del mercado laboral, distribución del factor trabajo entre sectores de actividad económica, costos de transporte, salario real, y por ende, otros determinantes sociales y culturales que son consecuencia de los efectos de la aglomeración espacial.
+
+
+# Regiones 
+
+## Macrofactores
+ Para la selección de los macro factores (Jana Kuhnt, 2019) de aglomeración de las provincias de Argentina se optó por clasificarlos en factores sociodemográficos y económicos, se tomó como parámetros base el trabajo de Martín Cicowiez (2003) y se los amplió en pos de reflejar las variables compartidas según las teorías de aglomeración productiva de la nueva geografía económica, a continuación se dará una breve descripción de los mismos.
+ 
+Factores sociodemográficos de macrolocalización:
+
+* Cantidad de Habitantes: Esta variable indica la cantidad de habitantes de cada provincia, tiene como fuente el Censo Nacional de Población y Vivienda del INDEC realizado en el año 2010, e intenta representar el tamaño de las distintas provincias en términos poblacionales.
+
+* Tasa de promoción efectiva secundaria: En esta variable se busca encontrar una aproximación a la calidad y efectividad del aparato educativo en cada provincia, siendo que no solo es importante el acceso a la educación media en términos de tasa de escolarización neta secundaria, sino también la posibilidad de sortear los obstáculos para lograr completar el nivel secundario.
+
+* Mortalidad infantil: Se calcula como la mortalidad infantil por cada 1000 nacidos vivos según la provincia de residencia de la madre, estos datos tienen como fuente la secretaría de acceso a la salud del ministerio de salud de la Nación Argentina, e intenta mostrar las diferencias y similitudes en el acceso a la salud y a las posibilidades del desarrollo de un proyecto familiar.
+
+* Homicidios, robos, robos agravados, violaciones y muertes en accidentes de tránsito cada 100.000 habitantes: estas variables tienen como fuente el Sistema Nacional de Información Criminal del ministerio de seguridad de la nación y se utiliza para aproximar el nivel de seguridad social y jurídica de cada una de las provincias.
+
+Factores económicos de macrolocalización:
+
+* Exportaciones per cápita promedio: Este indicador obtenido del Origen provincial de las exportaciones argentinas (OPEX) INDEC permite exponer el nivel de integración al comercio internacional de las provincias y su capacidad de producir bienes transables, con el efecto que tiene en la definición de los salarios reales en los mercados laborales provinciales.
+
+* Demanda de energía eléctrica en MwH per-cápita: Este indicador obtenido de CAMMESA permite aproximar el nivel de actividad de cada provincia, siendo que una gran parte de este consumo se da por parte de industrias y comercios.
+
+* Tasa de actividad promedio: Este indicador, obtenido del INDEC, permite vislumbrar la fuerza de trabajo que existe en cada provincia, siendo que indica el porcentaje de la población total que forma parte de la población económicamente activa.
+
+* Cantidad de empresas cada 100.000 habitantes: Esta variable, obtenida del GPS de empresas del ministerio de Desarrollo productivo, permite conocer el nivel de concentración de firmas que existe en cada una de las provincias, lo cual afecta directamente al nivel de demanda de trabajo y produce efectos en términos de encadenamientos productivos que pueden beneficiar a las economías de las provincias.
+
+* Remuneración real de los trabajadores registrados del sector privado: esta remuneración real, que tiene como fuente al Observatorio de Empleo y Dinámicas Empresariales del Ministerio de Trabajo, Empleo y Seguridad Social, indica el valor relativo que tiene el trabajo de las personas que trabajan en las distintas provincias.
+
+* Porcentaje de empleados en los distintos sectores de actividad: esta variable que tiene como fuente al Observatorio de Empleo y Dinámicas Empresariales del Ministerio de Trabajo, Empleo y Seguridad Social demuestra el peso de los distintos sectores de actividad como generadores de empleo en las provincias y  demarca las diferencias en las estructuras productivas que existen entre ellas, esto significa que en algunas puede existir un mayor porcentaje de empleo proveniente de la Agricultura, ganadería, pesca y actividades extractivas (sector primario extractivo), en otras del sector de Comercio, servicios, electricidad, gas, agua y construcción (sector terciario de servicios) y en otras del sector industrial (sector secundario).
+
+## Cantidad óptima 
+
+Para comenzar con la división en regiones de las provincias argentinas, es necesario definir el nivel optimo de aglomeración de acuerdo a los macrofactores elegidos, es decir, definir el numero de regiones en que serán divididas las provincias argentinas.
+
+Para esta aglomeración se utilizará el algoritmo de K-medias (*K-means*), y el indicador a utilizar para definir el numero de regiones óptimas será el *Within-cluster sum of square (WSS)*.
+
+\vspace{5mm}
+\begin {center}
+$WCSS=\sum_{i=1}^{N_{C}} \sum_{\textbf{x}\in Ci} distancia(\textbf{x},\bar {\textbf {x}}_{\textbf{Ci}})$ 
+\end {center}
+\vspace{5mm}
+
+El WSS es un indicador que mide la suma de las distancias al cuadrado entre las variables dentro de  los cluster y sus centroides, en donde el objetivo es minimizar dicha discrepancia dentro de cada grupo, teniendo en cuenta el *trade-off* que implica cuando este es mínimo, el cual es el caso en que el numero de clusters es igual al número de variables a clusterizar, en donde si tenemos j observaciones, el numero de clusters k sería tal que j=k, y no se estaría dando ninguna información relevante a los efectos de poder resumir caracteristicas comunes entre los grupos, esto provoca que se tenga que tomar una decisión en el numero de regiones óptimas, tal que las provincias dentro de cada cluster sean lo más similares posibles en términos de los factores de macrolozalización, pero teniendo en cuenta que una división muy extensa en regiones pierde utilidad analítica a los efectos de definir zonas con caracterísiticas similares para un posterior análisis de movilidad regional.
+
+```{r include=FALSE}
+## Carga de datos
+##Para comenzar, cargamos los datos de las variables sociales y economicas que definen a las distintas provincias de la Argentina.
+datos<- read_csv("macroloc_para_r.csv",col_names = T, row.names(1))
+datos3<- datos %>% select(-Provincia)
+row.names(datos3)<- datos$Provincia
+datos4<- datos3
+#datos<- datos %>% mutate(`Densidad poblacional: Hab/km² (2010)`=log(`Densidad poblacional: Hab/km² (2010)`))
+```
+
+```{r include=FALSE}
+## Normalización de la base de datos
+#Ahora normalizamos la base de datos para lograr coherencia en la aplicación de K-means, debido a quen trabajamos con distintas escalas de #datos.
+datos3<-datos3 %>% select(-c(`Densidad poblacional: Hab/km² (2010)`))
+datos_norm<- scale(datos3)
+```
+
+```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center',fig.cap="Numero óptimo de clusters"}
+library(tikzDevice)
+#tikz(file = "regiones_optimas.tex", width = 6, height = 4)
+factoextra::fviz_nbclust(datos_norm,kmeans, method="wss")+ geom_vline(xintercept = 3, colour="RED", linetype="dotted") + theme_classic() + labs(title="") + xlab("Número de clusters") + ylab("WSS")+ theme(text=element_text(), title = element_text(face = "bold"),axis.text = element_text(color = "BLACK", size = 5) , axis.title = element_text(size = 5),panel.background = element_blank())
+#dev.off()
+```
+
+Luego de realizar el cálculo del *WSS* se obtiene que el numero óptimo de regiones se encuentra en torno a **tres**, debido a que la contribución marginal de aumentar el numero de  clusters a cuatro, no aportaría una reducción muy elevada al **WSS**, y se seguiría perdiendo generalidad en la regionalización de las provincias sin una ganancia significativa de similitud dentro de las regiones.
+
+## Aglomeración de provincias
+
+Una vez obtenido el número de regiones óptimas se procede a asignar a las provincias a las regiones que pertenecen, dependiendo de la similitud que poseen con respecto a los macrofactores definidos anteriormente.
+
+Para la división regional se utilizará el algoritmo de K-Medias, en donde se define una semilla para el cálculo de los centroides iniciales del algoritmo y se procede a realizar el cálculo de los clusters a través de 1.000 iteraciones, siendo seleccionada aquella  que arroje un menor numero del indicador de la suma de las distancias al cuadrado entre las variables dentro de  los cluster y sus centroides, tambien conocido como *WSS*.
+
+
+```{r echo = FALSE, warning=FALSE, error=FALSE}
+set.seed(1118)
+km_clusters<- kmeans(datos_norm,centers = 3,iter.max = 1000,nstart = 2000)
+nomenclador<- km_clusters$cluster
+```
+```{r echo = FALSE, warning=FALSE, error=FALSE}
+#Podemos ver la media de los parámetros para cada uno de los clusters
+
+resumen_cluster<-aggregate(datos3,by = list(cluster=km_clusters$cluster),FUN = median)
+resumen_g<-resumen_cluster %>% pivot_longer(-cluster)
+resumen2<-data.frame(t(resumen_cluster)) 
+resumen2<- resumen2 %>% rename("Region 1"=X1,"Region 2"=X2, "Region 3"=X3) %>% rownames_to_column()
+resumen2<- resumen2 %>% rename("Indicadores"=rowname)
+resumen2<- resumen2 %>% filter(Indicadores!="cluster" & Indicadores!="Habitantes (2010)" )
+resumen2$`Region 1`<- formattable::comma((resumen2$`Region 1`),2)
+resumen2$`Region 2`<- formattable::comma((resumen2$`Region 2`),2)
+resumen2$`Region 3`<- formattable::comma((resumen2$`Region 3`),2)
+
+resumen2b<- resumen2[14:16,]
+resumen2b$`Region 1`<- resumen2b$`Region 1`*100
+resumen2b$`Region 2`<- resumen2b$`Region 2`*100
+resumen2b$`Region 3`<- resumen2b$`Region 3`*100
+resumen2<- resumen2[1:13,]
+resumen2<- bind_rows(resumen2, resumen2b)
+#
+#kableExtra::kable(resumen2,format = "markdown",caption = "Resumen de indicadores por cluster")
+#xtable(resumen2, type="latex",auto = TRUE)
+```
+
+```{r include=FALSE}
+#agregamos a la base de datos original la denominación de cada cluster
+
+datos<- cbind(datos,cluster=nomenclador)
+clustersprov<-datos %>% select(Provincia,cluster)
+datos %>% group_by(cluster) %>% summarise(habitantes=sum(`Habitantes (2010)`))
+datos %>% group_by(cluster) %>% summarise(Provincia)
+datos<- datos %>% mutate(Provincia=case_when(Provincia=="Tierra del Fuego, Antártida e Islas del Atlántico Sur (4)"~ "Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+                                             TRUE~Provincia)) %>% arrange(Provincia)
+names(km_clusters[1])
+```
+
+```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center',fig.cap="regiones resultantes de la macrolocalización"}
+#tikz(file = "regiones_resultantes.tex", sanitize = TRUE,width = 4,height = 4)
+fviz_cluster(km_clusters, data = datos4,
+palette = c("RED", "BLUE","GREEN"),
+ellipse.type = "euclid", # Concentration ellipse
+star.plot = TRUE, # Add segments from centroids to items
+repel = TRUE, # Avoid label overplotting (slow)
+ labelsize = 6,) + theme_classic(base_family ="LM Roman 10") + labs(title="") + theme(text=element_text(family = "LM Roman 10", size = 8), title = element_text(face = "bold"), axis.title = element_text(size = 7))
+#dev.off()
+```
+```{r}
+#tikz(file = "regiones_resultantes.tex", sanitize = TRUE,width = 6,height = 4)
+fviz_cluster(km_clusters, data = datos4,
+palette = c("RED", "BLUE","GREEN"),
+ellipse.type = "euclid", # Concentration ellipse
+star.plot = TRUE, # Add segments from centroids to items
+repel = TRUE, # Avoid label overplotting (slow)
+ labelsize = 6) + labs(title="") + theme(text=element_text(),  title = element_text(face = "bold"),axis.text = element_text(color = "BLACK", size = 5) , axis.title = element_text(size = 5),panel.background = element_blank(), axis.line.x.bottom = element_line(color = "BLACK"), axis.line.y.left = element_line(color="BLACK"))
+#dev.off()
+```
+ 
+
+ title = element_text(face = "bold"),axis.text = element_text(color = "BLACK", size = 5) , axis.title = element_text(size = 5),panel.background = element_blank()
+
+```{r}
+#tikz(file = "regiones_resultantes.tex", sanitize = TRUE,width = 5,height = 4)
+fviz_cluster(km_clusters, data = datos4,
+palette = c("RED", "BLUE","GREEN"),
+ellipse.type = "euclid", # Concentration ellipse
+star.plot = TRUE, # Add segments from centroids to items
+repel = TRUE, # Avoid label overplotting (slow)
+ labelsize = 5) +   labs(title="") +theme_bw() + theme(title =element_text(size=5),plot.background = element_blank(), panel.grid = element_blank(),panel.border = element_blank(), axis.line.x.bottom = element_line(color = "black"), axis.line.y = element_line(color = "black"))
+#dev.off()
+
+```
+
+
+Una vez ejecutado el algoritmo, se obtiene la division de las provincias de Argentina en tres regiones bien definidas, las cuales comparten similitudes en los parámetros definidos en la macrolozalización.
+
+Se puede ver claramente la diferencia en la similitud de los tres grupos, siendo solamente la Capital Federal la única que presenta mayor disimilitud con respecto a su región, lo cual indica que esta  lleva una dinámica socio-económica muy peculiar con respecto al promedio de las provincias argentinas, inclusive considerablemente distinta que las provincias con la cual ostenta mayor similitud.
+
+A continuación se muestra la distribución geográfica de las regiones definidas anteriormente.
+
+```{r include=FALSE}
+
+#ephtotal<- read_rds("ephtotal.Rds")
+### provincia
+
+provincia<- read.csv("provincias.csv", sep=",", header = T, encoding = "UTF-8")
+provincia<- provincia %>% arrange(PROVINCIA)
+provincia1<- provincia %>% select(PROVINCIA,CH15_COD)
+provincia2<- provincia %>% select(PROVINCIA,CH16_COD)
+#
+nombredato<- datos %>% select(Provincia)
+nombredato
+
+name_prov_para_datos<-bind_cols(nombredato, provincia) %>% select(-PROVINCIA)
+datos<- left_join(datos,name_prov_para_datos)
+#
+cluster_nombres_eph<- datos %>% select(c("Provincia","cluster","CH15_COD","CH16_COD"))
+cluster_nombres_eph<- cluster_nombres_eph %>% rename(provincia_origen=Provincia, cluster_origen=cluster)
+cluster_nombres_eph_ch16<-cluster_nombres_eph %>% select(provincia_origen,CH16_COD, cluster_origen)
+##############################################################################################
+ephinmi<- ephtotal %>% filter(CH16==3) 
+ephinmi<- left_join(ephinmi, cluster_nombres_eph_ch16) 
+
+ephinmi %>% filter(!is.na(SECTOR_ACT)) %>% group_by(SECTOR_ACT) %>% summarise(porcentaje=formattable::percent (sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(SECTOR_ACT)]))) %>% arrange(-porcentaje)
+
+ephinmi %>% filter(!is.na(CALIFICACION)) %>% group_by(CALIFICACION) %>% summarise(porcentaje=formattable::percent (sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(CALIFICACION)]))) %>% arrange(-porcentaje)
+
+```
+
+```{r include=FALSE}
+ephinmi<- ephinmi %>% filter(!is.na(provincia_origen))
+prov_por_aglo<- read_csv("provincias_por_aglomerado.csv")
+cluster_destino<- cluster_nombres_eph %>% select(provincia_origen,cluster_origen) %>% rename(provincia_destino=provincia_origen, cluster_destino=cluster_origen)
+cluster_destino<- left_join(prov_por_aglo,cluster_destino)
+
+ephinmi<- left_join(ephinmi,cluster_destino)
+```
+
+```{r include=FALSE}
+cuadro_4<- ephinmi %>% group_by("Provincia"=provincia_destino) %>% summarise("Inmigrantes"=sum(PONDERA))
+cuadro_5<- ephinmi %>% group_by("Provincia"=provincia_origen) %>% summarise("Emigrantes"=sum(PONDERA))
+cuadro_6<- full_join(cuadro_4,cuadro_5)
+######
+prov_aglo<- prov_por_aglo %>% rename(provincia=provincia_destino)
+ephtotal<- left_join(ephtotal, prov_aglo)
+prov_cluster<- clustersprov %>% mutate(Provincia=case_when(Provincia=="Tierra del Fuego, Antártida e Islas del Atlántico Sur (4)"~ "Tierra del Fuego, Antártida e Islas del Atlántico Sur",                              TRUE ~ Provincia))
+#######
+cuadro_7<- ephtotal %>% group_by("Provincia"=provincia) %>% summarise("Poblacion"=sum(PONDERA))
+cuadro_8<- left_join(cuadro_6,cuadro_7)
+cuadro_8<- left_join(cuadro_8,prov_cluster)
+cuadro_8<- cuadro_8 %>% mutate(tasa_inmigracion=Inmigrantes/Poblacion, tasa_emigracion=Emigrantes/Poblacion, tasa_neta=tasa_inmigracion-tasa_emigracion)
+cuadro_8$cluster<- factor(cuadro_8$cluster, levels = c("1","2","3"))
+```
+
+```{r include=FALSE}
+### Mapa de migraciony emigracion por provincia
+
+datos_mapa_prov<- st_read( "./mapa/gadm36_ARG_1.shp")
+datos_mapa_prov<- datos_mapa_prov %>% rename(Provincia=NAME_1)
+
+datos_mapa_prov<- datos_mapa_prov %>% mutate(Provincia=case_when(Provincia=="Ciudad de Buenos Aires"  ~ "Ciudad Autónoma de Buenos Aires",
+                                                       Provincia=="Tierra del Fuego"  ~"Tierra del Fuego, Antártida e Islas del Atlántico Sur",
+                                                       TRUE~Provincia))
+cuadro_9<- cuadro_8 %>% mutate(tasa_inmigracion=formattable::percent(tasa_inmigracion),tasa_emigracion=formattable::percent(tasa_emigracion))
+datos_mapa_prov<- inner_join(datos_mapa_prov, cuadro_9)
+```
+```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center', fig.cap="Macrolocalización de regiones por provincia"}
+#extrafont::font_import(paths = "/home/alejandrochain/Documentos/GitHub/investigacion2021/macrolocalizacion/fuentes")
+#extrafont::loadfonts(device = "pdf",quiet = T)
+#pdf(file = "mapa_regiones.pdf", width = 4,height = 4)
+mapa_cluster<- ggplot(data = datos_mapa_prov) + geom_sf(aes(fill=cluster),color="BLACK", size=0.2 ) + labs(fill="Región:") + scale_fill_manual(values=color)+ theme(text=element_text(family="LM Roman 10"), panel.background = element_blank() , axis.text = element_blank(), axis.ticks = element_blank())
+mapa_cluster
+#dev.off()
+```
+
+Para completar el análisis, se presenta un resumen de los macrofactores que representan en promedio a cada región, es decir, cuales son las características compartidas entre las provincias que provocaron que sean parte de un mismo aglomerado.
+
+
+```{r echo=FALSE, warning=FALSE, error=FALSE}
+kableExtra::kable(resumen2, caption = "Resumen de indicadores por regiones", format = 'markdown')
+
+stargazer(resumen2,summary = FALSE)
+```
+La **región 1** se caracteriza en terminos sociales por una tasa de promoción secundaria relativamente baja, en comparación con las otras regiones, una leve mortalidad infantil, una alta tasa de robos agravados, homocidios dolosos y violaciones cada 100.000 habitantes y un nivel moderado de robos no agravados y muertes en accidentes viales cada 100.000 habitantes.
+En cuanto a términos económicos, esta región se caracteriza por tener la mejor integración a los mercados internacionales con la mayor cantidad de exportaciones per-cápita. 
+En cuanto al nivel de actividad, posee elevados niveles de consumo  de energía electrica per-cápita, la tasa de actividad promedio y la cantidad relativa de empresas es la segunda más elevada de las tres regiones, el salario real es el más alto, con amplia diferencia, de las tres regiones y la tasa de pobreza es la más baja de las tres. Por último, se caracteriza por una predominancia del sector terciario, seguido del sector primario (Agricultura, ganadería, pesca y actividades extractivas) y por último, con un porcentaje considerablemente menor, el sector secundario (industrial).
+
+La **región 2** se caracteriza en terminos sociales por una moderada tasa de promoción secundaria, en comparación con las otras regiones, una elevada tasa mortalidad infantil, una baja tasa de robos (agravados y no agravados) y homocidios dolosos cada 100.000 habitantes, un nivel moderado de violaciones cada 100.000 habitantes y una elevada tasa de muertes en accidentes viales cada 100.000 habitantes. 
+En cuanto a factores económicos, esta región se caracteriza por tener una pésima integración a los mercados internacionales con la más baja cantidad de exportaciones per-cápita, en cuanto a los niveles de actividad, posee los menores niveles de consumo  de energía electrica per-cápita, la menor tasa de actividad promedio, la menor cantidad relativa de empresas, el salario real es el más bajo de las tres regiones y la tasa de pobreza es la más alta de las tres, dejandola en el último puesto en términos de desempeño económico en términos relativos. 
+Por último, se caracteriza, al igual que las otras dos regiones, por una predominancia del sector terciario, seguido del sector secundario (industrial) y dejando en último lugar al sector primario (Agricultura, ganadería, pesca y actividades extractivas).
+
+La **región 3** se caracteriza en terminos sociales por una elevada tasa de promoción secundaria, en comparación con las otras regiones, una moderada tasa mortalidad infantil, muy similar a la región 2, una moderada tasa de robos agravados y homocidios dolosos cada 100.000 habitantes, un nivel bajo en términos relativos de violaciones y muertes en accidentes viales cada 100.000 habitantes y una elevada tasa de robos no agravados. 
+En cuanto a factores económicos, esta región se caracteriza por tener un desempeño intermedio en términos de integración a los mercados internacionales, con una cantidad de exportaciones per-cápita en dolares que se encuentra en un término medio entre las dos regiones restantes, en cuanto a los niveles de actividad, posee el segundo mayor nivel de consumo  de energía electrica per-cápita, la mayor tasa de actividad promedio, la mayor cantidad relativa de empresas cada 100.000 habitantes, un nivel intermedio de salario real  y una tasa de pobreza que se encuentra como la segunda más baja de las tres regiones. Por último, se caracteriza, al igual que las otras dos regiones, por una predominancia del sector terciario, seguido del sector secundario (industrial) y dejando en último lugar, con amplia diferencia, al sector primario (Agricultura, ganadería, pesca y actividades extractivas).
+
+
+## Flujos migratorios 
+
+Dentro de las regiones existen provincias de las cuales salen gran cantidad de inmigrantes, al igual que existen provincias que son receptoras de estos mismos, en primer lugar se caracterizará a las regiones según el nivel de *expulsion* de inmigrantes interprovinciales.
+```{r}
+cuadro_2<-ephinmi %>% group_by("Región"=cluster_origen) %>% summarise("Porcentaje"=formattable::percent((sum(PONDERA)/sum(ephinmi$PONDERA))))
+kableExtra::kable(cuadro_2,format = "markdown",caption = "Regiones de origen de los migrantes")
+#stargazer(cuadro_2,title = "Regiones de origen de los migrantes",summary = FALSE,label = "cuadro:origen_mig")
+```
+Se puede notar que las provincias de la  **Región Nº2** son las que mayor nivel de expulsión poseen, seguidas por las provincias pertenecientes a la Región Nº3, y por úlitmo se encuentran las pertenecientes a la Región Nº1.
+
+```{r echo = FALSE, warning=FALSE, error=FALSE}
+cuadro_3<-ephinmi %>% group_by("Región"=cluster_destino) %>% summarise("Porcentaje"=formattable::percent((sum(PONDERA)/sum(ephinmi$PONDERA))))
+kableExtra::kable(cuadro_3,format = "markdown",caption = "Regiones de destino de los migrantes")
+#stargazer(cuadro_3,title = "Regiones de destino de los migrantes",summary = FALSE,label = "cuadro:destino_mig")
+
+```
+Sin embargo, analizando cuales son las regiones de destino  con mayor porcentaje  de migrantes, encontramos que la **Región Nº 3** es la que mayor nivel de *atracción* posee por elevada diferencia (`r cuadro_3 %>% filter("Región"==3) %>% pull()`), seguida por la Región Nº2 y en último lugar la Región Nº1.
+
+Esta relación entre regiones con mayor atracción y expulsión de migrantes tambien puede ser vista a nivel de provincias, para ello se definen dos tasas a considerar:
+\vspace{5mm}
+\begin{itemize}
+ \item $Tasa\ de\ emigración\ de\ la\ Provincia\ "X"= \frac{Cantidad\ de\ migrantes\ nativos\ de\ la\ Provincia\ "X"}{Cantidad\ de\ habitantes\ de\ la\ Provincia\ "X"}$
+ \item $Tasa\ de\ inmigración\ de\ la\ Provincia\ "X"= \frac{Cantidad\ de\ migrantes\ no\ nativos\  que\ habitan\ la\ Provincia\ "X"}{Cantidad\ de\ habitantes\ de\ la\ Provincia\ "X"}$
+\end{itemize}
+\vspace{5mm}
+
+En el siguiente gráfico se puede observar la relación entre la tasa de emigración e inmigración de las provincias, diferenciando por la región a la cual pertenecen.
+
+```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center', fig.cap="Tasa de inmigración y emigración por provincia"}
+cuadro_8 %>% ggplot(mapping=aes(x=tasa_inmigracion,y = tasa_emigracion, label=Provincia, color=cluster)) + geom_point(show.legend = T) + geom_abline(intercept=-0,slope = 1)+ scale_color_manual(values = color)+ scale_y_continuous(labels = scales::percent_format(),limits = c(0,0.75))+scale_x_continuous(labels = scales::percent_format(),limits = c(0,0.75)) + xlab("Tasa de inmigración") + ylab("Tasa de emigración")+ labs(title = "", color="Región:")+ ggrepel::geom_text_repel(size=3,family = "LM Roman 10",show.legend = F)+theme(text=element_text(family = "LM Roman 10"),axis.line = element_line(color="BLACK") ,axis.text = element_text(size=7, color = "BLACK") , panel.background = element_blank(),  axis.title = element_text(size=7), title = element_text(face = "bold"), legend.key = element_blank())
+```
+
+```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center', fig.cap="Tasa de inmigración y emigración por provincia"}
+#tikz(file = "tasas_emig_inmig_prov.tex", sanitize = TRUE,width = 6,height = 4)
+
+cuadro_8 %>% ggplot(mapping=aes(x=tasa_inmigracion,y = tasa_emigracion, label=Provincia, color=cluster)) + geom_point(show.legend = T) + geom_abline(intercept=-0,slope = 1)+ scale_color_manual(values = color)+ scale_y_continuous(labels = scales::percent_format(),limits = c(0,0.75))+scale_x_continuous(labels = scales::percent_format(),limits = c(0,0.75)) + xlab("Tasa de inmigración") + ylab("Tasa de emigración")+ labs(title = "", color="Región:")+ ggrepel::geom_text_repel(size=2,show.legend = F)+theme(axis.line = element_line(color="BLACK") ,axis.text = element_text(color = "BLACK", size = 5) , axis.title = element_text(size = 5),panel.background = element_blank(), title = element_text(face = "bold"), legend.key = element_blank())
+#dev.off()
+```
+
+
+La bisectriz divide el plano en dos zonas, todas las provincias que se encuentran por encima de ella son aquellas en la que la tasa de emigración es superior a la tasa de inmigración, mientras que las que se encuentran por debajo, son quellas en la que existe una mayor tasa de inmigración que de emigración. 
+
+Las provincias pertenecientes a la Región Nº2 se ubican en casi su totalidad por encima de la bisectriz, indicando que son provincias en donde la expulsión de migrantes es mucho mayor que la atracción de los mismos, por otro lado, las provincias de la Región Nº 1 tienen una mayor tendencia a ubicarse por debajo de la linea diagonal, en donde la atracción de migrantes es mayor que la expulsión en casi la totalidad de las provincias, con excepción de Tucumán, y por último, en la Región Nº3 se pueden encontrar tres provincias que se encuentran por debajo de la diagonal, en donde la atracción de migrantes es mayor que su nivel de expulsión (Buenos Aires, Ciudad Autónoma de Buenos Aires y Tierra del Fuego) y otras tres que se encuentran con tasa de inmigración y emigración muy similares, con diferencias muy leves a favor de la tasa de emigración.
+
+```{r fig.align='center' ,  fig.cap="Tasas de emigración e inmigración por provincia"}
+#pdf(file = "emig_inmig_por_prov.pdf",height = 4, width = 6)
+mapa_inmigracion<-ggplot(data = datos_mapa_prov) + geom_sf(aes(fill=tasa_inmigracion),color="BLACK", size=0.2 ) + viridis::scale_fill_viridis(label=scales::percent) + labs(fill="Tasa de inmigración:") + theme(text=element_text(family="LM Roman 10"), panel.background = element_blank() , axis.text = element_blank(), axis.ticks = element_blank()) 
+mapa_emigracion<- ggplot(data = datos_mapa_prov) + geom_sf(aes(fill=tasa_emigracion),color="BLACK", size=0.2 ) + viridis::scale_fill_viridis(label=scales::percent) + labs(fill="Tasa de emigración:") + theme(text=element_text(family="LM Roman 10"), panel.background = element_blank() , axis.text = element_blank(), axis.ticks = element_blank()) 
+gridExtra::grid.arrange(mapa_emigracion,mapa_inmigracion, ncol=2)
+#dev.off()
+```
+En el Mapa Nº2 se observa la diferencia en la distribución de las provincias con mayor tasaa de migración e inmigración, las provincias de Chaco, Corrientes y Rio Negro son las que mayores tasa de emigración poseen, mientras que en el Sur de la Argentina se encuentran las provincias en donde la tasa de inmigración es mas elevada, con provincias como Tierra del Fuego, Santa Cruz y Neuquén.
+
+# Microfactores
+
+
+## Caracterización de los migrantes
+
+
+```{r include=FALSE}
+#Creación de regresores (feature engineerirng)
+deflactor<- read_csv("deflactor.csv")
+canastas<- read.csv("canasta.csv", sep=";", dec=".", header = TRUE)
+
+ephtotal<- left_join(ephtotal, deflactor)
+ephtotal<- ephtotal %>% mutate(HIJO=case_when(CH03==3~1,
+                                              TRUE ~ 0))
+
+ephtotal<- ephtotal %>% group_by(ANO4, TRIMESTRE, CODUSU,NRO_HOGAR) %>% mutate(HIJO_HOGAR=sum(HIJO)) %>% ungroup()
+ephtotal<- left_join(ephtotal,eph::adulto_equivalente)
+ephtotal<- left_join(ephtotal,canastas)
+ephtotal<- ephtotal %>% group_by(ANO4, TRIMESTRE, CODUSU,NRO_HOGAR) %>% mutate(EAF=sum(adequi)) %>% ungroup()
+ephtotal<- ephtotal %>% mutate(CBAEQ=CBA*EAF,
+                         CBTEQ=CBT*EAF)
+ephtotal<- ephtotal %>% mutate(condicion=case_when(ITF<CBAEQ ~ "Indigente",
+                                             ITF>=CBAEQ & ITF<CBTEQ ~ "Pobre",
+                                             ITF>=CBTEQ ~ "No Pobre"))
+
+
+ephtotal<- ephtotal %>% mutate(hombre=case_when(Sexo=="Hombres"~1,
+                                                                    Sexo=="Mujeres"~0),
+                                                   edad=case_when(CH06=="-1" ~ as.integer(1),
+                                                                  TRUE ~ as.integer(CH06)),
+                                                   edad2=(edad)^2,
+                                                   ledad=log(edad),
+                                                   medio=case_when(niveled=="Secundario\nCompleto"~ 1,
+                                                                    TRUE ~ 0),
+                                                   alto=case_when(niveled=="Superior/Universitario\ncompleto"~ 1,
+                                                                    TRUE ~ 0),
+                                                    IPCFR=IPCF/DEFLACTOR,
+                                                    IPCFRL=log(IPCFR),
+                                                    OCUPADO_BAJO=case_when(ESTADO==1 & CALIFICACION %in% c("No Calificados", "Operativos") ~ 1,
+                                                                      TRUE ~ 0),
+                                                    OCUPADO_ALTO=case_when(ESTADO==1 & CALIFICACION %in% c("Profesionales","Técnicos") ~ 1,
+                                                                      TRUE ~ 0),
+                                                    PROPIETARIO=case_when(II7==1 | II7==2 ~ 1,
+                                                                          TRUE ~ 0),
+                                                    HIJO_DUMMY=case_when(HIJO_HOGAR==0 ~ 0,
+                                                                         TRUE ~ 1),
+                                                    CASADO= case_when(CH07==1 | CH07==2 ~ 1 ,
+                                                                      TRUE ~ 0),
+                                                    SOLTERO_C_HIJO=case_when(CASADO==0 & HIJO_DUMMY==1~1,
+                                                                             TRUE~0),
+                                                    CASADO_S_HIJO=case_when(CASADO==1 & HIJO_DUMMY==0~ 1,
+                                                                            TRUE ~ 0),
+                                                    CASADO_C_HIJO=case_when(CASADO==1 & HIJO_DUMMY==1~1,
+                                                                            TRUE~0),
+                                                    POBRE=case_when(condicion %in% c("Pobre","Indigente")~1,
+                                                                    TRUE ~ 0),
+                                                    SUBSIDIO=case_when(V5==1 ~ 1,
+                                                                       TRUE ~ 0)
+                                                   )
+```
+creación migrante
+```{r}
+eph_carac<- ephtotal %>% mutate(migrante=case_when(CH15==3 ~ 1, 
+                                                   TRUE ~ 0),
+                                nativo=case_when(CH15 %in% c(1,2) ~ 1,
+                                                 TRUE ~ 0))
+eph_carac<- left_join(eph_carac,cluster_destino)
+```
+## Sexo y edad de los nativos
+El sexo y la edad de las personas son considerados dentro de los microfactores que pueden afectar considerablemente a la decisión migratoria, es por ello que se analizan estas características dentro de la población de cada región, diferenciando entre los que son nativos de la provincia en la que habitan de los que son migrantes.
+
+```{r}
+sexo_edad<- eph_carac %>% mutate(condicion_mig=case_when(migrante==1 ~ "Migrantes",
+                                                         nativo==1 ~ "Nativos")) 
+
+ pre<-sexo_edad %>% group_by(cluster_destino,  condicion_mig) %>% summarise(total=sum(PONDERA)) 
+
+ post<-sexo_edad %>% group_by(cluster_destino,  condicion_mig, Sexo) %>% summarise(Cantidad=sum(PONDERA)) 
+sexo_edad<- left_join(post,pre) 
+sexo_edad$Porcentaje=formattable::percent((sexo_edad$Cantidad/sexo_edad$total),2)
+sexo_edad$cluster_destino=paste0("\\textbf{Región",sexo_edad$cluster_destino,"}")
+
+tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex/graficos/sexo_mig.tex",width = 6, height = 4,sanitize = TRUE)
+sexo_edad %>% filter(!is.na(condicion_mig)) %>% ggplot(mapping=aes(x = condicion_mig, y =Porcentaje, fill=Sexo, label=Porcentaje)) + geom_col(position = position_fill(),width = 0.6) + facet_grid(rows = vars(cluster_destino)) + xlab("") + ylab("")+scale_y_continuous(labels = scales::percent_format())+ labs(fill="") + scale_fill_manual(values = color) + geom_text(position = position_fill(vjust = 0.4), size=3) + theme(axis.text = element_text(color = "BLACK"), strip.background = element_blank(), panel.background = element_blank())+ coord_flip()
+dev.off()
+```
+
+```{r}
+sexo_edad<- eph_carac %>% mutate(condicion_mig=case_when(migrante==1 ~ "Migrantes",
+                                                         nativo==1 ~ "Nativos")) 
+
+
+sexo_edad$cluster_destino=paste0("\\textbf{Región",sexo_edad$cluster_destino,"}")
+tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex/graficos/edad_mig.tex",width = 6, height = 4,sanitize = TRUE)
+sexo_edad %>% filter(!is.na(condicion_mig)) %>% ggplot(mapping = aes(x=edad, group=condicion_mig, fill=condicion_mig)) + geom_density(alpha=0.5) + scale_fill_manual(values=color)+ xlab("Edad")+ ylab("Densidad")+ labs(fill="") +scale_y_continuous(labels = scales::percent_format())+facet_grid(.~cluster_destino)+ theme(axis.text = element_text(color = "BLACK"), strip.background = element_blank(), panel.background = element_blank(), axis.line.x.bottom = element_line(color="BLACK"),axis.line.y.left = element_line(color="BLACK"))
+dev.off()
+sexo_edad<-sexo_edad %>% filter(!is.na(condicion_mig)) %>% group_by("Región"=cluster_destino,"Condición"=condicion_mig, "Género"=Sexo) %>% summarise("Mediana de Edad"=median(edad))
+sexo_edad
+stargazer(sexo_edad)
+```
+
+
+
+
+## Factores determinantes de la expulsión
+
+En primer lugar se analizará si existen microdeterminantes dentro de las características de los migrantes que porovoquen que ciertas personas con tengan una mayor propensión a migrar desde ciertas localizaciones, es decir, se analizaran los factores de expulsión de los distintos cluster; por otro lado, se realizará un análisis diferenciando el destino de los distintos migrantes, con el fin de establecer los determinantes de atracción de las distintas localizaciones.
+
+En el universo de habitantes de una determinada región/cluster, pueden existir caracteristicas determinadas que diferencien de manera significativa entre las personas que nacieron  y decidieron quedarse en la misma región, de las que si bien nacieron en la misma región, optaron por migrar hacia otra. A continuación se realizará un análisis diferenciando por cluster  de características socioeconómicas de los migrantes y no migrantes  que nacieron en un mismo cluster, con el fin de determinar si existen diferencias significativas entre ellos.
+
+
+```{r include = FALSE}
+cluster1_expulsion<- left_join(ephtotal,cluster_destino)  
+cluster1_expulsion<- left_join(cluster1_expulsion,cluster_nombres_eph_ch15)
+cluster1_expulsion<- cluster1_expulsion %>%  filter(cluster_destino==1 | cluster_origen==1)
+cluster1_expulsion<- cluster1_expulsion %>% filter(CH03==1)
+cluster1_expulsion<- cluster1_expulsion %>% filter(CH15%in% c(1,2,3))
+cluster1_expulsion<- cluster1_expulsion %>% mutate(inmigrante=case_when(cluster_origen==1  &  CH15==3 &   cluster_destino!=1 ~1,
+                                                                        cluster_destino==1 & CH15 %in% c(1,2) ~0))
+cluster1_expulsion<- cluster1_expulsion %>% filter(!is.na(inmigrante))
+
+cluster_exp1<- glm(inmigrante ~  hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto ,data = cluster1_expulsion,family = binomial(link="logit"))
+
+```
+```{r include = FALSE}
+cluster2_expulsion<- left_join(ephtotal,cluster_destino)  
+cluster2_expulsion<- left_join(cluster2_expulsion,cluster_nombres_eph_ch15)
+cluster2_expulsion<- cluster2_expulsion %>%  filter(cluster_destino==2 | cluster_origen==2)
+cluster2_expulsion<- cluster2_expulsion %>% filter(CH15%in% c(1,2,3))
+cluster2_expulsion<- cluster2_expulsion %>% filter(CH03==1)
+cluster2_expulsion<- cluster2_expulsion %>% mutate(inmigrante=case_when(cluster_origen==2  &  CH15==3 &   cluster_destino!=2~1,
+                                                                        cluster_destino==2 & CH15 %in% c(1,2) ~0))
+cluster2_expulsion<- cluster2_expulsion %>% filter(!is.na(inmigrante))
+
+cluster_exp2<- glm(inmigrante ~  hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto, data= cluster2_expulsion,family = binomial(link = "logit"))
+```
+
+```{r include = FALSE}
+cluster3_expulsion<- left_join(ephtotal,cluster_destino)  
+cluster3_expulsion<- left_join(cluster3_expulsion,cluster_nombres_eph_ch15)
+cluster3_expulsion<- cluster3_expulsion %>%  filter(cluster_destino==3 | cluster_origen==3)
+cluster3_expulsion<- cluster3_expulsion %>% filter(CH15%in% c(1,2,3))
+cluster3_expulsion<- cluster3_expulsion %>% filter(CH03==1)
+cluster3_expulsion<- cluster3_expulsion %>% mutate(inmigrante=case_when(cluster_origen==3  &  CH15==3 &   cluster_destino!=3 ~1,
+                                                                        cluster_destino==3 & CH15 %in% c(1,2) ~0))
+cluster3_expulsion<- cluster3_expulsion %>% filter(!is.na(inmigrante))
+
+cluster_exp3<- glm(inmigrante ~  hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto,data = cluster3_expulsion,family = binomial(link = "logit"))
+```
+```{r include= FALSE}
+#Grafico de regresiones en stargazer
+stargazer(cluster_exp1,cluster_exp2, cluster_exp3,font.size = "small")
+summary(cluster_exp1)
+```
+\begin{table}[!htbp] \centering 
+  \caption{} 
+  \label{} 
+\small 
+\begin{tabular}{@{\extracolsep{5pt}}lccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-4} 
+\\[-1.8ex] & \multicolumn{3}{c}{inmigrante} \\ 
+\\[-1.8ex] & (1) & (2) & (3)\\ 
+\hline \\[-1.8ex] 
+ Hombre & $-$0.014 & 0.033 & 0.120$^{***}$ \\ 
+  & (0.046) & (0.020) & (0.025) \\ 
+  & & & \\ 
+ Pobre & 0.257$^{***}$ & 0.088$^{***}$ & $-$0.475$^{***}$ \\ 
+  & (0.044) & (0.020) & (0.025) \\ 
+  & & & \\ 
+ Subsidio & $-$0.225$^{***}$ & $-$0.553$^{***}$ & 0.325$^{***}$ \\ 
+  & (0.071) & (0.031) & (0.038) \\ 
+  & & & \\ 
+ Ocupado/a baja calif. & $-$0.099$^{*}$ & $-$0.006 & $-$0.178$^{***}$ \\ 
+  & (0.052) & (0.023) & (0.029) \\ 
+  & & & \\ 
+ Ocupado/a alta calif. & $-$0.191$^{***}$ & $-$0.100$^{***}$ & $-$0.131$^{***}$ \\ 
+  & (0.067) & (0.033) & (0.034) \\ 
+  & & & \\ 
+ Soltero/a con Hijo/a & $-$0.341$^{***}$ & $-$0.360$^{***}$ & 0.110$^{***}$ \\ 
+  & (0.058) & (0.027) & (0.034) \\ 
+  & & & \\ 
+ Casado/a sin Hijo/a & 0.137$^{**}$ & 0.097$^{***}$ & 0.009 \\ 
+  & (0.062) & (0.028) & (0.033) \\ 
+  & & & \\ 
+ Casado/a con Hijo/a & $-$0.350$^{***}$ & $-$0.238$^{***}$ & $-$0.116$^{***}$ \\ 
+  & (0.054) & (0.024) & (0.030) \\ 
+  & & & \\ 
+ Propietario/a de Vivienda & $-$0.234$^{***}$ & $-$0.527$^{***}$ & 0.080$^{***}$ \\ 
+  & (0.043) & (0.019) & (0.023) \\ 
+  & & & \\ 
+ Edad & $-$0.001 & $-$0.001 & 0.064$^{***}$ \\ 
+  & (0.007) & (0.003) & (0.004) \\ 
+  & & & \\ 
+ Edad$^2$ & 0.0001$^{**}$ & 0.0001$^{***}$ & $-$0.001$^{***}$ \\ 
+  & (0.0001) & (0.00003) & (0.00004) \\ 
+  & & & \\ 
+ Nivel Educativo Medio & 0.169$^{***}$ & $-$0.481$^{***}$ & 0.304$^{***}$ \\ 
+  & (0.045) & (0.021) & (0.025) \\ 
+  & & & \\ 
+ Nivel Educativo Alto & 0.505$^{***}$ & $-$0.601$^{***}$ & 0.488$^{***}$ \\ 
+  & (0.060) & (0.030) & (0.030) \\ 
+  & & & \\ 
+ Constante & $-$2.015$^{***}$ & $-$1.279$^{***}$ & $-$3.848$^{***}$ \\ 
+  & (0.176) & (0.081) & (0.105) \\ 
+  & & & \\ 
+\hline \\[-1.8ex] 
+Observaciones & 24,400 & 110,543 & 111,681 \\ 
+Log Likelihood & $-$9,396.855 & $-$45,578.040 & $-$35,125.640 \\ 
+Akaike Inf. Crit. & 18,821.710 & 91,184.090 & 70,279.290 \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Nota:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
+
+Los factores determinantes de expulsión de los migrantes varían dependiendo de la región que se esté tomando a consideración, el sexo no es un factor determinante de expulsión para los cluster 1 y 2, sin embargo, si lo es para el cluster 3, en el cual los hombres que nacieron en el mismo tienen una mayor probabilidad de migrar que las mujeres; la edad, por otro lado, tiene una relación positiva con la probabilidad de migrar para los tres clusters, lo que indica que la probabildiad de migrar aumenta conforme la persona es mayor, particularmente para el cluster 3 existe una relación cuadrática significativa, en donde cada año que pasa esta probabilidad crece a tasa decreciente,lo que genera que cada año que aumente la edad aportará cada vez menos en el aumento de  la probabilidad de ser migrante.
+
+La incidencia en la pobreza es un factor determinante significativo en la migración en los tres clusters, para los cluster 1 y 2 las personas pobres que nacieron en los mismos tienen una mayor probabilidad de abandonar sus provincias de origen, mientras que la incidencia en la pobreza para los oriundos del cluster 3 tiene un efecto totalmente inverso, reduciendo al probabilidad de abandonar su provincia natal.
+
+La recepción de susidios o ayudas por parte del gobierno, instituciones, iglesias, etc, tiene un impacto significativo en la probabilidad de migracion en los tres clusters, pero nuevamente se puede ver un patron diferenciado entre los cluster 1 y 2, en donde la recepción de un subsidio disminuye la probabibilidad de ser migrante, mientras que en el cluster 3 el efecto es contrario, en donde la recepción de esta transferencia económica aumenta la probabilidad de abandonar la provincia de origen.
+
+En cuanto a la condición de ocupación y la calificación del trabajo, los cluster 1 y 3 tienen efectos similares en cuanto a este factor determinante de la migración, en donde la probabilidad de migrar se reduce en presencia de un trabajo de baja calificación en relación a una persona que está desocupada o inactiva (en adelante grupo base), este efecto se intensifica y se generaliza en los tres clusters si la condición de ocupacioón de la persona es en un trabajo de alta calificación, en donde la probabildiad de migrar se reduce en comparación con el grupo base, lo cual indica que una persona con un trabajo de calificación alta tiene menos probabilidad de ser migrante de su provincia de origen para los tres clusters.
+
+otro factor relevante a la hora de analizar los factores de expulsión de los cluster es la organización familiar, en este caso, en el cluster 1 y 2 ser soltero con hijos disminuye la porbabilidad de abandonar la provincia de origen en comparación con una persona soltera sin hijos (en adelante grupo base), mientras que en el cluster 3 el efecto es inverso, donde ser soltero con hijos aumenta la probabildiad de migrar, en relación con el grupo base.
+La similitud entre el cluster 1 y 2 se vuelve a repetir si consideramos el auimento en la probabildiad de ser migrante en el caso de ser estar en pareja (casado o unido) SIN hijos, en comparación el grupo base, en donde la condición de estar en pareja reforzaría la decisión de migración, lo cual queda revertido en el caso de las personas que estan casadas pero con hijos, el cual para todos los cluster es un factor determinante negativo que reduce la probabilidad de migrar en relación al grupo base y es estadísticamente significativo.
+
+La propiedad de la vivienda es otro factor que tiene efectos diferenciados en la decisión de migración dependiendo del cluster que se esté analizando, para los cluster 1 y 2, el hecho de ser propietario/a de la vivienda reduce la probabilidad de ser un migrante con origen en estas provincias en relación con las personas que no son propietarias de las viviendas (en adelante grupo base), sin embargo, para el cluster 3 este efecto es inverso, el cual indica que la propiedad de la vivienda aumenta la probailidad de haber abandonado su provincia de origen en relación con el grupo base.
+
+Por último se analiza el efecto que tiene la educación en la expulsión de la provincia de origen, para el  cluster 1  una persona con nivel educativo medio (secundaria completa) tiene menor probabildiad de haber abandonado la provincia de origen en relación con una persona con un nivel educativo bajo (en adelante grupo base), sin embargo, para los cluster 2 y 3 esta probabildiad es inversa, en donde una persona con nivel educativo medio tiene una mayor probabilidad de ser migrante en relación al grupo base, misma relación se repite si se considera una persona con nivel educativo alto (educación superior o universitaria), en donde para el cluster 1 y 3 la probabildiad de ser migrante aumenta en comparación con el grupo base, generando una expulsión de personas con elevado nivel educativo, lo cual es inverso en el cluster 2, el cual la probabildiad de migrar se reduce en comparación con el grupo base si se posee un nivel educativo superior o universitario .
+
+## Factores determinantes de la atracción
+
+El deseo de migrar es distinto a la acción de migración, entre el deseo y el hecho existen multiples barreras y condicionantes que impiden su concreción, es por ello que el análisis de los factores que determinarán la atracción de las personas hacia los distintos clusters se realiza con respecto a la muestra en el período de relevancia de personas que efectivamente migraron. 
+
+La distinción se realiza en torno a los factores que determinan que un migrante elija como destino alguno de los clusters, se busca analizar si existen diferencias significativas en las características de un migrante dependiendo del cluster que elige como destino de migración.
+
+```{r include=FALSE}
+cluster1_atraccion<- left_join(ephtotal,cluster_destino)  
+cluster1_atraccion<- left_join(cluster1_atraccion,cluster_nombres_eph_ch15)
+cluster1_atraccion <- cluster1_atraccion %>% filter(CH15==3)
+cluster1_atraccion<- cluster1_atraccion %>% mutate(inmigrante=case_when(cluster_destino==1 ~1,
+                                                                        (cluster_destino==2 | cluster_destino==3)~0)) 
+cluster1_atraccion<- cluster1_atraccion %>% filter(!is.na(inmigrante))
+
+cluster1_atraccion %>% group_by(inmigrante) %>% count()
+
+cluster_atr1<- glm(inmigrante ~  hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto ,data = cluster1_atraccion,family = binomial(link="logit"))
+summary(cluster_atr1)
+```
+
+```{r include=FALSE}
+cluster2_atraccion<- left_join(ephtotal,cluster_destino)  
+cluster2_atraccion<- left_join(cluster2_atraccion,cluster_nombres_eph_ch15)
+cluster2_atraccion <- cluster2_atraccion %>% filter(CH15==3)
+cluster2_atraccion<- cluster2_atraccion %>% mutate(inmigrante=case_when(cluster_destino==2 ~1,
+                                                                        (cluster_destino==1 | cluster_destino==3)~0)) 
+cluster2_atraccion<- cluster2_atraccion %>% filter(!is.na(inmigrante))
+
+cluster2_atraccion %>% group_by(inmigrante) %>% count()
+
+cluster_atr2<- glm(inmigrante ~  hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto ,data = cluster2_atraccion,family = binomial(link="logit"))
+summary(cluster_atr2)
+```
+
+```{r include=FALSE}
+cluster3_atraccion<- left_join(ephtotal,cluster_destino)  
+cluster3_atraccion<- left_join(cluster3_atraccion,cluster_nombres_eph_ch15)
+cluster3_atraccion <- cluster3_atraccion %>% filter(CH15==3)
+cluster3_atraccion<- cluster3_atraccion %>% mutate(inmigrante=case_when(cluster_destino==3 ~1,
+                                                                        (cluster_destino==1 | cluster_destino==2)~0)) 
+cluster3_atraccion<- cluster3_atraccion %>% filter(!is.na(inmigrante))
+
+cluster3_atraccion %>% group_by(inmigrante) %>% count()
+
+cluster_atr3<- glm(inmigrante ~  hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto ,data = cluster3_atraccion,family = binomial(link="logit"))
+summary(cluster_atr3)
+```
+
+```{r include= FALSE}
+stargazer(cluster_atr1,cluster_atr2, cluster_atr3,font.size = "small")
+```
+\begin{table}[!htbp] \centering 
+  \caption{} 
+  \label{} 
+\small 
+\begin{tabular}{@{\extracolsep{5pt}}lccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ 
+\cline{2-4} 
+\\[-1.8ex] & \multicolumn{3}{c}{inmigrante} \\ 
+\\[-1.8ex] & (1) & (2) & (3)\\ 
+\hline \\[-1.8ex] 
+ Hombre & 0.057$^{***}$ & 0.051$^{***}$ & $-$0.078$^{***}$ \\ 
+  & (0.017) & (0.014) & (0.013) \\ 
+  & & & \\ 
+ Pobre & $-$0.403$^{***}$ & $-$0.069$^{***}$ & 0.301$^{***}$ \\ 
+  & (0.019) & (0.015) & (0.014) \\ 
+  & & & \\ 
+ Subsidio & $-$0.140$^{***}$ & 0.624$^{***}$ & $-$0.538$^{***}$ \\ 
+  & (0.029) & (0.022) & (0.023) \\ 
+  & & & \\ 
+ Ocupado/a baja calif. & $-$0.066$^{***}$ & $-$0.046$^{***}$ & 0.077$^{***}$ \\ 
+  & (0.021) & (0.017) & (0.016) \\ 
+  & & & \\ 
+ Ocupado/a alta calif. & 0.081$^{***}$ & 0.057$^{**}$ & $-$0.120$^{***}$ \\ 
+  & (0.028) & (0.023) & (0.023) \\ 
+  & & & \\ 
+ Soltero/a con Hijo/a & 0.171$^{***}$ & 0.248$^{***}$ & $-$0.333$^{***}$ \\ 
+  & (0.027) & (0.022) & (0.021) \\ 
+  & & & \\ 
+ Casado/a sin Hijo/a & 0.142$^{***}$ & $-$0.146$^{***}$ & 0.047$^{**}$ \\ 
+  & (0.028) & (0.023) & (0.021) \\ 
+  & & & \\ 
+ Casado/a con Hijo/a & 0.232$^{***}$ & 0.034$^{*}$ & $-$0.167$^{***}$ \\ 
+  & (0.025) & (0.020) & (0.019) \\ 
+  & & & \\ 
+ Propietario/a de Vivienda & $-$0.235$^{***}$ & 0.476$^{***}$ & $-$0.293$^{***}$ \\ 
+  & (0.018) & (0.015) & (0.014) \\ 
+  & & & \\ 
+ Edad & $-$0.001 & $-$0.020$^{***}$ & 0.021$^{***}$ \\ 
+  & (0.002) & (0.002) & (0.002) \\ 
+  & & & \\ 
+ Edad$^2$ & $-$0.0001$^{***}$ & 0.0001$^{***}$ & $-$0.0001$^{***}$ \\ 
+  & (0.00002) & (0.00002) & (0.00002) \\ 
+  & & & \\ 
+ Nivel Educativo Medio & 0.009 & 0.443$^{***}$ & $-$0.393$^{***}$ \\ 
+  & (0.019) & (0.016) & (0.015) \\ 
+  & & & \\ 
+ Nivel Educativo Alto & 0.071$^{***}$ & 0.709$^{***}$ & $-$0.683$^{***}$ \\ 
+  & (0.027) & (0.022) & (0.021) \\ 
+  & & & \\ 
+ Constante & $-$1.227$^{***}$ & $-$0.617$^{***}$ & $-$0.374$^{***}$ \\ 
+  & (0.046) & (0.037) & (0.037) \\ 
+  & & & \\ 
+\hline \\[-1.8ex] 
+Observaciones & 111,355 & 111,355 & 111,355 \\ 
+Log Likelihood & $-$50,810.460 & $-$68,966.010 & $-$73,498.910 \\ 
+Akaike Inf. Crit. & 101,648.900 & 137,960.000 & 147,025.800 \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Nota:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
+
+El sexo es un determinante significativo para los migrantes a la hora de elegir su lugar de destino, los migrantes hombres tienen una mayore probabilidad de seleccionar como lugar de destino a las provincias del cluster 1 y 2, lo cual es inverso para las provincias del cluster 3, el cual tiene una mayor probabilidad de selección si la migrante es mujer. La edad de los migrantes tiene un efecto muy diferenciado dependiendo del cluster que se esté considerando como destino, para los migrantes que eligen el cluster 1, la edad es un determinante negativo, el cual genera que cuanto mayor sea la edad del migrante, menor sea la probabilidad que elija el cluster 1 como destino, para el cluster 2 y 3 la relación con la edad de los migrantes es cuadrática, siendo que ante una mayor edad se reduce la probabilidad de elegir como destino de migración el cluster 2, pero cada año que se suma tiene un efecto negativo cada vez menor, efecto totalmente inverso tiene la edad en los que eligen como destino de migración el cluster 3, para los cuales la edad es un factor que afecta positivamente a la probabildiad de migrar hacia este cluster, pero cada año que se suma tiene un efecto positivo cada vez menor. 
+
+La incidencia en la pobreza es un factor socioeconómico que es relevante a la hora de que un migrante decida su cluster de destino, la probabildiad de que una persona pobre elija como destino los cluster 1 y 2, ceteris paribus, es mayor que la de una persona NO-pobre, sin embargo, esta relación se invierte si se considera como destino el cluster 3, en donde la probabildiad de que un migrante lo elija como destino es menor en el caso de una persona pobre.
+
+La recepción de susidios o ayudas por parte del gobierno, instituciones, iglesias, etc, tiene un impacto significativo en la probabilidad de elegir como destino alguno de los tres clusters, sin embargo el patron es distino dependiendo de cluster que se tome como destino, la recepción de un subsidio disminuye la probabibilidad de elegir como destino el cluster 1 y 3, mientras que en el cluster 2 el efecto es contrario, en donde la recepción de esta transferencia económica aumenta la probabilidad de elegir como destino este cluster.
+
+La situación y cualidad ocupacional es un factor determinante para la elección del cluster de destino para los migrantes, para los cluster 1 y 2 la dirección del efecto de este determninante es similar, la probabilidad de elegir como destino de migración alguno dee estos cluster se reduce en presencia de un trabajo de baja calificación en relación a una persona que está desocupada o inactiva (en adelante grupo base), y este efecto se invierte si la condición de ocupación de la persona es en un trabajo de alta calificación, en donde la probabildiad de elegir como destino de migración el cluster 1 y 2 aumenta en comparación con el grupo base, lo cual indica que un migrante con un trabajo de calificación alta tiene, ceteris paribus, mayor probabilidad en comparación con el grupo base de elegir como destino a provincias que pertenezcan al cluster 1 y 2. Para las provincias del cluster 3 encontramos una situación disimil, en donde la probabilidad de elegir como destino de migración este cluster aumenta en presencia de un trabajo de baja calificación en relación a una persona que está desocupada o inactiva (en adelante grupo base), y este efecto se invierte si la condición de ocupación de la persona es en un trabajo de alta calificación, lo que hace menos probable (ceteris paribus, en relación con el grupo base) que un migrante con un trabajo de calificación alta elija como provincia de destino a alguna de las pertenecientes al cluster 3.
+
+La organización familiar vuelve a jugar un papel relevante en la elección  de los migrantes en torno al cluster de destino, en este caso, ser soltero/a con hijos/as aumenta la probabilidad de que un migrante sea atraido como lugar de destino por los cluster 1 y 2 en comparación con una persona soltera sin hijos (en adelante grupo base), mientras que para el cluster 3 el efecto es inverso, donde ser soltero con hijos disminuye la probabilidad de elegir como destino este cluster, en relación con el grupo base.
+
+Los migrantes que estan en pareja (casado o unido) SIN hijos tienen una mayor probabilidad de elegir como destino de migración el cluster 1 y 3, en comparación el grupo base, situación inversa se configura si se considera como destino alguna de las provincias del cluster 2, en donde estar en pareja SIN hijos disminuye la probabildiad de elegir como destino este cluster en comparación con el grupo base.  En el caso de las personas que estan casadas  CON hijos, tienen mayor probabilidad de elegir como destino los cluster 1 y 2 en comparación con el grupo base, situación inversa se da en los migrantes casados CON hijos que que ven reducida su probabilidad de elegir como destino el cluster 3 en comparación con una persona soltera sin hijos.
+
+Un migrante que es propietario de su vivienda tiene menos probabilidad de elegir como provincia de destino a alguna de las que pertenecen al cluster 1 y 3, mientras que este efecto es contario para las provincias que pertenecen al cluster 2, en donde la probabilidad de ser un migrante que elije como cluster de destino este mismo aumenta en el caso de ser propietario de la vivienda.
+
+Para finalizar el análisis de los factores de atracción de los migrantes hacia los cluster de destino, se tiene en cuenta el efecto de la educación del migrante en la probabildiad de elegir alguno de los tres cluster, un migrante con nivel educativo medio (secundaria completa) tiene mayor probabilidad de haber elegido al cluster 2 como su cluster de destino en relación a un migrante con un nivel educativo bajo (en adelante grupo base), sin embargo, para el cluster 3 esta probabilidad es inversa, en donde un migrante con nivel educativo medio tiene una menor probabilidad de elegir como destino a alguna de las provincias que componen este cluster en relación al grupo base. Un migrante con un nivel educativo alto tiene mayor probabilidad de elegir como destino el cluster 1 u 2 en relación al grupo base, y esta  probabilidad se reduce si se considera como destino el cluster 3, en el cual un migrante con un nivel educativo alto tiene menor probabilidad de elegir como destino alguna de las provincias que componen el cluster 3 en relación al grupo base.
+
+
+
+

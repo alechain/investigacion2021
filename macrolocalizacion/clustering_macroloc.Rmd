@@ -172,7 +172,7 @@ Para esta aglomeración se utilizará el algoritmo de K-medias (*K-means*), y el
 
 \vspace{5mm}
 \begin {center}
-$WCSS=\sum_{i=1}^{N_{C}} \sum_{\textbf{x}\in Ci} distancia(\textbf{x},\bar {\textbf x} _{\textbf{Ci}})$ 
+$WCSS=\sum_{i=1}^{N_{C}} \sum_{\textbf{x}\in Ci} distancia(\textbf{x},\bar {\textbf {x}}_{\textbf{Ci}})$ 
 \end {center}
 \vspace{5mm}
 
@@ -196,7 +196,10 @@ datos_norm<- scale(datos3)
 ```
 
 ```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center',fig.cap="Numero óptimo de clusters"}
-factoextra::fviz_nbclust(datos_norm,kmeans, method="wss")+ geom_vline(xintercept = 3, colour="RED", linetype="dotted") + theme_classic() + labs(title="") + xlab("Número de clusters") + ylab("WSS")+ theme(text=element_text(family = "LM Roman 10"), title = element_text(face = "bold"))
+library(tikzDevice)
+#tikz(file = "regiones_optimas.tex", width = 6, height = 4)
+factoextra::fviz_nbclust(datos_norm,kmeans, method="wss")+ geom_vline(xintercept = 3, colour="RED", linetype="dotted") + theme_classic() + labs(title="") + xlab("Número de clusters") + ylab("WSS")+ theme(text=element_text(), title = element_text(face = "bold"),axis.text = element_text(color = "BLACK", size = 5) , axis.title = element_text(size = 5),panel.background = element_blank())
+#dev.off()
 ```
 
 Luego de realizar el cálculo del *WSS* se obtiene que el numero óptimo de regiones se encuentra en torno a **tres**, debido a que la contribución marginal de aumentar el numero de  clusters a cuatro, no aportaría una reducción muy elevada al **WSS**, y se seguiría perdiendo generalidad en la regionalización de las provincias sin una ganancia significativa de similitud dentro de las regiones.
@@ -250,13 +253,41 @@ names(km_clusters[1])
 ```
 
 ```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center',fig.cap="regiones resultantes de la macrolocalización"}
+#tikz(file = "regiones_resultantes.tex", sanitize = TRUE,width = 4,height = 4)
 fviz_cluster(km_clusters, data = datos4,
 palette = c("RED", "BLUE","GREEN"),
 ellipse.type = "euclid", # Concentration ellipse
 star.plot = TRUE, # Add segments from centroids to items
 repel = TRUE, # Avoid label overplotting (slow)
- labelsize = 6,) + theme_classic(base_family ="LM Roman 10" ) + labs(title="") + theme(text=element_text(family = "LM Roman 10"), title = element_text(face = "bold"))
+ labelsize = 6,) + theme_classic(base_family ="LM Roman 10") + labs(title="") + theme(text=element_text(family = "LM Roman 10", size = 8), title = element_text(face = "bold"), axis.title = element_text(size = 7))
+#dev.off()
 ```
+```{r}
+#tikz(file = "regiones_resultantes.tex", sanitize = TRUE,width = 6,height = 4)
+fviz_cluster(km_clusters, data = datos4,
+palette = c("RED", "BLUE","GREEN"),
+ellipse.type = "euclid", # Concentration ellipse
+star.plot = TRUE, # Add segments from centroids to items
+repel = TRUE, # Avoid label overplotting (slow)
+ labelsize = 6) + labs(title="") + theme(text=element_text(),  title = element_text(face = "bold"),axis.text = element_text(color = "BLACK", size = 5) , axis.title = element_text(size = 5),panel.background = element_blank(), axis.line.x.bottom = element_line(color = "BLACK"), axis.line.y.left = element_line(color="BLACK"))
+#dev.off()
+```
+ 
+
+ title = element_text(face = "bold"),axis.text = element_text(color = "BLACK", size = 5) , axis.title = element_text(size = 5),panel.background = element_blank()
+
+```{r}
+#tikz(file = "regiones_resultantes.tex", sanitize = TRUE,width = 5,height = 4)
+fviz_cluster(km_clusters, data = datos4,
+palette = c("RED", "BLUE","GREEN"),
+ellipse.type = "euclid", # Concentration ellipse
+star.plot = TRUE, # Add segments from centroids to items
+repel = TRUE, # Avoid label overplotting (slow)
+ labelsize = 5) +   labs(title="") +theme_bw() + theme(title =element_text(size=5),plot.background = element_blank(), panel.grid = element_blank(),panel.border = element_blank(), axis.line.x.bottom = element_line(color = "black"), axis.line.y = element_line(color = "black"))
+#dev.off()
+
+```
+
 
 Una vez ejecutado el algoritmo, se obtiene la division de las provincias de Argentina en tres regiones bien definidas, las cuales comparten similitudes en los parámetros definidos en la macrolozalización.
 
@@ -331,15 +362,21 @@ cuadro_9<- cuadro_8 %>% mutate(tasa_inmigracion=formattable::percent(tasa_inmigr
 datos_mapa_prov<- inner_join(datos_mapa_prov, cuadro_9)
 ```
 ```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center', fig.cap="Macrolocalización de regiones por provincia"}
-mapa_cluster<- ggplot(data = datos_mapa_prov) + geom_sf(aes(fill=cluster),color="BLACK", size=0.2 ) + labs(fill="Regiones:") + scale_fill_manual(values=color)+ theme(text=element_text(family="LM Roman 10"), panel.background = element_blank() , axis.text = element_blank(), axis.ticks = element_blank())
+#extrafont::font_import(paths = "/home/alejandrochain/Documentos/GitHub/investigacion2021/macrolocalizacion/fuentes")
+#extrafont::loadfonts(device = "pdf",quiet = T)
+#pdf(file = "mapa_regiones.pdf", width = 4,height = 4)
+mapa_cluster<- ggplot(data = datos_mapa_prov) + geom_sf(aes(fill=cluster),color="BLACK", size=0.2 ) + labs(fill="Región:") + scale_fill_manual(values=color)+ theme(text=element_text(family="LM Roman 10"), panel.background = element_blank() , axis.text = element_blank(), axis.ticks = element_blank())
 mapa_cluster
+#dev.off()
 ```
 
 Para completar el análisis, se presenta un resumen de los macrofactores que representan en promedio a cada región, es decir, cuales son las características compartidas entre las provincias que provocaron que sean parte de un mismo aglomerado.
 
 
 ```{r echo=FALSE, warning=FALSE, error=FALSE}
-kableExtra::kable(resumen2, caption = "Resumen de indicadores por regiones",format='markdown')
+kableExtra::kable(resumen2, caption = "Resumen de indicadores por regiones", format = 'markdown')
+
+stargazer(resumen2,summary = FALSE)
 ```
 La **región 1** se caracteriza en terminos sociales por una tasa de promoción secundaria relativamente baja, en comparación con las otras regiones, una leve mortalidad infantil, una alta tasa de robos agravados, homocidios dolosos y violaciones cada 100.000 habitantes y un nivel moderado de robos no agravados y muertes en accidentes viales cada 100.000 habitantes.
 En cuanto a términos económicos, esta región se caracteriza por tener la mejor integración a los mercados internacionales con la mayor cantidad de exportaciones per-cápita. 
@@ -359,12 +396,15 @@ Dentro de las regiones existen provincias de las cuales salen gran cantidad de i
 ```{r}
 cuadro_2<-ephinmi %>% group_by("Región"=cluster_origen) %>% summarise("Porcentaje"=formattable::percent((sum(PONDERA)/sum(ephinmi$PONDERA))))
 kableExtra::kable(cuadro_2,format = "markdown",caption = "Regiones de origen de los migrantes")
+#stargazer(cuadro_2,title = "Regiones de origen de los migrantes",summary = FALSE,label = "cuadro:origen_mig")
 ```
 Se puede notar que las provincias de la  **Región Nº2** son las que mayor nivel de expulsión poseen, seguidas por las provincias pertenecientes a la Región Nº3, y por úlitmo se encuentran las pertenecientes a la Región Nº1.
 
 ```{r echo = FALSE, warning=FALSE, error=FALSE}
 cuadro_3<-ephinmi %>% group_by("Región"=cluster_destino) %>% summarise("Porcentaje"=formattable::percent((sum(PONDERA)/sum(ephinmi$PONDERA))))
 kableExtra::kable(cuadro_3,format = "markdown",caption = "Regiones de destino de los migrantes")
+#stargazer(cuadro_3,title = "Regiones de destino de los migrantes",summary = FALSE,label = "cuadro:destino_mig")
+
 ```
 Sin embargo, analizando cuales son las regiones de destino  con mayor porcentaje  de migrantes, encontramos que la **Región Nº 3** es la que mayor nivel de *atracción* posee por elevada diferencia (`r cuadro_3 %>% filter("Región"==3) %>% pull()`), seguida por la Región Nº2 y en último lugar la Región Nº1.
 
@@ -381,24 +421,33 @@ En el siguiente gráfico se puede observar la relación entre la tasa de emigrac
 ```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center', fig.cap="Tasa de inmigración y emigración por provincia"}
 cuadro_8 %>% ggplot(mapping=aes(x=tasa_inmigracion,y = tasa_emigracion, label=Provincia, color=cluster)) + geom_point(show.legend = T) + geom_abline(intercept=-0,slope = 1)+ scale_color_manual(values = color)+ scale_y_continuous(labels = scales::percent_format(),limits = c(0,0.75))+scale_x_continuous(labels = scales::percent_format(),limits = c(0,0.75)) + xlab("Tasa de inmigración") + ylab("Tasa de emigración")+ labs(title = "", color="Región:")+ ggrepel::geom_text_repel(size=3,family = "LM Roman 10",show.legend = F)+theme(text=element_text(family = "LM Roman 10"),axis.line = element_line(color="BLACK") ,axis.text = element_text(size=7, color = "BLACK") , panel.background = element_blank(),  axis.title = element_text(size=7), title = element_text(face = "bold"), legend.key = element_blank())
 ```
+
+```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center', fig.cap="Tasa de inmigración y emigración por provincia"}
+#tikz(file = "tasas_emig_inmig_prov.tex", sanitize = TRUE,width = 6,height = 4)
+
+cuadro_8 %>% ggplot(mapping=aes(x=tasa_inmigracion,y = tasa_emigracion, label=Provincia, color=cluster)) + geom_point(show.legend = T) + geom_abline(intercept=-0,slope = 1)+ scale_color_manual(values = color)+ scale_y_continuous(labels = scales::percent_format(),limits = c(0,0.75))+scale_x_continuous(labels = scales::percent_format(),limits = c(0,0.75)) + xlab("Tasa de inmigración") + ylab("Tasa de emigración")+ labs(title = "", color="Región:")+ ggrepel::geom_text_repel(size=2,show.legend = F)+theme(axis.line = element_line(color="BLACK") ,axis.text = element_text(color = "BLACK", size = 5) , axis.title = element_text(size = 5),panel.background = element_blank(), title = element_text(face = "bold"), legend.key = element_blank())
+#dev.off()
+```
+
+
 La bisectriz divide el plano en dos zonas, todas las provincias que se encuentran por encima de ella son aquellas en la que la tasa de emigración es superior a la tasa de inmigración, mientras que las que se encuentran por debajo, son quellas en la que existe una mayor tasa de inmigración que de emigración. 
 
 Las provincias pertenecientes a la Región Nº2 se ubican en casi su totalidad por encima de la bisectriz, indicando que son provincias en donde la expulsión de migrantes es mucho mayor que la atracción de los mismos, por otro lado, las provincias de la Región Nº 1 tienen una mayor tendencia a ubicarse por debajo de la linea diagonal, en donde la atracción de migrantes es mayor que la expulsión en casi la totalidad de las provincias, con excepción de Tucumán, y por último, en la Región Nº3 se pueden encontrar tres provincias que se encuentran por debajo de la diagonal, en donde la atracción de migrantes es mayor que su nivel de expulsión (Buenos Aires, Ciudad Autónoma de Buenos Aires y Tierra del Fuego) y otras tres que se encuentran con tasa de inmigración y emigración muy similares, con diferencias muy leves a favor de la tasa de emigración.
 
 ```{r fig.align='center' ,  fig.cap="Tasas de emigración e inmigración por provincia"}
+#pdf(file = "emig_inmig_por_prov.pdf",height = 4, width = 6)
 mapa_inmigracion<-ggplot(data = datos_mapa_prov) + geom_sf(aes(fill=tasa_inmigracion),color="BLACK", size=0.2 ) + viridis::scale_fill_viridis(label=scales::percent) + labs(fill="Tasa de inmigración:") + theme(text=element_text(family="LM Roman 10"), panel.background = element_blank() , axis.text = element_blank(), axis.ticks = element_blank()) 
 mapa_emigracion<- ggplot(data = datos_mapa_prov) + geom_sf(aes(fill=tasa_emigracion),color="BLACK", size=0.2 ) + viridis::scale_fill_viridis(label=scales::percent) + labs(fill="Tasa de emigración:") + theme(text=element_text(family="LM Roman 10"), panel.background = element_blank() , axis.text = element_blank(), axis.ticks = element_blank()) 
 gridExtra::grid.arrange(mapa_emigracion,mapa_inmigracion, ncol=2)
+#dev.off()
 ```
 En el Mapa Nº2 se observa la diferencia en la distribución de las provincias con mayor tasaa de migración e inmigración, las provincias de Chaco, Corrientes y Rio Negro son las que mayores tasa de emigración poseen, mientras que en el Sur de la Argentina se encuentran las provincias en donde la tasa de inmigración es mas elevada, con provincias como Tierra del Fuego, Santa Cruz y Neuquén.
 
 # Microfactores
 
-## Factores determinantes de la expulsión
 
-En primer lugar se analizará si existen microdeterminantes dentro de las características de los migrantes que porovoquen que ciertas personas con tengan una mayor propensión a migrar desde ciertas localizaciones, es decir, se analizaran los factores de expulsión de los distintos cluster; por otro lado, se realizará un análisis diferenciando el destino de los distintos migrantes, con el fin de establecer los determinantes de atracción de las distintas localizaciones.
+## Caracterización de los migrantes
 
-En el universo de habitantes de una determinada región/cluster, pueden existir caracteristicas determinadas que diferencien de manera significativa entre las personas que nacieron  y decidieron quedarse en la misma región, de las que si bien nacieron en la misma región, optaron por migrar hacia otra. A continuación se realizará un análisis diferenciando por cluster  de características socioeconómicas de los migrantes y no migrantes  que nacieron en un mismo cluster, con el fin de determinar si existen diferencias significativas entre ellos.
 
 ```{r include=FALSE}
 #Creación de regresores (feature engineerirng)
@@ -454,6 +503,113 @@ ephtotal<- ephtotal %>% mutate(hombre=case_when(Sexo=="Hombres"~1,
                                                                        TRUE ~ 0)
                                                    )
 ```
+creación migrante
+```{r}
+eph_carac<- ephtotal %>% mutate(migrante=case_when(CH15==3 ~ 1, 
+                                                   TRUE ~ 0),
+                                nativo=case_when(CH15 %in% c(1,2) ~ 1,
+                                                 TRUE ~ 0))
+eph_carac<- left_join(eph_carac,cluster_destino)
+```
+## Sexo y edad de los nativos
+El sexo y la edad de las personas son considerados dentro de los microfactores que pueden afectar considerablemente a la decisión migratoria, es por ello que se analizan estas características dentro de la población de cada región, diferenciando entre los que son nativos de la provincia en la que habitan de los que son migrantes.
+
+```{r}
+sexo_edad<- eph_carac %>% mutate(condicion_mig=case_when(migrante==1 ~ "Migrantes",
+                                                         nativo==1 ~ "Nativos")) 
+
+ pre<-sexo_edad %>% group_by(cluster_destino,  condicion_mig) %>% summarise(total=sum(PONDERA)) 
+
+ post<-sexo_edad %>% group_by(cluster_destino,  condicion_mig, Sexo) %>% summarise(Cantidad=sum(PONDERA)) 
+sexo_edad<- left_join(post,pre) 
+sexo_edad$Porcentaje=formattable::percent((sexo_edad$Cantidad/sexo_edad$total),2)
+sexo_edad$cluster_destino=paste0("\\textbf{Región",sexo_edad$cluster_destino,"}")
+
+#tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex/graficos/sexo_mig.tex",width = 6, height = 4,sanitize = TRUE)
+sexo_edad %>% filter(!is.na(condicion_mig)) %>% ggplot(mapping=aes(x = condicion_mig, y =Porcentaje, fill=Sexo, label=Porcentaje)) + geom_col(position = position_fill(),width = 0.6) + facet_grid(rows = vars(cluster_destino)) + xlab("") + ylab("")+scale_y_continuous(labels = scales::percent_format())+ labs(fill="") + scale_fill_manual(values = color) + geom_text(position = position_fill(vjust = 0.4), size=3) + theme(axis.text = element_text(color = "BLACK"), strip.background = element_blank(), panel.background = element_blank())+ coord_flip()
+#dev.off()
+```
+
+```{r}
+sexo_edad<- eph_carac %>% mutate(condicion_mig=case_when(migrante==1 ~ "Migrantes",
+                                                         nativo==1 ~ "Nativos")) 
+
+
+sexo_edad$cluster_destino=paste0("\\textbf{Región",sexo_edad$cluster_destino,"}")
+#tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex/graficos/edad_mig.tex",width = 6, height = 4,sanitize = TRUE)
+sexo_edad %>% filter(!is.na(condicion_mig)) %>% ggplot(mapping = aes(x=edad, group=condicion_mig, fill=condicion_mig)) + geom_density(alpha=0.5) + scale_fill_manual(values=color)+ xlab("Edad")+ ylab("Densidad")+ labs(fill="") +scale_y_continuous(labels = scales::percent_format())+facet_grid(.~cluster_destino)+ theme(axis.text = element_text(color = "BLACK"), strip.background = element_blank(), panel.background = element_blank(), axis.line.x.bottom = element_line(color="BLACK"),axis.line.y.left = element_line(color="BLACK"))
+#dev.off()
+
+
+
+
+sexo_edad
+sexo_edad<-sexo_edad %>% filter(!is.na(condicion_mig)) %>% group_by("Región"=cluster_destino,"Condición"=condicion_mig, "Género"=Sexo) %>% summarise("Mediana de Edad"=median(edad))
+sexo_edad$Región<- str_replace(sexo_edad$Región,pattern = "textbf",replacement = "")
+sexo_edad$Región<- str_replace_all(sexo_edad$Región,pattern = "[[:punct:]]",replacement = "")
+
+xtable(sexo_edad,caption = "Edad y género de los migrantes",label = "cuadro:edad_mig" ,align = c("c","c","c","c","c"))
+stargazer(sexo_edad,title = "Edad y género de los migrantes",summary = FALSE,label = "cuadro:edad_mig")
+
+```
+
+
+
+## Pobrezsa y patrimonio
+
+### Pobreza
+```{r}
+pobreza<- eph_carac %>% mutate(condicion_mig=case_when(migrante==1 ~ "Migrantes",
+                                                         nativo==1 ~ "Nativos")) 
+
+ pre<-pobreza %>% group_by(cluster_destino,  condicion_mig) %>% summarise(total=sum(PONDERA)) 
+
+ post<-pobreza %>% group_by(cluster_destino,  condicion_mig, POBRE) %>% summarise(Cantidad=sum(PONDERA)) 
+pobreza<- left_join(post,pre) 
+pobreza$Porcentaje=formattable::percent((pobreza$Cantidad/pobreza$total),2)
+pobreza$cluster_destino=paste0("\\textbf{Región",pobreza$cluster_destino,"}")
+pobreza <- pobreza %>% mutate(POBRE=case_when(POBRE==1~ "Pobre",
+                                              POBRE==0~ "No pobre"))
+#tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex/graficos/pobre_mig.tex",width = 6, height = 4,sanitize = TRUE)
+pobreza %>% filter(!is.na(condicion_mig)) %>% ggplot(mapping=aes(x = condicion_mig, y =Porcentaje, fill=POBRE, label=Porcentaje)) + geom_col(position = position_fill(),width = 0.8) + facet_grid(cols = vars(cluster_destino)) + xlab("") + ylab("")+scale_y_continuous(labels = scales::percent_format())+ labs(fill="") + scale_fill_manual(values = color) + geom_text(position = position_fill(vjust = 0.4), size=3) + theme(axis.text = element_text(color = "BLACK"), strip.background = element_blank(), panel.background = element_blank())
+#dev.off()
+```
+### Patrimonio
+
+```{r}
+patrimonio<- eph_carac %>% mutate(condicion_mig=case_when(migrante==1 ~ "Migrantes",
+                                                         nativo==1 ~ "Nativos")) 
+
+ pre<-patrimonio %>% group_by(cluster_destino,  condicion_mig) %>% summarise(total=sum(PONDERA)) 
+
+ post<-patrimonio %>% group_by(cluster_destino,  condicion_mig, PROPIETARIO) %>% summarise(Cantidad=sum(PONDERA)) 
+patrimonio<- left_join(post,pre) 
+patrimonio$Porcentaje=formattable::percent((patrimonio$Cantidad/patrimonio$total),2)
+patrimonio$cluster_destino=paste0("\\textbf{Región",patrimonio$cluster_destino,"}")
+patrimonio <- patrimonio %>% mutate(PROPIETARIO=case_when(PROPIETARIO==1~ "Propietario",
+                                              PROPIETARIO==0~ "No propietario"))
+
+patrimonio<- patrimonio %>% group_by(cluster_destino, condicion_mig) %>% mutate(ymax=as.numeric(cumsum(Porcentaje)))
+patrimonio<- patrimonio %>% group_by(cluster_destino, condicion_mig) %>% mutate(ymin=c(0, head(ymax, n=-1)))
+patrimonio<- patrimonio %>% group_by(cluster_destino, condicion_mig) %>% mutate(labelpos=(ymax+ymin)/2)
+
+tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex/graficos/vivienda_mig.tex",width = 6, height = 4,sanitize = TRUE)
+patrimonio %>% filter(!is.na(condicion_mig)) %>% ggplot(mapping=aes(ymax=ymax, ymin=ymin, xmax=4, xmin=0, fill=PROPIETARIO)) + scale_fill_manual(values = color)+
+  geom_rect() +
+  geom_text( x=2, aes(y=labelpos, label=Porcentaje), size=2.5)  +
+  coord_polar(theta="y") +
+  xlim(c(0, 4)) + facet_grid(cols = vars(condicion_mig),rows = vars(cluster_destino)) +
+  theme_void() +  labs(fill="") + theme( strip.background = element_blank(), panel.background = element_blank(), legend.position = "left")
+dev.off()
+```
+
+
+## Factores determinantes de la expulsión
+
+En primer lugar se analizará si existen microdeterminantes dentro de las características de los migrantes que porovoquen que ciertas personas con tengan una mayor propensión a migrar desde ciertas localizaciones, es decir, se analizaran los factores de expulsión de los distintos cluster; por otro lado, se realizará un análisis diferenciando el destino de los distintos migrantes, con el fin de establecer los determinantes de atracción de las distintas localizaciones.
+
+En el universo de habitantes de una determinada región/cluster, pueden existir caracteristicas determinadas que diferencien de manera significativa entre las personas que nacieron  y decidieron quedarse en la misma región, de las que si bien nacieron en la misma región, optaron por migrar hacia otra. A continuación se realizará un análisis diferenciando por cluster  de características socioeconómicas de los migrantes y no migrantes  que nacieron en un mismo cluster, con el fin de determinar si existen diferencias significativas entre ellos.
+
 
 ```{r include = FALSE}
 cluster1_expulsion<- left_join(ephtotal,cluster_destino)  
@@ -562,7 +718,7 @@ Akaike Inf. Crit. & 18,821.710 & 91,184.090 & 70,279.290 \\
 \end{tabular} 
 \end{table} 
 
-Los factores determinantes de expulsión de los migrantes varían dependiendo del cluster que se esté tomando a consideración, el sexo no es un factor determinante de expulsión para los cluster 1 y 2, sin embargo, si lo es para el cluster 3, en el cual los hombres que nacieron en el mismo tienen una mayor probabilidad de migrar que las mujeres; la edad, por otro lado, tiene una relación positiva con la probabilidad de migrar para los tres clusters, lo que indica que la probabildiad de migrar aumenta conforme la persona es mayor, particularmente para el cluster 3 existe una relación cuadrática significativa, en donde cada año que pasa esta probabilidad crece a tasa decreciente,lo que genera que cada año que aumente la edad aportará cada vez menos en el aumento de  la probabilidad de ser migrante.
+Los factores determinantes de expulsión de los migrantes varían dependiendo de la región que se esté tomando a consideración, el sexo no es un factor determinante de expulsión para los cluster 1 y 2, sin embargo, si lo es para el cluster 3, en el cual los hombres que nacieron en el mismo tienen una mayor probabilidad de migrar que las mujeres; la edad, por otro lado, tiene una relación positiva con la probabilidad de migrar para los tres clusters, lo que indica que la probabildiad de migrar aumenta conforme la persona es mayor, particularmente para el cluster 3 existe una relación cuadrática significativa, en donde cada año que pasa esta probabilidad crece a tasa decreciente,lo que genera que cada año que aumente la edad aportará cada vez menos en el aumento de  la probabilidad de ser migrante.
 
 La incidencia en la pobreza es un factor determinante significativo en la migración en los tres clusters, para los cluster 1 y 2 las personas pobres que nacieron en los mismos tienen una mayor probabilidad de abandonar sus provincias de origen, mientras que la incidencia en la pobreza para los oriundos del cluster 3 tiene un efecto totalmente inverso, reduciendo al probabilidad de abandonar su provincia natal.
 
