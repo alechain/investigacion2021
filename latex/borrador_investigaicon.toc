@@ -1,11 +1,13 @@
 \babel@toc {spanish}{}
-\contentsline {section}{\numberline {1}Introducción}{2}%
-\contentsline {section}{\numberline {2}Regiones}{2}%
-\contentsline {subsection}{\numberline {2.1}Macrofactores}{3}%
-\contentsline {subsection}{\numberline {2.2}Nivel de subdivisión}{5}%
-\contentsline {subsection}{\numberline {2.3}Aglomeración de provincias}{6}%
-\contentsline {subsection}{\numberline {2.4}Flujos migatrorios}{9}%
-\contentsline {section}{\numberline {3}Migrantes}{12}%
-\contentsline {subsection}{\numberline {3.1}Género y edad}{12}%
-\contentsline {subsection}{\numberline {3.2}Pobreza y patrimonio}{15}%
-\contentsline {subsection}{\numberline {3.3}Factores determinantes de la expulsión}{16}%
+\contentsline {section}{\numberline {1}Introducción}{3}%
+\contentsline {section}{\numberline {2}Regiones}{3}%
+\contentsline {subsection}{\numberline {2.1}Macrofactores}{4}%
+\contentsline {subsection}{\numberline {2.2}Nivel de subdivisión}{6}%
+\contentsline {subsection}{\numberline {2.3}Aglomeración de provincias}{7}%
+\contentsline {subsection}{\numberline {2.4}Flujos migatrorios}{10}%
+\contentsline {section}{\numberline {3}Migrantes}{13}%
+\contentsline {subsection}{\numberline {3.1}Género y edad}{13}%
+\contentsline {subsection}{\numberline {3.2}Pobreza y patrimonio}{16}%
+\contentsline {subsection}{\numberline {3.3}Ocupación y calificación}{18}%
+\contentsline {subsection}{\numberline {3.4}Estado civil y situación familiar}{19}%
+\contentsline {subsection}{\numberline {3.5}Factores determinantes de la expulsión}{20}%

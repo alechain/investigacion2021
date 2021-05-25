@@ -6,7 +6,6 @@
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage{tikz}
 \renewcommand{\baselinestretch}{1.2}
-
 \usepackage{caption}
 \newcommand{\source}[1]{\caption*{\scriptsize{Fuente: {#1}}} }
 
@@ -16,6 +15,7 @@
 \title{Borrador determinantes de migraciones interregionales en Argentina}
 \begin{document}
 \maketitle
+\newpage
 \tableofcontents
 \newpage
 \section{Introducción}
@@ -222,6 +222,7 @@ Esta relación entre regiones con mayor atracción y expulsión de migrantes tam
 \label{figure:emig_inmig_prov}
 \end{center}
 \end{figure}
+
 En la Figura \ref{figure:emig_inmig_prov} se puede observar la relación entre la tasa de emigración e inmigración de las provincias, diferenciando por la región a la cual pertenecen.
 
 La bisectriz divide el plano en dos zonas, todas las provincias que se encuentran por encima de ella son aquellas en la que la tasa de emigración es superior a la tasa de inmigración, mientras que las que se encuentran por debajo, son quellas en la que existe una mayor tasa de inmigración que de emigración. 
@@ -336,8 +337,81 @@ Fuente: Elaboración propia en base a EPH
 \end{scriptsize}
 \end{flushleft}
 \end{figure}
+\newpage
 
 
+En un estudio que se realizo para los paises de la \textit{``OCDE''}, se llegó a la conclusión de que en aquellos en donde la cuota de migrantes de edad avanzada no es tan elevada, los migrantes contribuyen en mayor medida en impuestos y contribuciones sociales de lo que reciben en forma de beneficios individuales por parte del Estado en comparación con los nativos (Liebig, Mo, 2013). 
+
+Este patrón puede ser analizado a nivel de migraciones interprovinciales considerando la recepción de ingresos no laborales (subsidios) de los migrantes y nativos para cada región. Es menester aclarar que solamente se está observando una dimensión del fenómeno, que es la asimetria en la recepción de beneficios individuales en forma de transferencias, es decir, que no se observa la recepción de otro tipo de beneficios individuales otorgado por el estado, como tampoco se puede observar el nivel de constribución a las arcas publicas de los distintos segmentos, con lo que se podría armar un panorama completo sobre la posicion fiscal neta de los migrantes y nativos.
+
+Se puede observar en la Figura \ref{figure:subsidio_mig} que para las tres regiones, es más probable que un nativo reciba algun tipo de subsidio que un migrante, siendo estos los que menor participación en la percepción de subsidios poseen en promedio.
+
+\begin{figure}[ht!]
+\begin{center}
+\caption{\\Percepción de subsidios de los nativos y migrantes}
+\label{figure:subsidio_mig}
+\input{./graficos/subsidio_mig.tex} 
+\end{center}
+\begin{flushleft}
+\begin{scriptsize}
+Fuente: Elaboración propia en base a EPH
+\end{scriptsize}
+\end{flushleft}
+\end{figure}
+
+\subsection{Ocupación y calificación}
+En el cuadro \ref{cuadro:tasaactiv_mig} se pude ver como los migrantes tienen una tasa de actividad superior a la de los nativos para todas las reigones, esto indica que los migrantes forman parte de la fuerza de trabajo en una en una mayor proporción que los nativos.
+\begin{table}[ht]
+\centering
+\caption{\\Tasa de actividad de nativos y migrantes} 
+\begin{tabular}{ccc}
+  \hline
+ Región & Migrantes & Nativos \\ 
+  \hline
+   1 & 54.29\% & 42.04\% \\ 
+   2 & 53.01\% & 41.78\% \\ 
+   3 & 51.34\% & 46.39\% \\ 
+   \hline
+\end{tabular}
+\label{cuadro:tasaactiv_mig}
+\end{table}
+
+Tomando como referencia a la población ocupada, dentro de la población activa considerada anteriormente, se puede observar en la Figura \ref{figure:calif_mig} la calificación de los empleados en cada región dependiendo si son nativos o migrantes, para la región 1 y 2 los migrantes ocupan puestos de mayor calificación que los nativos, esta relación se invierte para la región 3, en la cual no solo los nativos poseen trabajos más calificados en comparación con las otras dos regiones, sino tambien que los migrantes ocupan puestos de calificación mas baja en términos relativos.
+
+\begin{figure}[ht!]
+\begin{center}
+\caption{\\Calificación de la ocupación los nativos y migrantes}
+\label{figure:calif_mig}
+\input{./graficos/calif_mig.tex} 
+\end{center}
+\begin{flushleft}
+\begin{scriptsize}
+Fuente: Elaboración propia en base a EPH.
+\end{scriptsize}
+\end{flushleft}
+\end{figure}
+
+\subsection{Estado civil y situación familiar}
+
+La situación familiar y relacional de las personas afecta directamente las ganancias y los costos de migrar, en especial considerando que la teoría indica que las ganancias provenientes de la migración se incrementan en menor proporción que los costos cuando existe una familia vinculada a la decisión del éxodo (Mincer 1977), por esta razón es necesario caracterizar el estado civil y la situación familiar de los nativos y los migrantes en las distintas regiones con el fin de reconocer si existen heterogeneidades en los distintos grupos.
+
+En la Figura \ref{figure:estadociv_mig} se puede observar como los porcentajes de personas solteras sin hijos son mayores para los migrantes que para los nativos en las tres regiones, sin embargo, yendo al otro extremo de las personas que estan casadas y con hijos, no se encuentra una diferencia tan demarcada entre nativos y migrantes como podría indicar la teoría.
+
+En el caso de las personas que se encuentran en pareja sin hijos  existe una diferencia entre los migrantes y los nativos, siendo más frecuente encontrar a migrantes en esta situación, sin embargo, para el caso de las personas que están solteras pero tienen un hijo a cargo, es más frecuente que se configure en nativos que en migrantes para las tres regiones del país.
+
+\begin{figure}[ht!]
+\begin{center}
+\caption{\\Estado civil y situación familiar de los nativos y migrantes}
+\label{figure:estadociv_mig}
+\input{./graficos/estadociv_mig.tex} 
+\end{center}
+\begin{flushleft}
+\begin{scriptsize}
+Fuente: Elaboración propia en base a EPH\\
+Nota: Nativos y migrantes mayores a 18 años.
+\end{scriptsize}
+\end{flushleft}
+\end{figure}
 
 
 \subsection{Factores determinantes de la expulsión}
