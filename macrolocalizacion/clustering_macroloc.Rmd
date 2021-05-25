@@ -27,7 +27,7 @@ library(sf)
 library(tmap)
 library(tmaptools)
 
-color<- c('#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628','#f781bf')
+color<- c('#e41a1c','#377eb8','#4daf4a','#a6cee3','#4575b4','#f781bf','#a65628','#ffff33','#984ea3','#ff7f00','#f781bf')
 ```
 
 ```{r include=FALSE}
@@ -593,14 +593,160 @@ patrimonio<- patrimonio %>% group_by(cluster_destino, condicion_mig) %>% mutate(
 patrimonio<- patrimonio %>% group_by(cluster_destino, condicion_mig) %>% mutate(ymin=c(0, head(ymax, n=-1)))
 patrimonio<- patrimonio %>% group_by(cluster_destino, condicion_mig) %>% mutate(labelpos=(ymax+ymin)/2)
 
-tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex/graficos/vivienda_mig.tex",width = 6, height = 4,sanitize = TRUE)
+#tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex/graficos/vivienda_mig.tex",width = 6, height = 4,sanitize = TRUE)
 patrimonio %>% filter(!is.na(condicion_mig)) %>% ggplot(mapping=aes(ymax=ymax, ymin=ymin, xmax=4, xmin=0, fill=PROPIETARIO)) + scale_fill_manual(values = color)+
   geom_rect() +
   geom_text( x=2, aes(y=labelpos, label=Porcentaje), size=2.5)  +
   coord_polar(theta="y") +
   xlim(c(0, 4)) + facet_grid(cols = vars(condicion_mig),rows = vars(cluster_destino)) +
   theme_void() +  labs(fill="") + theme( strip.background = element_blank(), panel.background = element_blank(), legend.position = "left")
-dev.off()
+#dev.off()
+```
+### Subsidios 
+```{r}
+subsidios<- eph_carac %>% mutate(condicion_mig=case_when(migrante==1 ~ "Migrantes",
+                                                         nativo==1 ~ "Nativos")) 
+
+ pre<-subsidios %>% group_by(cluster_destino,  condicion_mig) %>% summarise(total=sum(PONDERA)) 
+
+ post<-subsidios %>% group_by(cluster_destino,  condicion_mig, SUBSIDIO) %>% summarise(Cantidad=sum(PONDERA)) 
+subsidios<- left_join(post,pre) 
+subsidios$Porcentaje=formattable::percent((subsidios$Cantidad/subsidios$total),2)
+subsidios$cluster_destino=paste0("\\textbf{Región",subsidios$cluster_destino,"}")
+subsidios <- subsidios %>% mutate(SUBSIDIO=case_when(SUBSIDIO==1~ "Recibe\nsubsidio",
+                                              SUBSIDIO==0~ "No recibe\nsubsidio"))
+
+subsidios<- subsidios %>% group_by(cluster_destino, condicion_mig) %>% mutate(ymax=as.numeric(cumsum(Porcentaje)))
+subsidios<- subsidios %>% group_by(cluster_destino, condicion_mig) %>% mutate(ymin=c(0, head(ymax, n=-1)))
+subsidios<- subsidios %>% group_by(cluster_destino, condicion_mig) %>% mutate(labelpos=(ymax+ymin)/2)
+
+
+#subsidios %>% filter(!is.na(condicion_mig)) %>% ggplot(mapping=aes(ymax=ymax, ymin=ymin, xmax=4, xmin=0, fill=SUBSIDIO)) + scale_fill_manual(values = color)+
+ # geom_rect() +
+#  geom_text( x=2, aes(y=labelpos, label=Porcentaje), size=2.5)  +
+#  coord_polar(theta="y") +
+#  xlim(c(0, 4)) + facet_grid(cols = vars(condicion_mig),rows = vars(cluster_destino)) +
+#  theme_void() +  labs(fill="") + theme( strip.background = element_blank(), panel.background = element_blank(), legend.position = "left")
+#tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex/graficos/subsidio_mig.tex",width = 6, height = 4,sanitize = TRUE)
+subsidios %>% filter(!is.na(condicion_mig)) %>% ggplot(mapping=aes(x = condicion_mig, y =Porcentaje, fill=SUBSIDIO, label=Porcentaje)) + geom_col(position = position_fill(),width = 0.8) + facet_grid(cols = vars(cluster_destino)) + xlab("") + ylab("")+scale_y_continuous(labels = scales::percent_format())+ labs(fill="") + scale_fill_manual(values = color) + geom_text(position = position_fill(vjust = 0.4), size=3) + theme(axis.text = element_text(color = "BLACK"), strip.background = element_blank(), panel.background = element_blank())
+#dev.off()
+```
+
+## Ocupación y nivel de calificacion
+### Ocupacion
+
+```{r}
+ocupacion<- eph_carac %>% mutate(condicion_mig=case_when(migrante==1 ~ "Migrantes",
+                                                         nativo==1 ~ "Nativos"),
+                                 pea=case_when(ESTADO %in% c(1,2) ~ 1,
+                                               ESTADO %in% c(3,4)~ 0)) 
+
+ pre<-ocupacion %>% group_by(cluster_destino,  condicion_mig) %>% summarise(total=sum(PONDERA)) 
+
+ post<-ocupacion %>% group_by(cluster_destino,  condicion_mig, pea) %>% summarise(Cantidad=sum(PONDERA)) 
+ocupacion<- left_join(post,pre) 
+ocupacion$Porcentaje=formattable::percent((ocupacion$Cantidad/ocupacion$total),2)
+
+ocupacion <- ocupacion %>% mutate(SUBSIDIO=case_when(pea==1~ "Población Economicamente Activa",
+                                              pea==0~ "Población Economicamente Inactiva"))
+ocupacion<- ocupacion %>% filter(!is.na(condicion_mig) & pea==1) %>% rename("Tasa de Actividad"=Porcentaje, "Región"=cluster_destino) %>% select(Región,condicion_mig,`Tasa de Actividad`)
+ocupacion<- pivot_wider(ocupacion,names_from = condicion_mig, values_from = "Tasa de Actividad")
+ocupacion
+xtable(ocupacion,caption = "Tasa de actividad de nativos y migrantes",label = "cuadro:tasaactiv_mig" ,align = c("c","c","c","c"))
+
+
+```
+
+```{r}
+ocupacion<- eph_carac %>% mutate(condicion_mig=case_when(migrante==1 ~ "Migrantes",
+                                                         nativo==1 ~ "Nativos"),
+                                 pea=case_when(ESTADO %in% c(1,2) ~ 1,
+                                               ESTADO %in% c(3,4)~ 0),
+                                 calif_ocup=case_when(OCUPADO_BAJO==1~ "Calificación baja",
+                                                      OCUPADO_ALTO==1 ~ "Calificación alta")) 
+ocupacion<- ocupacion %>% filter(!is.na(calif_ocup))
+
+ pre<-ocupacion %>% group_by(cluster_destino,  condicion_mig) %>% summarise(total=sum(PONDERA)) 
+
+ post<-ocupacion %>% group_by(cluster_destino,  condicion_mig, calif_ocup) %>% summarise(Cantidad=sum(PONDERA)) 
+ocupacion<- left_join(post,pre) 
+ocupacion$Porcentaje=formattable::percent((ocupacion$Cantidad/ocupacion$total),2)
+ocupacion$cluster_destino=paste0("\\textbf{Región",ocupacion$cluster_destino,"}")
+ocupacion<- ocupacion %>% filter(!is.na(condicion_mig))
+
+ocupacion<- ocupacion %>% group_by(cluster_destino, condicion_mig) %>% mutate(ymax=as.numeric(cumsum(Porcentaje)))
+ocupacion<- ocupacion %>% group_by(cluster_destino, condicion_mig) %>% mutate(ymin=c(0, head(ymax, n=-1)))
+ocupacion<- ocupacion %>% group_by(cluster_destino, condicion_mig) %>% mutate(labelpos=(ymax+ymin)/2)
+
+#tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex/graficos/calif_mig.tex",width = 6, height = 4,sanitize = TRUE)
+ocupacion  %>% ggplot(mapping=aes(ymax=ymax, ymin=ymin, xmax=4, xmin=0, fill=calif_ocup)) + scale_fill_manual(values = color)+
+ geom_rect() +
+ geom_text( x=2, aes(y=labelpos, label=Porcentaje), size=2.5)  +
+  coord_polar(theta="y") +
+  xlim(c(0, 4)) + facet_grid(rows = vars(condicion_mig),cols = vars(cluster_destino)) +
+ theme_void() +  labs(fill="") + theme( strip.background = element_blank(), panel.background = element_blank(), legend.position = "bottom")
+#dev.off()
+
+```
+## Estado civil y organización familiar
+
+
+```{r}
+org_fam<- eph_carac %>% mutate(condicion_mig=case_when(migrante==1 ~ "Migrantes",
+                                                         nativo==1 ~ "Nativos"),
+                                 pea=case_when(ESTADO %in% c(1,2) ~ 1,
+                                               ESTADO %in% c(3,4)~ 0),
+                                 estado_civil=case_when(SOLTERO_C_HIJO==1~ "Soltero/a con hijo/a",
+                                                      CASADO_C_HIJO==1 ~ "Casado/a con hijo/a",
+                                                      CASADO_S_HIJO==1 ~ "Casado/a sin hijo/a",
+                                                      CASADO==0 & HIJO_DUMMY==0 ~ "Soltero/a sin hijo/a")) 
+org_fam<- org_fam %>% filter(!is.na(estado_civil) & CH06>=18)
+
+ pre<-org_fam %>% group_by(cluster_destino,  condicion_mig) %>% summarise(total=sum(PONDERA)) 
+
+ post<-org_fam %>% group_by(cluster_destino,  condicion_mig, estado_civil) %>% summarise(Cantidad=sum(PONDERA)) 
+org_fam<- left_join(post,pre) 
+org_fam$Porcentaje=formattable::percent((org_fam$Cantidad/org_fam$total),2)
+org_fam$cluster_destino=paste0("\\textbf{Región",org_fam$cluster_destino,"}")
+org_fam<- org_fam %>% filter(!is.na(condicion_mig))
+
+org_fam
+
+
+#tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex/graficos/estadociv_mig.tex",width = 6, height = 4,sanitize = TRUE)
+org_fam  %>%   ggplot(mapping=aes(x = condicion_mig, y =Porcentaje, fill=estado_civil, label=Porcentaje)) + geom_col(position = position_fill(),width = 0.8) + facet_grid(cols = vars(cluster_destino)) + xlab("") + ylab("")+scale_y_continuous(labels = scales::percent_format())+ labs(fill="") + scale_fill_manual(values = color) + geom_text(position = position_fill(vjust = 0.4), size=3) + theme(axis.text = element_text(color = "BLACK"), strip.background = element_blank(), panel.background = element_blank())
+#dev.off()
+
+```
+
+## Nivel educativo
+
+```{r}
+niveled<- eph_carac %>% mutate(condicion_mig=case_when(migrante==1 ~ "Migrantes",
+                                                         nativo==1 ~ "Nativos"),
+                                 pea=case_when(ESTADO %in% c(1,2) ~ 1,
+                                               ESTADO %in% c(3,4)~ 0),
+                               niveled=case_when(niveled %in% c("Sin\ninstrucción","Primario\nCompleto") ~ "Nivel educativo\nBajo",
+                                                 niveled=="Secundario\nCompleto" ~ "Nivel educativo\nmedio",
+                                                 niveled== "Superior/Universitario\ncompleto" ~ "Nivel educativo\nelevado")) 
+niveled$niveled<- factor(niveled$niveled, levels=c("Nivel educativo\nelevado","Nivel educativo\nmedio","Nivel educativo\nBajo"))
+niveled<- niveled %>% filter(!is.na(niveled) & CH06>=18)
+
+ pre<-niveled %>% group_by(cluster_destino,  condicion_mig) %>% summarise(total=sum(PONDERA)) 
+
+ post<-niveled %>% group_by(cluster_destino,  condicion_mig, niveled) %>% summarise(Cantidad=sum(PONDERA)) 
+niveled<- left_join(post,pre) 
+niveled$Porcentaje=formattable::percent((niveled$Cantidad/niveled$total),2)
+niveled$cluster_destino=paste0("\\textbf{Región",niveled$cluster_destino,"}")
+niveled<- niveled %>% filter(!is.na(condicion_mig))
+
+niveled
+
+
+#tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex/graficos/niveled_mig.tex",width = 6, height = 4,sanitize = TRUE)
+niveled  %>%   ggplot(mapping=aes(x = condicion_mig, y =Porcentaje, fill=niveled, label=Porcentaje)) + geom_col(position = position_fill(),width = 0.8) + facet_grid(cols = vars(cluster_destino)) + xlab("") + ylab("")+scale_y_continuous(labels = scales::percent_format())+ labs(fill="") + scale_fill_manual(values = color) + geom_text(position = position_fill(vjust = 0.4), size=3) + theme(axis.text = element_text(color = "BLACK"), strip.background = element_blank(), panel.background = element_blank())
+#dev.off()
+
 ```
 
 
