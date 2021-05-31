@@ -1012,4 +1012,78 @@ Para finalizar el análisis de los factores de atracción de los migrantes hacia
 
 
 
+```{r}
+cluster1_multinom<- left_join(ephtotal,cluster_destino)  
+cluster1_multinom<- left_join(cluster1_multinom,cluster_nombres_eph_ch15)
+
+cluster1_multinom<- cluster1_multinom %>%  filter(cluster_destino==1 | cluster_origen==1)
+cluster1_multinom<- cluster1_multinom %>% filter(CH03==1)
+cluster1_multinom<- cluster1_multinom %>% filter(CH15%in% c(1,2,3))
+cluster1_multinom<- cluster1_multinom %>% mutate(inmigrante=case_when(cluster_origen==1  &  CH15==3 &   cluster_destino==1 ~ 0,
+                                                                      cluster_origen==1  &  CH15==3 &   cluster_destino==2 ~2,
+                                                                      cluster_origen==1  &  CH15==3 &   cluster_destino==3 ~3,
+                                                                      
+                                                                      
+                                                                        cluster_destino==1 & CH15 %in% c(1,2) ~0))
+cluster1_multinom<- cluster1_multinom %>% filter(!is.na(inmigrante))
+table(cluster1_multinom$inmigrante)
+
+cluster1_multinom$inmigrante<- as.factor(cluster1_multinom$inmigrante)
+cluster1_multinom$inmigrante<- relevel(cluster1_multinom$inmigrante, ref = "0")
+
+cluster1_multinom_model<-multinom(inmigrante~ hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto, data=cluster1_multinom)
+
+summary(cluster1_multinom_model)
+stargazer(cluster1_multinom_model)
+```
+
+```{r}
+cluster2_multinom<- left_join(ephtotal,cluster_destino)  
+cluster2_multinom<- left_join(cluster2_multinom,cluster_nombres_eph_ch15)
+
+cluster2_multinom<- cluster2_multinom %>%  filter(cluster_destino==2 | cluster_origen==2)
+cluster2_multinom<- cluster2_multinom %>% filter(CH03==1)
+cluster2_multinom<- cluster2_multinom %>% filter(CH15%in% c(1,2,3))
+cluster2_multinom<- cluster2_multinom %>% mutate(inmigrante=case_when(cluster_origen==2  &  CH15==3 &   cluster_destino==2 ~ 0,
+                                                                      cluster_origen==2  &  CH15==3 &   cluster_destino==1 ~1,
+                                                                      cluster_origen==2  &  CH15==3 &   cluster_destino==3 ~3,
+                                                                      
+                                                                      
+                                                                        cluster_destino==2 & CH15 %in% c(1,2) ~0))
+cluster2_multinom<- cluster2_multinom %>% filter(!is.na(inmigrante))
+table(cluster2_multinom$inmigrante)
+
+cluster2_multinom$inmigrante<- as.factor(cluster2_multinom$inmigrante)
+cluster2_multinom$inmigrante<- relevel(cluster2_multinom$inmigrante, ref = "0")
+
+cluster2_multinom_model<-multinom(inmigrante~ hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto, data=cluster2_multinom)
+
+summary(cluster2_multinom_model)
+stargazer(cluster2_multinom_model)
+```
+
+```{r}
+cluster3_multinom<- left_join(ephtotal,cluster_destino)  
+cluster3_multinom<- left_join(cluster3_multinom,cluster_nombres_eph_ch15)
+
+cluster3_multinom<- cluster3_multinom %>%  filter(cluster_destino==3 | cluster_origen==3)
+cluster3_multinom<- cluster3_multinom %>% filter(CH03==1)
+cluster3_multinom<- cluster3_multinom %>% filter(CH15%in% c(1,2,3))
+cluster3_multinom<- cluster3_multinom %>% mutate(inmigrante=case_when(cluster_origen==3  &  CH15==3 &   cluster_destino==3 ~ 0,
+                                                                      cluster_origen==3  &  CH15==3 &   cluster_destino==2 ~2,
+                                                                      cluster_origen==3  &  CH15==3 &   cluster_destino==1 ~1,
+                                                                      
+                                                                      
+                                                                        cluster_destino==3 & CH15 %in% c(1,2) ~0))
+cluster3_multinom<- cluster3_multinom %>% filter(!is.na(inmigrante))
+table(cluster3_multinom$inmigrante)
+
+cluster3_multinom$inmigrante<- as.factor(cluster3_multinom$inmigrante)
+cluster3_multinom$inmigrante<- relevel(cluster3_multinom$inmigrante, ref = "0")
+
+cluster3_multinom_model<-multinom(inmigrante~ hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto, data=cluster3_multinom)
+
+summary(cluster3_multinom_model)
+stargazer(cluster3_multinom_model)
+```
 
