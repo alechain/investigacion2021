@@ -26,6 +26,7 @@ library(readxl)
 library(sf)
 library(tmap)
 library(tmaptools)
+library(nnet)
 
 color<- c('#e41a1c','#377eb8','#4daf4a','#a6cee3','#4575b4','#f781bf','#a65628','#ffff33','#984ea3','#ff7f00','#f781bf')
 ```
@@ -548,8 +549,8 @@ sexo_edad<-sexo_edad %>% filter(!is.na(condicion_mig)) %>% group_by("Región"=cl
 sexo_edad$Región<- str_replace(sexo_edad$Región,pattern = "textbf",replacement = "")
 sexo_edad$Región<- str_replace_all(sexo_edad$Región,pattern = "[[:punct:]]",replacement = "")
 
-xtable(sexo_edad,caption = "Edad y género de los migrantes",label = "cuadro:edad_mig" ,align = c("c","c","c","c","c"))
-stargazer(sexo_edad,title = "Edad y género de los migrantes",summary = FALSE,label = "cuadro:edad_mig")
+#xtable(sexo_edad,caption = "Edad y género de los migrantes",label = "cuadro:edad_mig" ,align = c("c","c","c","c","c"))
+#stargazer(sexo_edad,title = "Edad y género de los migrantes",summary = FALSE,label = "cuadro:edad_mig")
 
 ```
 
@@ -1025,6 +1026,13 @@ cluster1_multinom<- cluster1_multinom %>% mutate(inmigrante=case_when(cluster_or
                                                                       
                                                                       
                                                                         cluster_destino==1 & CH15 %in% c(1,2) ~0))
+
+cluster1_diagrama<- cluster1_multinom %>% mutate(flujo_de_1=case_when(cluster_origen==1  &  CH15==3 &   cluster_destino==1 ~ 1,
+                                                                      cluster_origen==1  &  CH15==3 &   cluster_destino==2 ~2,
+                                                                      cluster_origen==1  &  CH15==3 &   cluster_destino==3 ~3))
+  
+cluster1_diagrama<- cluster1_diagrama %>% group_by(flujo_de_1) %>% summarise(cantidad=sum(PONDERA))
+  
 cluster1_multinom<- cluster1_multinom %>% filter(!is.na(inmigrante))
 table(cluster1_multinom$inmigrante)
 
@@ -1050,6 +1058,14 @@ cluster2_multinom<- cluster2_multinom %>% mutate(inmigrante=case_when(cluster_or
                                                                       
                                                                       
                                                                         cluster_destino==2 & CH15 %in% c(1,2) ~0))
+
+cluster2_diagrama<- cluster2_multinom %>% mutate(flujo_de_2=case_when(cluster_origen==2  &  CH15==3 &   cluster_destino==1 ~ 1,
+                                                                      cluster_origen==2  &  CH15==3 &   cluster_destino==2 ~2,
+                                                                      cluster_origen==2  &  CH15==3 &   cluster_destino==3 ~3))
+  
+cluster2_diagrama<- cluster2_diagrama %>% group_by(flujo_de_2) %>% summarise(cantidad=sum(PONDERA))
+
+
 cluster2_multinom<- cluster2_multinom %>% filter(!is.na(inmigrante))
 table(cluster2_multinom$inmigrante)
 
@@ -1075,6 +1091,14 @@ cluster3_multinom<- cluster3_multinom %>% mutate(inmigrante=case_when(cluster_or
                                                                       
                                                                       
                                                                         cluster_destino==3 & CH15 %in% c(1,2) ~0))
+
+cluster3_diagrama<- cluster3_multinom %>% mutate(flujo_de_3=case_when(cluster_origen==3  &  CH15==3 &   cluster_destino==1 ~ 1,
+                                                                      cluster_origen==3  &  CH15==3 &   cluster_destino==2 ~2,
+                                                                      cluster_origen==3  &  CH15==3 &   cluster_destino==3 ~3))
+  
+cluster3_diagrama<- cluster3_diagrama %>% group_by(flujo_de_3) %>% summarise(cantidad=sum(PONDERA))
+
+
 cluster3_multinom<- cluster3_multinom %>% filter(!is.na(inmigrante))
 table(cluster3_multinom$inmigrante)
 
@@ -1085,5 +1109,88 @@ cluster3_multinom_model<-multinom(inmigrante~ hombre + POBRE + SUBSIDIO + OCUPAD
 
 summary(cluster3_multinom_model)
 stargazer(cluster3_multinom_model)
+```
+### Multinomial en general
+
+```{r}
+cluster_multinom<- left_join(ephtotal,cluster_destino)  
+cluster_multinom<- left_join(cluster_multinom,cluster_nombres_eph_ch15)
+
+
+cluster_multinom<- cluster_multinom %>% filter(CH03==1)
+cluster_multinom<- cluster_multinom %>% filter(CH15%in% c(1,2,3))
+
+cluster_multinom<- cluster_multinom %>% mutate(inmigrante=case_when(#cluster_origen==3  &  CH15==3 &   cluster_destino==3 ~ 3,
+                                                                    cluster_destino==3 & CH15 %in% c(1,2) ~0,
+                                                                      cluster_origen==3  &  CH15==3 &   cluster_destino==2 ~2,
+                                                                      cluster_origen==3  &  CH15==3 &   cluster_destino==1 ~1,
+                                                                    
+                                                                    #cluster_origen==2  &  CH15==3 &   cluster_destino==2 ~ 2,
+                                                                    cluster_destino==2 & CH15 %in% c(1,2) ~0,
+                                                                      cluster_origen==2  &  CH15==3 &   cluster_destino==3 ~3,
+                                                                      cluster_origen==2  &  CH15==3 &   cluster_destino==1 ~1,
+                                                                    
+                                                                      #cluster_origen==1  &  CH15==3 &   cluster_destino==1 ~ 1,
+                                                                    cluster_destino==1 & CH15 %in% c(1,2) ~0,
+                                                                      cluster_origen==1  &  CH15==3 &   cluster_destino==3 ~3,
+                                                                      cluster_origen==1  &  CH15==3 &   cluster_destino==2 ~2))
+
+
+cluster_multinom<- cluster_multinom %>% filter(!is.na(inmigrante))
+table(cluster_multinom$inmigrante)
+
+cluster_multinom$inmigrante<- as.factor(cluster_multinom$inmigrante)
+cluster_multinom$inmigrante<- relevel(cluster_multinom$inmigrante, ref = "0")
+
+cluster_multinom_model<-multinom(inmigrante~ hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto, data=cluster_multinom)
+
+summary(cluster_multinom_model)
+stargazer(cluster_multinom_model)
+```
+
+
+
+
+
+
+### CHORDIAGG
+
+
+```{r}
+library(circlize)
+cluster1_diagrama
+cluster2_diagrama
+cluster3_diagrama
+
+frow<- cluster1_diagrama %>% filter(!is.na(flujo_de_1)) 
+
+frow<- as.matrix(frow)
+frow<- frow[,2]
+
+srow<- cluster2_diagrama %>% filter(!is.na(flujo_de_2)) 
+
+srow<- as.matrix(srow)
+srow<- srow[,2]
+
+trow<- cluster3_diagrama %>% filter(!is.na(flujo_de_3)) 
+
+trow<- as.matrix(trow)
+trow<- trow[,2]
+
+m<-matrix(c((frow),(srow), (trow)), ncol = 3)
+m<-t(m)
+rownames(m)<- paste0("R.O ", 1:3)
+colnames(m)<- paste0("R.D ", 1:3)
+m
+color[3]
+colors <- c( "R.D 1" = "#e41a1c", "R.D 2" ="#377eb8",
+           "R.D 3" = "#4daf4a", "R.O 1" = "#e41a1c",
+             "R.O 2" ="#377eb8",  "R.O 3" = "#4daf4a")
+
+
+#pdf(file = "/home/alejandrochain/Documentos/GitHub/investigacion2021/latex/graficos/chord.pdf",height = 4, width = 6)
+#tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex/graficos/chord.tex",width = 6, height = 4,sanitize = TRUE)
+chordDiagram(m, annotationTrack =  c("name", "grid", "ticks"), transparency = 0.2, grid.col = colors)
+#dev.off()
 ```
 
