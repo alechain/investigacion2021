@@ -441,58 +441,96 @@ Nota: Nativos y migrantes mayores a 18 años.
 
 
 \section{Factores determinantes de la migración}
+\subsection{Modelo}
 El análisis de los factores determinantes de la migración  encuentra su base en que las personas se desplazan a partir de una decisión racional que maximiza su utilidad, en esta decisión intervienen una serie de factores socio económicos que hacen más o menos propenso que la misma decida permanecer en su localidad de origen o migrar hacia alguna otra region.
 
-Para determinar el impacto de los distintos factores en la decisión migratoria, se recurre a la formulación de un modelo de probabilidad \textit{logit multinomial}, en el cual los individuos se enfrentan a $n$ alternativas mutuamente excluyentes que no siguen un orden específico (greene), entre ellas se encuentran:
-\begin{itemize}
-	\item No migrar
-	\item Migrar hacia la Región 1
-	\item Migrar hacia la Región 2
-	\item Migrar hacia la Región 3
-\end{itemize}
+Para determinar el impacto de los distintos factores en la decisión migratoria, se recurre a la formulación de un modelo de probabilidad \textit{logit multinomial}, en el cual los individuos se enfrentan a $n$ alternativas mutuamente excluyentes que no siguen un orden específico (greene), estas son la decisión de no migrar, la de migrar hacia la región 1, la de migrar hacia la región 2 o la de migrar hacia la región 3.
 
-Este modelo se basa en la teoría de utilidad aleatoria, en la cual la utilidad de los $i-esimos$ individuos que se enfrentan a las $j-esimas$ alternativas estan representdas por una función de utilidad $U_{ij}$(\ref{eq:utility}) que posee dos componentes, un componente observable $\beta_{j} \textbf{x}_{i}$  que está determinado por un vector de factores socio-económicos determinantes de la migración $\textbf{x}_{i}$ que varía para cada individuio $i$ y un vector de parámetros $\beta_{j}$ que varía para cada alternativa $j$, y un componente inobservable $\varepsilon_{ij}$ que sigue una distribución Gumbel independiente e identicamente distribuida.
-
+Este modelo se basa en la teoría de la utilidad aleatoria (McFadden 1975) que permite fundamentar teoricamente el modelo de elección discreta de los individuos en el caso de que se enfrente a un conjunto finito de alternativas mutuamente excluyente, como es el caso de la decisión del éxodo.
+Según esta teoría la utilidad de los $i$ individuos que se enfrentan a $j$ alternativas estan representadas por una función $U_{ij}$(\ref{eq:utility}) que posee dos componentes, un componente observable $\beta_{j} \textbf{x}_{i}$  que en este caso está determinado por un vector de factores socio-económicos determinantes de la migración $\textbf{x}_{i}$ que varía para cada individuio $i$ y un vector de parámetros $\beta_{j}$ que varía para cada alternativa $j$, y un componente inobservable $\varepsilon_{ij}$ que para este caso sigue una distribución de valor máximo de tipo I (Distribución Gumbel) independiente e identicamente distribuida.
 \begin {center}
 \begin{equation}\label{eq:utility}
 U_{ij}=\beta_{j} \textbf{x}_{i}+\varepsilon_{ij}
 \end{equation}
 \end {center}
 
-Asumiendo que el individuo $i$ es racional y maximiza su utilidad en la elección de las  alternativas 
-$j-esimas$, si este selecciona una alternativa $m$ sera tal que la utilidad $U_{im}$ es la máxima entre las $j-esimas$ alternativas. Se puede especificar entonces que  la probabilidad de la selección de una alternativa $m$ para el individuo $i$ es:
-
+Asumiendo que el individuo $i$ es racional y maximiza su utilidad en la elección de las  alternativas, si este selecciona una alternativa $m$ sera tal que la utilidad $U_{im}$ es la máxima entre las $j$ alternativas, recordando que la utilidad del individuo posee un componente estocástico, es necesaria la introducción de la probabilidad de la ocurrencia de dicha elección, debido a que no todos los componentes son observables. Entonces se puede especificar que  la probabilidad de la selección de una alternativa $m$ para el individuo $i$ es:
 \begin {center}
 \begin{equation}\label{eq:prob}
-P_{im}=P(U_{im}>U_{ij}) \ \forall \ j\neq m
+P_{im}=P{(Y_{i}=m)} =P(U_{im}>U_{ij}) \ \ \forall \ \ j\neq m
 \end{equation}
 \end {center}
 
-Como se menciono anteriormente, el componente aleatorio $\varepsilon_{ij}$ sigue una una distribución Gumbel independiente e identicamente distribuida, esto permite generalizar que la probabilidad de que un individuo $i$ elija una alternativa $j$ de las $n$ alternativas está dada por:
+Como se menciono anteriormente, si se supone que el componente aleatorio $\varepsilon_{ij}$ sigue una una distribución Gumbel independiente e identicamente distribuida, se puede generalizar que la probabilidad de que un individuo $i$ elija una alternativa $j$ de las $n$ alternativas está dada por:
 \begin {center}
 \begin{equation}\label{eq:multinom}
 P{(Y_{i}=j)}=\frac{e^{\ \beta_{j} \textbf{x}_{i}}}{\sum_{k=0}^{n-1}e^{\ \beta_{k} \textbf{x}_{i}}}
 \end{equation}
 \end {center}
-Para evitar el problema de indeterminación en la estimación de los parámetros $\beta_{j}$ se normaliza el modelo representado por la ecuación (\ref{eq:multinom}) asignando el valor de 0 para todos los parámetros de la alternativa correspondiente a ``No migrar" ($j=0$), designandolo como el ``grupo base".
 
+Para evitar el problema de indeterminación en la estimación de los parámetros $\beta_{j}$ se normaliza el modelo representado por la ecuación (\ref{eq:multinom}) asignando el valor de cero para todos los parámetros de la alternativa correspondiente a ``No migrar" ($\beta_{0}=0$), de esta manera la estimación de la probabildiad en el modelo logit multinomial será relativa a esta ``alternativa base" de no migrar (Coxhead, Nguyen, Linh 2015).
 Luego de esa normalización, se pueden definir las probabilidades de las $n$ alternativas de la siguiente forma:
 \begin {center}
 \begin{equation}\label{eq:multinom_2}
-P{(Y_{i}=j)}=\frac{e^{\ \beta_{j} \textbf{x}_{i}}}{1+\sum_{k=0}^{n-1}e^{\ \beta_{k} \textbf{x}_{i}}} \ \forall \ j=1,...,(n-1)
+P{(Y_{i}=j)}=\frac{e^{\ \beta_{j} \textbf{x}_{i}}}{1+\sum_{k=0}^{n-1}e^{\ \beta_{k} \textbf{x}_{i}}} \ \ \Leftrightarrow \ \ j=1,...,(n-1)
 \end{equation}
 \begin{equation}\label{eq:multinom_3}
-P{(Y_{i}=0)}=\frac{1}{1+\sum_{k=0}^{n-1}e^{\ \beta_{k} \textbf{x}_{i}}} \ \forall \ j=0
+P{(Y_{i}=0)}=\frac{1}{1+\sum_{k=0}^{n-1}e^{\ \beta_{k} \textbf{x}_{i}}} \ \ \Leftrightarrow \ \ j=0
 \end{equation}
 \end {center}
+
 En donde se tiene que cumplir necesariamente la condición:
 \begin {center}
 \begin{equation}\label{eq:multinom_4}
-\sum_{k=0}^{n-1}P{(Y_{i}=k)}=1
+\sum_{k=0}^{n-1}P{(Y_{i}=k)}\equiv1
 \end{equation}
 \end {center}
 
+La ecuación \ref{eq:multinom_3} está definida para la probabilidad de elección de la ``alternativa base" (no migrar), mientras que la ecuación \ref{eq:multinom_2} está definida para las restantes alternativas, a través de ellas se puede definir el ratio de probabilidades (\textit{odds}) de que un individuo $i$ elija migrar hacia alguna de las regiones ($j\neq0$) en comparación con la decisión de no migrar ($j=0$), la cual está dada por la siguiente expresión:
+\begin{center}
+\begin{equation}\label{eq:odds}
+\frac{P{(Y_{i}=j)}}{P{(Y_{i}=0)}}=e^{\ \beta_{j} \textbf{x}_{i}} \ \ \forall \ \ j\neq0
+\end{equation}
+\end {center}
+Tomando logaritmos neperianos para ambos términos de la ecuación \ref{eq:odds} se llega a la expresión:
+\begin{center}
+\begin{equation}\label{eq:logodds}
+\log\frac{P{(Y_{i}=j)}}{P{(Y_{i}=0)}}=\ \beta_{j} \textbf{x}_{i} \ \ \forall \ \ j\neq0
+\end{equation}
+\end {center}
 
+En el primer término de la ecuación \ref{eq:logodds} encontramos el logaritmo del ratio de probabilidades(\textit{log-odds}) y en el segundo término se encuentra el vector de parametros $\beta_{j}$ acompañado del vector de las características individuales $\textbf{x}_{i}$. 
+
+La lienalidad del segundo término implica que la dirección del impacto al logaritmo del ratio de probabilidades ante  un cambio en las características individuales del individuo estará dado por el signo del parametro $\beta_{j}$ correspondiente a esa característica específica, es decir, si el parámetro  $\beta_{jc}$ de una característica $\textbf{x}_{ic}$ es positivo y ese $\textbf{x}_{ic}$  aumenta su valor, el logaritmo del ratio de probabilidades tambien se verá aumentado, y considerando que el logaritmo es una función monótona estrictamente concava (creciente), se puede demostrar que un aumento del logaritmo del ratio de probabilidades implica un aumento del ratio de probabilidades.
+
+A modo de resumen, el signo del parámetro $\beta_{jc}$ indica la dirección del impacto de un cambio en la característica $\textbf{x}_{ic}$ en la probabilidad de la elección de la alternativa $j$ con respecto a la ``alternativa base'', para el caso específico tratado en este modelo, será el impacto en la probabilidad de una persona de migrar hacia la región $j$ con respecto a no migrar.
+
+\subsection{Base de datos y variables}
+La totalidad de los datos referidos a los flujos migratorios y las características socio económicas de los individuos que se utilizan para la estimación de los factores determinantes de las migraciones a través del modelo tienen como fuente un pool de cortes transversales  armado a través de la Encuesta Permanente de Hogares (EPH) relevada por el Instituto de Estadísticas y Censos de la República Argentina desde el segundo trimestre del año 2016 hasta el cuarto trimestre del año 2019.
+
+La muestra elegida de este pool de cortes transversales queda reducida a los jefes/as de hogar, asumiendo que la familia que conforma el hogar influye en los retornos netos de la migración (Mincer 1977) y el análisis de los migrantes de manera individual no permitiría contemplar dicha complejidad. Por otro lado, para este análisis no se consideran a los migrantes que tienen como región de destino y origen a la misma región ni tampoco a los migrantes internacionales.
+
+La variable dependiente del modelo esta representada por las alternativas que puede tomar la persona con respecto la decisión y el destino del acto migratorio, estas pueden ser:
+\begin{itemize}
+\item No migrar
+\item Migrar hacia la Región 1
+\item Migrar hacia la Región 2
+\item Migrar hacia la Región 3
+\end{itemize}
+
+En cuanto a los regresores o variables dependientes del modelo se encuentran:
+\begin{itemize}
+\item Hombre: esta variable binaria indica el sexo de la persona, toma el valor de uno para los hombres y cero para las mujeres (grupo base).
+\item Pobre: Esta variable binaria indica la incidencia en la pobreza de la persona en el momento del relevamiento, toma el valor de uno para las personas pobres y cero para las no pobres (grupo base).
+\item Subsidio: Esta variable binaria indica si la persona recibe o no  subsidios o ayudas sociales en dinero al momento del relevamiento, toma el valor de uno para las personas que reciben esta transferencia económica y cero para las que no lo reciben (grupo base).
+\item Ocupado baja calificación y ocupado de alta calificación: estas variables binarias son del tipo categórica y representan a tres categorías, en donde el grupo base esta representado por las personas inactivas, desocupadas o con trabajos de baja calificación.
+\item Soltero con hijo, casado con hijo y casado sin hijo: estas variables binarias son del tipo categórica y representan a cuatro categorías, en donde el grupo base esta representado por las personas solteras sin hijos. Otra forma en la que normalmente se presentan las variables categóricas en estos casos es en forma de interacciones de binarias, sin embargo se desistió la utilización de las mismas debido a que presentan conflictos en la interpretación de los parámetros estimados cuando los modelos son no lineales, para un tratamiento completo del tema ver  AI Norton (2003).
+\item Propietario: Esta variable binaria indica la condición de tenencia de la vivienda de la persona de la persona en el momento del relevamiento, toma el valor de uno para las personas que son dueñas de la vivienda que habitan y cero para las que no lo son (grupo base).
+\item Edad y Edad$^{2}$: Estas variables continuas indican la edad  y la edad elevada al cuadrado del individuo. 
+\item Educación media 
+
+
+\end{itemize}
 
 Los factores socioeconómicos determinantes  de la migración varían dependiendo de la región de origen y de destino que se esté tomando a consideración.
 
