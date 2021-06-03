@@ -1,0 +1,14 @@
+[0] Config.pm:312> INFO - This is Biber 2.15 (beta)
+[0] Config.pm:315> INFO - Logfile is 'borrador_investigaicon.blg'
+[124] biber-MSWIN64:330> INFO - === 
+[150] Biber.pm:415> INFO - Reading 'borrador_investigaicon.bcf'
+[298] Biber.pm:952> INFO - Found 1 citekeys in bib section 0
+[320] Biber.pm:4334> INFO - Processing section 0
+[338] Biber.pm:4523> INFO - Looking for bibtex format file 'Bibliography.bib' for section 0
+[368] bibtex.pm:1682> INFO - LaTeX decoding ...
+[443] bibtex.pm:1494> INFO - Found BibTeX data source 'Bibliography.bib'
+[494] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'variable = shifted' with 'variable = non-ignorable'
+[495] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[495] Biber.pm:4162> INFO - Sorting list 'apa/global//global/global' of type 'entry' with template 'apa' and locale 'es-ES'
+[497] bbl.pm:651> INFO - Writing 'borrador_investigaicon.bbl' with encoding 'UTF-8'
+[499] bbl.pm:754> INFO - Output to borrador_investigaicon.bbl

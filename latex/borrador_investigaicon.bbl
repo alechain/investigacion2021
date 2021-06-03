@@ -1,0 +1,69 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{apa/global//global/global}
+    \entry{hanson_international_2005}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=bdb914c33d79924aa43db93246da623b}{%
+           family={Hanson},
+           familyi={H\bibinitperiod},
+           given={Gordon},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6c84676895c0adce6bf7deb9da8fd292}{%
+           family={Chiquiar},
+           familyi={C\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{27d1153296e41a338497442abceb1e47}
+      \strng{fullhash}{27d1153296e41a338497442abceb1e47}
+      \strng{bibnamehash}{27d1153296e41a338497442abceb1e47}
+      \strng{authorbibnamehash}{27d1153296e41a338497442abceb1e47}
+      \strng{authornamehash}{27d1153296e41a338497442abceb1e47}
+      \strng{authorfullhash}{27d1153296e41a338497442abceb1e47}
+      \field{sortinit}{H}
+      \field{sortinithash}{6db6145dae8dc9e1271a8d556090b50a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{If migrants return to their origin countries, two questions arise which are of immediate economic interest for both immigration and emigration country: What determines their optimal migration duration, and what are the activities migrants choose after a return. Little research has been devoted to these two issues. This paper utilises a unique survey data set which records activities of returned migrants. We first illustrate the activities of immigrants after returning. We show that more than half of the returning migrants are economically active after return, and most of them engage in entrepreneurial activities. We then develop a model, where migrants decide simultaneously about the optimal migration duration, and their after-return activities. Guided by this model, we specify and estimate an empirical model, where the after-return activity, and the optimal migration duration are simultaneously chosen.}
+      \field{journaltitle}{Journal of Political Economy}
+      \field{month}{4}
+      \field{shorttitle}{International {Migration}, {Self}-{Selection}, and the {Distribution} of {Wages}}
+      \field{title}{International {Migration}, {Self}-{Selection}, and the {Distribution} of {Wages}: {Evidence} from {Mexico} and the {United} {States}}
+      \field{volume}{113}
+      \field{year}{2005}
+      \field{pages}{239\bibrangedash 281}
+      \range{pages}{43}
+      \verb{doi}
+      \verb 10.1086/427464
+      \endverb
+      \verb{file}
+      \verb Full Text PDF:/home/alejandrochain/Zotero/storage/VXV5VFKD/Hanson y Chiquiar - 2005 - International Migration, Self-Selection, and the D.pdf:application/pdf
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
