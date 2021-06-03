@@ -5,6 +5,9 @@
 \usepackage{amsmath} 
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage{tikz}
+\usepackage[backend=biber,style=apa]{biblatex}
+\bibliography{Bibliography.bib}
+
 \renewcommand{\baselinestretch}{1.2}
 \usepackage{caption}
 \newcommand{\source}[1]{\caption*{\scriptsize{Fuente: {#1}}} }
@@ -24,14 +27,12 @@ regiones menos desarrolladas hacia centros urbanos con mayores niveles de prospe
 
 Esta situación provoca un desconocimiento a la hora de analizar la ponderación de los factores que impulsan a los individuos a emigrar hacia determinadas zonas, y, por ende, de poder comprender cuales son los factores mayor peso a la hora de considerar las heterogeneidades en el desarrollo regional.
 
-El tema de investigación tiene como fundamento el abordaje de la migración con una perspectiva de dependencia de la movilidad de las personas con respecto al progreso relativo del lugar de destino con el lugar de origen, considerando que el crecimiento y la calidad de vida de un espacio geográfico determinado impacta en las decisiones de emigración de individuos que comparten ciertas características socioeconómicas homogéneas.
-
-Es de suma importancia identificar cuáles son los factores que juegan un rol predominante a la hora de incentivar a las personas a migrar desde su localidad de origen (“expulsión”) como los factores que hacen más propenso para un determinado lugar de ser receptor de este éxodo (“atracción”), para entender los perfiles de desarrollo impulsados por cada espacio geográfico.
+Es de suma importancia identificar cuáles son los factores que juegan un rol predominante a la hora de incentivar a las personas a migrar desde su localidad de origen hacia otra localidad con un perfil de desarrollo totalmente distinto,  considerando que el crecimiento y la calidad de vida de un espacio geográfico determinado impacta en las decisiones de emigración de individuos que comparten ciertas características socioeconómicas homogéneas.
 
 \section{Regiones}
 En el estudio de los determinantes de las migraciones interprovinciales se pueden encontrar distintos niveles de factores según la generalidad del impacto que tengan en las personas que habitan un determinado espacio geográfico, por un lado se encuentran factores que son comunes a toda la población de una determinada comunidad, que son conocidos como macrofactores y estan conformados por aspectos políticos, sociales, económicos y demográficos, por el otro, se puden encontrar los microfactores, estos son características individuales que actúan como “mediadores” en la decisión migratoria e impactan de manera distinta dependiendo de los macrofactores que configuran los potenciales destinos u orígenes de migración.
 
-Este proceso de decisión migratoria consta de una interrelación constante entre los macrofactores y microfactores, que deben ser considerados a la hora de definir los determinantes que llevan a la decisión del éxodo Interprovincial.
+Este proceso de decisión migratoria consta de una interrelación constante entre los macrofactores y microfactores, que deben ser considerados a la hora de definir los determinantes que llevan a la decisión del éxodo interprovincial.
 
 En el análisis pormenorizado de las migraciones interprovinciales en la Argentina existen ciertas  limitaciones, debido a la elevada cantidad de provincias de origen y destino que surgen de la combinación de los movimientos migratorios, se torna dificultoso encontrar determinantes aislados para cada una de las provincias, esto no solo por la complicación en términos de disponibilidad y volumen de los datos, los cuales se ven ampliamente reducidos a causa de la subdivisión, sino también por el hecho de que se volvería tedioso y desordenado el análisis pormenorizado de ciertas combinaciones migratorias.
 
@@ -171,7 +172,7 @@ En cuanto a factores económicos, esta región se caracteriza por tener un desem
 Dentro de las regiones existen provincias de las cuales salen gran cantidad de inmigrantes, al igual que existen provincias que son receptoras de estos mismos, en primer lugar se caracterizará a las regiones según el nivel de \textit{expulsion} de inmigrantes interprovinciales.
 \begin{table}[!htbp] \centering 
 \footnotesize
-  \caption{Regiones de origen de los migrantes} 
+  \caption{\\Regiones de origen de los migrantes} 
   \label{cuadro:origen_mig} 
 \begin{tabular}{@{\extracolsep{5pt}} ccc} 
 \\[-1.8ex]\hline 
@@ -190,7 +191,7 @@ En el Cuadro \ref{cuadro:origen_mig} se puede ntoar que las provincias de la  \t
 
 \begin{table}[!htbp] \centering 
 \footnotesize
-  \caption{Regiones de destino de los migrantes} 
+  \caption{\\Regiones de destino de los migrantes} 
   \label{cuadro:destino_mig} 
 \begin{tabular}{@{\extracolsep{5pt}} ccc} 
 \\[-1.8ex]\hline 
@@ -205,20 +206,14 @@ Región & Porcentaje \\
 \end{tabular} 
 \end{table} 
 
-Sin embargo, analizando cuales son las regiones de destino  con mayor porcentaje  de migrantes, se puede encontrar en el Cuadro \ref{cuadro:destino_mig} que la \textbf{Región Nº 3} es la que mayor nivel de *atracción* posee por elevada diferencia (79.32\%), seguida por la Región Nº2 y en último lugar la Región Nº1.
+Sin embargo, analizando cuales son las regiones de destino  con mayor porcentaje  de migrantes, se puede encontrar en el Cuadro \ref{cuadro:destino_mig} que la \textbf{Región Nº 3} es la que mayor nivel de atracción posee por elevada diferencia (79.32\%), seguida por la Región Nº2 y en último lugar la Región Nº1.
 
-Esta relación entre regiones con mayor atracción y expulsión de migrantes tambien puede ser vista a nivel de provincias, para ello se definen dos tasas a considerar:
+Esta relación entre regiones con mayor atracción y expulsión de migrantes tambien puede ser vista a nivel provincial, para ello se definen la tasa de emigración que es el cociente entre la cantidad de emigrantes nativos de la provincia ``$x$'' sobre la cantidad de residentes de la provincia ``$x$'' y la tasa de inmigración que indica la cantidad de inmigrantes que habitan la provincia ``$x$'' sobre la cantidad de residentes de la provincia ``$x$''.
 
-\begin{itemize}
-\footnotesize
- \item $Tasa\ de\ emigraci\acute{o}n\ de\ la\ Provincia\ "X"= \frac{Cantidad\ de\ migrantes\ nativos\ de\ la\ Provincia\ "X"}{Cantidad\ de\ habitantes\ de\ la\ Provincia\ "X"}$
- \footnotesize 
- \item $Tasa\ de\ inmigraci\acute{o}n\ de\ la\ Provincia\ "X"= \frac{Cantidad\ de\ migrantes\ no\ nativos\  que\ habitan\ la\ Provincia\ "X"}{Cantidad\ de\ habitantes\ de\ la\ Provincia\ "X"}$
-\end{itemize}
 \begin{figure}[h!]
 \begin{center}
+\caption{\\Tasa de inmigración y emigración por provincia}
 \input{./graficos/tasas_emig_inmig_prov.tex}
-\caption{Tasa de inmigración y emigración por provincia}
 \label{figure:emig_inmig_prov}
 \end{center}
 \end{figure}
@@ -241,12 +236,11 @@ En la Figura \ref{figure:emig_inmig_prov_mapa} se observa la diferencia en la di
 \section{Migrantes}
 Las características individuales o familiares de las personas que toman la decisión de emprender un proceso migratorio forman parte de los microdeterminantes de las migraciones,si bien estas no deben ser tomadas como las principales impulsoras de la decisión del éxodo, funcionan como mediadoras en la decisión migratoria y tienen una elevada influencia en la auto-selección de los migrantes (Borjas, 1987) para cada una de las regiones.
 
-En primer lugar se analizará si existen microdeterminantes dentro de las características de los migrantes que porovoquen que ciertas personas con tengan una mayor propensión a migrar desde ciertas localizaciones, es decir, se analizaran los factores de expulsión de los distintos cluster; por otro lado, se realizará un análisis diferenciando el destino de los distintos migrantes, con el fin de establecer los determinantes de atracción de las distintas localizaciones.
+Se analizará si existen microdeterminantes dentro de las características de los migrantes que provoquen que ciertas personas con tengan una mayor propensión a migrar hacia determinadas localizaciones, es decir, se indagará en las diferencia entre los migrantes y los nativos de las distintas regiones con respecto a ciertas características que se consideran relevantes, como ser el sexo, la edad, la educación, entre otros. 
 
-Se tomara como unidad de análisis al Jefe de Hogar, con el fin de condensar la decisión familiar de la migración en un solo sujeto, y reconocer la importancia de los vinculos y las ganancias familiares en las decisiones migratorias de los sujetos (Mincer, 1978).
 
-\subsection{Género y edad}
-El género y la edad de las personas son considerados dentro de los microfactores que pueden afectar considerablemente a la decisión migratoria, es por ello que se analizan estas características dentro de la población de cada región, diferenciando entre los que son nativos de la provincia en la que habitan de los que son migrantes.
+\subsection{Sexo y edad}
+El sexo y la edad de las personas son considerados dentro de los microfactores que pueden afectar considerablemente a la decisión migratoria, es por ello que se analizan estas características dentro de la población de cada región, diferenciando entre los que son nativos de la provincia en la que habitan de los que son migrantes.
 
 En la Figura \ref{figure:sexo_mig_} se puede ver el género de los migrantes y nativos de las tres regiones definidas. En las tres regiones los migrantes  son en su mayoría mujeres, siendo la región 3 la que mayor cantidad de migrantes mujeres posee con un $55.62\%$, seguido por la Región 2, y en donde menor cantidad de mujeres migrantes habitan es en la Región 1, con un $52.80\%$ de migrantes mujeres.
 
@@ -508,7 +502,9 @@ A modo de resumen, el signo del parámetro $\beta_{jc}$ indica la dirección del
 \subsection{Base de datos y variables}
 La totalidad de los datos referidos a los flujos migratorios y las características socio económicas de los individuos que se utilizan para la estimación de los factores determinantes de las migraciones a través del modelo tienen como fuente un pool de cortes transversales  armado a través de la Encuesta Permanente de Hogares (EPH) relevada por el Instituto de Estadísticas y Censos de la República Argentina desde el segundo trimestre del año 2016 hasta el cuarto trimestre del año 2019.
 
-La muestra elegida de este pool de cortes transversales queda reducida a los jefes/as de hogar, asumiendo que la familia que conforma el hogar influye en los retornos netos de la migración (Mincer 1977) y el análisis de los migrantes de manera individual no permitiría contemplar dicha complejidad. Por otro lado, para este análisis no se consideran a los migrantes que tienen como región de destino y origen a la misma región ni tampoco a los migrantes internacionales.
+Se tomara como unidad de análisis al Jefe de Hogar, con el fin de condensar la decisión familiar de la migración en un solo sujeto, y reconocer la importancia de los vinculos y las ganancias familiares en las decisiones migratorias de los sujetos (Mincer, 1978).
+
+Por otro lado, para este análisis no se consideran a los migrantes que tienen como región de destino y origen a la misma región ni tampoco a los migrantes internacionales.
 
 La variable dependiente del modelo esta representada por las alternativas que puede tomar la persona con respecto la decisión y el destino del acto migratorio, estas pueden ser:
 \begin{itemize}
@@ -523,94 +519,15 @@ En cuanto a los regresores o variables dependientes del modelo se encuentran:
 \item Hombre: esta variable binaria indica el sexo de la persona, toma el valor de uno para los hombres y cero para las mujeres (grupo base).
 \item Pobre: Esta variable binaria indica la incidencia en la pobreza de la persona en el momento del relevamiento, toma el valor de uno para las personas pobres y cero para las no pobres (grupo base).
 \item Subsidio: Esta variable binaria indica si la persona recibe o no  subsidios o ayudas sociales en dinero al momento del relevamiento, toma el valor de uno para las personas que reciben esta transferencia económica y cero para las que no lo reciben (grupo base).
-\item Ocupado baja calificación y ocupado de alta calificación: estas variables binarias son del tipo categórica y representan a tres categorías, en donde el grupo base esta representado por las personas inactivas, desocupadas o con trabajos de baja calificación.
+\item Ocupado baja calificación y ocupado de alta calificación: estas variables binarias son del tipo categórica y representan a tres categorías, en donde el grupo base esta representado por las personas inactivas o desocupadas, el grupo de ocupados de baja calificación está compuesto por trabajadores con puestos no calificados u operativos y el grupo de ocupados de alta calificación está compuesto por personas que poseen un trabajo con calificación profesional o técnica.
 \item Soltero con hijo, casado con hijo y casado sin hijo: estas variables binarias son del tipo categórica y representan a cuatro categorías, en donde el grupo base esta representado por las personas solteras sin hijos. Otra forma en la que normalmente se presentan las variables categóricas en estos casos es en forma de interacciones de binarias, sin embargo se desistió la utilización de las mismas debido a que presentan conflictos en la interpretación de los parámetros estimados cuando los modelos son no lineales, para un tratamiento completo del tema ver  AI Norton (2003).
 \item Propietario: Esta variable binaria indica la condición de tenencia de la vivienda de la persona de la persona en el momento del relevamiento, toma el valor de uno para las personas que son dueñas de la vivienda que habitan y cero para las que no lo son (grupo base).
 \item Edad y Edad$^{2}$: Estas variables continuas indican la edad  y la edad elevada al cuadrado del individuo. 
-\item Educación media 
-
-
+\item Educación media y educación alta: estas variables binarias son del tipo categórica y representan a tres categorías, en donde el grupo base esta representado por las personas que como mucho poseen un nivel primario de educación, el grupo de personas con educación media está compuesto por aquellas que lograron terminar el secundario como nivel máximo de educación y el grupo con educación alta está compuesto por todos aquellos que lograron un título superior o universitario de educación.
 \end{itemize}
 
-Los factores socioeconómicos determinantes  de la migración varían dependiendo de la región de origen y de destino que se esté tomando a consideración.
-
-En el universo de habitantes de una determinada región/cluster, pueden existir caracteristicas determinadas que diferencien de manera significativa entre las personas que nacieron  y decidieron quedarse en la misma región, de las que si bien nacieron en la misma región, optaron por migrar hacia otra. A continuación se realizará un análisis diferenciando por cluster  de características socioeconómicas de los migrantes y no migrantes  que nacieron en una misma región con el fin de determinar si existen diferencias significativas entre ellos. 
-
-
-\begin{figure}[ht!]
-\begin{center}
-\caption{\\Flujo de migrantes entre regiones}
-\label{figure:chord}
-\input{./graficos/chord.tex} 
-\end{center}
-\begin{flushleft}
-\begin{scriptsize}
-Fuente: Elaboración propia en base a EPH
-\end{scriptsize}
-\end{flushleft}
-\end{figure}
-
-\begin{table}[!htbp] \centering \scriptsize 
-  \caption{} 
-  \label{} 
-\begin{tabular}{@{\extracolsep{5pt}}lccc} 
-\\[-1.8ex]\hline 
-\hline \\[-1.8ex] 
- & \multicolumn{3}{c}{\textit{Dependent variable:}} \\ 
-\cline{2-4} 
-\\[-1.8ex] & 1 & 2 & 3 \\ 
-\\[-1.8ex] & (1) & (2) & (3)\\ 
-\hline \\[-1.8ex] 
- hombre & 0.179$^{***}$ & 0.074$^{***}$ & $-$0.007 \\ 
-  & (0.001) & (0.005) & (0.010) \\ 
-  & & & \\ 
- POBRE & $-$0.583$^{***}$ & $-$0.166$^{***}$ & 0.030$^{***}$ \\ 
-  & (0.0005) & (0.002) & (0.010) \\ 
-  & & & \\ 
- SUBSIDIO & $-$0.213$^{***}$ & 0.153$^{***}$ & $-$0.415$^{***}$ \\ 
-  & (0.0002) & (0.001) & (0.002) \\ 
-  & & & \\ 
- OCUPADO\_BAJO & $-$0.236$^{***}$ & $-$0.086$^{***}$ & $-$0.069$^{***}$ \\ 
-  & (0.001) & (0.007) & (0.012) \\ 
-  & & & \\ 
- OCUPADO\_ALTO & $-$0.143$^{***}$ & $-$0.021$^{***}$ & $-$0.271$^{***}$ \\ 
-  & (0.001) & (0.007) & (0.007) \\ 
-  & & & \\ 
- SOLTERO\_C\_HIJO & $-$0.135$^{***}$ & $-$0.020$^{***}$ & $-$0.237$^{***}$ \\ 
-  & (0.0003) & (0.002) & (0.007) \\ 
-  & & & \\ 
- CASADO\_S\_HIJO & 0.055$^{***}$ & 0.062$^{***}$ & $-$0.005 \\ 
-  & (0.0002) & (0.001) & (0.004) \\ 
-  & & & \\ 
- CASADO\_C\_HIJO & $-$0.091$^{***}$ & $-$0.162$^{***}$ & $-$0.250$^{***}$ \\ 
-  & (0.001) & (0.004) & (0.007) \\ 
-  & & & \\ 
- PROPIETARIO & $-$0.332$^{***}$ & 0.031$^{***}$ & $-$0.296$^{***}$ \\ 
-  & (0.0005) & (0.001) & (0.010) \\ 
-  & & & \\ 
- edad & 0.028$^{***}$ & 0.026$^{***}$ & 0.020$^{***}$ \\ 
-  & (0.001) & (0.001) & (0.001) \\ 
-  & & & \\ 
- edad2 & $-$0.0003$^{***}$ & $-$0.0002$^{***}$ & $-$0.0001$^{***}$ \\ 
-  & (0.00001) & (0.00001) & (0.00001) \\ 
-  & & & \\ 
- medio & 0.047$^{***}$ & 0.408$^{***}$ & $-$0.555$^{***}$ \\ 
-  & (0.001) & (0.007) & (0.004) \\ 
-  & & & \\ 
- alto & 0.179$^{***}$ & 0.686$^{***}$ & $-$0.758$^{***}$ \\ 
-  & (0.001) & (0.008) & (0.006) \\ 
-  & & & \\ 
- Constant & $-$3.751$^{***}$ & $-$4.095$^{***}$ & $-$2.773$^{***}$ \\ 
-  & (0.0001) & (0.0003) & (0.0004) \\ 
-  & & & \\ 
-\hline \\[-1.8ex] 
-Akaike Inf. Crit. & 246,758.200 & 246,758.200 & 246,758.200 \\ 
-\hline 
-\hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-\end{tabular} 
-\end{table} 
-
+\subsection{Estimación del modelo}
+El resultado de las estimación de los parámetros del modelo se encuentra resumido en el Cuadro \ref{cuadro:estimacion}, en el se puede ver los coeficientes $\beta_{j}$ estimados para cada una de las alternativas del éxodo, cabe aclarar que en la interpretación de los mismos se utiliza implicitamente o explicitamente la comparación contra el grupo base, que está conformado por la alternativa de no migrar, es decir,se entienden de la alternativa de migrar hacia la región $j$ en comparación con la opción de no migrar.
 
 El sexo es un factor determinante de la migración hacia la region 1 y 2, en donde ser hombre aumenta la probabilidad de ser migrante en relación al grupo base (mujer), sin embargo, no es un factor determinante significativo si la migración es hacia la región 3. La edad tiene una relación positiva con la probabilidad de migrar hacia cualquiera de las tres regiones, lo que indica que la probabilidad de migrar aumenta conforme la persona es mayor, sin embargo existe una relación cuadrática significativa, lo que genera que cada año que aumente la edad aportará cada vez menos en el aumento de  la probabilidad de ser migrante hacia cualquiera de las regiones.
 
@@ -627,5 +544,68 @@ Otro factor relevante a la hora de analizar los factores determinantes de la dec
 La condición de ser propietario de la vivienda tiene efectos diferenciados en la probabilidad de que una persona migre hacia alguna de las regiones, mientras ser propietario de la vivienda aumenta la probabilidad de ser un migrante con destino a la región 2 en relación con las personas que no son propietarias de las viviendas (en adelante grupo base), la probabilidad de ser migrante disminuye para una persona que es propietaria de su vivienda en relación al grupo base si la región de destino es la 1 y 3.
 
 Por último se analiza el efecto que tiene la educación en la probabilidad de ser migrante. La probabilidad de ser migrante aumenta si la persona posee un nivel educativo medio o alto en relación con una persona con un nivel educativo bajo (en adelante grupo base), tanto para los que deciden migrar hacia la región 1 como hacia la region 2, sin embargo, la probabilidad de ser migrante con un nivel educativo medio o alto disminuye en relación al grupo base si al región de destino es la 3. 
+
+\begin{table}[!htbp] \centering \footnotesize 
+  \caption{Estimación de factores determinantes de la migración} 
+  \label{cuadro:estimacion} 
+\begin{tabular}{@{\extracolsep{5pt}}lccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{3}{c}{\textit{Variable dependiente:}} \\ 
+\cline{2-4} 
+\\[-1.8ex] & Región 1 & Región 2 & Región 3 \\ 
+\hline \\[-1.8ex] 
+ Hombre & 0.179$^{***}$ & 0.074$^{***}$ & $-$0.007 \\ 
+  & (0.001) & (0.005) & (0.010) \\ 
+  & & & \\ 
+ Pobre & $-$0.583$^{***}$ & $-$0.166$^{***}$ & 0.030$^{***}$ \\ 
+  & (0.0005) & (0.002) & (0.010) \\ 
+  & & & \\ 
+ Subsidio & $-$0.213$^{***}$ & 0.153$^{***}$ & $-$0.415$^{***}$ \\ 
+  & (0.0002) & (0.001) & (0.002) \\ 
+  & & & \\ 
+ Ocupado/a calif. baja & $-$0.236$^{***}$ & $-$0.086$^{***}$ & $-$0.069$^{***}$ \\ 
+  & (0.001) & (0.007) & (0.012) \\ 
+  & & & \\ 
+ Ocupado/a calif. alta  & $-$0.143$^{***}$ & $-$0.021$^{***}$ & $-$0.271$^{***}$ \\ 
+  & (0.001) & (0.007) & (0.007) \\ 
+  & & & \\ 
+ Soltero/a con hijo/a & $-$0.135$^{***}$ & $-$0.020$^{***}$ & $-$0.237$^{***}$ \\ 
+  & (0.0003) & (0.002) & (0.007) \\ 
+  & & & \\ 
+ Casado/a sin hijo/a & 0.055$^{***}$ & 0.062$^{***}$ & $-$0.005 \\ 
+  & (0.0002) & (0.001) & (0.004) \\ 
+  & & & \\ 
+ Casado/a con hijo/a & $-$0.091$^{***}$ & $-$0.162$^{***}$ & $-$0.250$^{***}$ \\ 
+  & (0.001) & (0.004) & (0.007) \\ 
+  & & & \\ 
+ Propietario/a & $-$0.332$^{***}$ & 0.031$^{***}$ & $-$0.296$^{***}$ \\ 
+  & (0.0005) & (0.001) & (0.010) \\ 
+  & & & \\ 
+ Edad & 0.028$^{***}$ & 0.026$^{***}$ & 0.020$^{***}$ \\ 
+  & (0.001) & (0.001) & (0.001) \\ 
+  & & & \\ 
+ Edad$^{2}$ & $-$0.0003$^{***}$ & $-$0.0002$^{***}$ & $-$0.0001$^{***}$ \\ 
+  & (0.00001) & (0.00001) & (0.00001) \\ 
+  & & & \\ 
+ Educación media & 0.047$^{***}$ & 0.408$^{***}$ & $-$0.555$^{***}$ \\ 
+  & (0.001) & (0.007) & (0.004) \\ 
+  & & & \\ 
+ Educación alta & 0.179$^{***}$ & 0.686$^{***}$ & $-$0.758$^{***}$ \\ 
+  & (0.001) & (0.008) & (0.006) \\ 
+  & & & \\ 
+ Constante & $-$3.751$^{***}$ & $-$4.095$^{***}$ & $-$2.773$^{***}$ \\ 
+  & (0.0001) & (0.0003) & (0.0004) \\ 
+  & & & \\ 
+\hline \\[-1.8ex] 
+Akaike Inf. Crit. & 246,758.200 & 246,758.200 & 246,758.200 \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Nota:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
+
+
+\printbibliography
 
 \end{document}

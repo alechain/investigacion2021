@@ -2,22 +2,22 @@
 title: "Borrador determinantes de las migraciones interregionales en Argentina"
 author: "Alejandro Chaín"
 date: "19/2/2021"
-header-includes:
-  - \usepackage[spanish]{babel}
-output: 
-  pdf_document:
+output:
+  html_document:
+    df_print: paged
+  pdf_document: null
+header-includes: \usepackage[spanish]{babel}
 fontsize: 11pt
-indent: TRUE
+indent: yes
 ---
 ```{r echo = FALSE, warning=FALSE, error=FALSE, message=FALSE, include=FALSE}
-setwd("/home/alejandrochain/Documentos/GitHub/investigacion2021/macrolocalizacion")
+#setwd("/home/alejandrochain/Documentos/GitHub/investigacion2021/macrolocalizacion")
 knitr::opts_chunk$set(echo = FALSE, dev="cairo_pdf", fig.cap = TRUE)
 library(readr)
 library(tidyverse)
 library(factoextra)
 library(cluster)
 library(fpc)
-#estos sirven para formatear pa latex
 library(stargazer)
 library(xtable)
 library(extrafont)
@@ -63,16 +63,25 @@ ephh<- ephh %>% arrange(-ANO4, -TRIMESTRE)
 ### mergeado
 
 ephtotal<- left_join(ephi,ephh)
+rm(list = c("ephh","ephh2","ephi","ephi2"))
 
 ### aglomerado
-aglomerado<- read_excel("aglomerado.xlsx",sheet = 4)
-
+temp<- tempfile()
+download.file("https://github.com/alechain/investigacion2021/raw/main/macrolocalizacion/aglomerado.xlsx", temp)
+aglomerado<- read_excel(temp,sheet = 4)
+unlink(temp)
 ### Sector
-sectorcaes<- read.csv("SECTORESCAES.csv", sep=",", header = T, encoding = "UTF-8", colClasses = "character")
+temp<- tempfile()
+download.file("https://github.com/alechain/investigacion2021/raw/main/macrolocalizacion/SECTORESCAES.csv", temp)
+sectorcaes<- read.csv(temp, sep=",", header = T, encoding = "UTF-8", colClasses = "character")
+unlink(temp)
 
 ### provincia
+temp<- tempfile()
+download.file("https://github.com/alechain/investigacion2021/raw/main/macrolocalizacion/provincias.csv", temp)
 
-provincia<- read.csv("provincias.csv", sep=",", header = T)
+provincia<- read.csv(temp, sep=",", header = T)
+unlink(temp)
 provincia1<- provincia %>% select(PROVINCIA,CH15_COD)
 provincia2<- provincia %>% select(PROVINCIA,CH16_COD)
 
@@ -182,7 +191,11 @@ El WSS es un indicador que mide la suma de las distancias al cuadrado entre las 
 ```{r include=FALSE}
 ## Carga de datos
 ##Para comenzar, cargamos los datos de las variables sociales y economicas que definen a las distintas provincias de la Argentina.
-datos<- read_csv("macroloc_para_r.csv",col_names = T, row.names(1))
+temp<- tempfile()
+download.file("https://github.com/alechain/investigacion2021/raw/main/macrolocalizacion/macroloc_para_r.csv", temp)
+
+datos<- read_csv(temp,col_names = T, row.names(1))
+unlink(temp)
 datos3<- datos %>% select(-Provincia)
 row.names(datos3)<- datos$Provincia
 datos4<- datos3
@@ -237,7 +250,7 @@ resumen2b$`Region 3`<- resumen2b$`Region 3`*100
 resumen2<- resumen2[1:13,]
 resumen2<- bind_rows(resumen2, resumen2b)
 #
-#kableExtra::kable(resumen2,format = "markdown",caption = "Resumen de indicadores por cluster")
+kableExtra::kable(resumen2,format = "html",caption = "Resumen de indicadores por cluster")
 #xtable(resumen2, type="latex",auto = TRUE)
 ```
 
@@ -254,40 +267,17 @@ names(km_clusters[1])
 ```
 
 ```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center',fig.cap="regiones resultantes de la macrolocalización"}
-#tikz(file = "regiones_resultantes.tex", sanitize = TRUE,width = 4,height = 4)
-fviz_cluster(km_clusters, data = datos4,
-palette = c("RED", "BLUE","GREEN"),
-ellipse.type = "euclid", # Concentration ellipse
-star.plot = TRUE, # Add segments from centroids to items
-repel = TRUE, # Avoid label overplotting (slow)
- labelsize = 6,) + theme_classic(base_family ="LM Roman 10") + labs(title="") + theme(text=element_text(family = "LM Roman 10", size = 8), title = element_text(face = "bold"), axis.title = element_text(size = 7))
-#dev.off()
-```
-```{r}
 #tikz(file = "regiones_resultantes.tex", sanitize = TRUE,width = 6,height = 4)
 fviz_cluster(km_clusters, data = datos4,
 palette = c("RED", "BLUE","GREEN"),
-ellipse.type = "euclid", # Concentration ellipse
-star.plot = TRUE, # Add segments from centroids to items
-repel = TRUE, # Avoid label overplotting (slow)
+ellipse.type = "euclid", 
+star.plot = TRUE, 
+repel = TRUE, 
  labelsize = 6) + labs(title="") + theme(text=element_text(),  title = element_text(face = "bold"),axis.text = element_text(color = "BLACK", size = 5) , axis.title = element_text(size = 5),panel.background = element_blank(), axis.line.x.bottom = element_line(color = "BLACK"), axis.line.y.left = element_line(color="BLACK"))
 #dev.off()
 ```
  
 
- title = element_text(face = "bold"),axis.text = element_text(color = "BLACK", size = 5) , axis.title = element_text(size = 5),panel.background = element_blank()
-
-```{r}
-#tikz(file = "regiones_resultantes.tex", sanitize = TRUE,width = 5,height = 4)
-fviz_cluster(km_clusters, data = datos4,
-palette = c("RED", "BLUE","GREEN"),
-ellipse.type = "euclid", # Concentration ellipse
-star.plot = TRUE, # Add segments from centroids to items
-repel = TRUE, # Avoid label overplotting (slow)
- labelsize = 5) +   labs(title="") +theme_bw() + theme(title =element_text(size=5),plot.background = element_blank(), panel.grid = element_blank(),panel.border = element_blank(), axis.line.x.bottom = element_line(color = "black"), axis.line.y = element_line(color = "black"))
-#dev.off()
-
-```
 
 
 Una vez ejecutado el algoritmo, se obtiene la division de las provincias de Argentina en tres regiones bien definidas, las cuales comparten similitudes en los parámetros definidos en la macrolozalización.
@@ -298,10 +288,6 @@ A continuación se muestra la distribución geográfica de las regiones definida
 
 ```{r include=FALSE}
 
-#ephtotal<- read_rds("ephtotal.Rds")
-### provincia
-
-provincia<- read.csv("provincias.csv", sep=",", header = T, encoding = "UTF-8")
 provincia<- provincia %>% arrange(PROVINCIA)
 provincia1<- provincia %>% select(PROVINCIA,CH15_COD)
 provincia2<- provincia %>% select(PROVINCIA,CH16_COD)
@@ -318,16 +304,16 @@ cluster_nombres_eph_ch15<-cluster_nombres_eph %>% select(provincia_origen,CH15_C
 ##############################################################################################
 ephinmi<- ephtotal %>% filter(CH15==3) 
 ephinmi<- left_join(ephinmi, cluster_nombres_eph_ch15) 
-
-ephinmi %>% filter(!is.na(SECTOR_ACT)) %>% group_by(SECTOR_ACT) %>% summarise(porcentaje=formattable::percent (sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(SECTOR_ACT)]))) %>% arrange(-porcentaje)
-
-ephinmi %>% filter(!is.na(CALIFICACION)) %>% group_by(CALIFICACION) %>% summarise(porcentaje=formattable::percent (sum(PONDERA)/sum(ephinmi$PONDERA[!is.na(CALIFICACION)]))) %>% arrange(-porcentaje)
-
 ```
 
 ```{r include=FALSE}
 ephinmi<- ephinmi %>% filter(!is.na(provincia_origen))
-prov_por_aglo<- read_csv("provincias_por_aglomerado.csv")
+
+temp<- tempfile()
+download.file("https://github.com/alechain/investigacion2021/raw/main/macrolocalizacion/provincias_por_aglomerado.csv", temp)
+
+prov_por_aglo<- read_csv(temp)
+unlink(temp)
 cluster_destino<- cluster_nombres_eph %>% select(provincia_origen,cluster_origen) %>% rename(provincia_destino=provincia_origen, cluster_destino=cluster_origen)
 cluster_destino<- left_join(prov_por_aglo,cluster_destino)
 
@@ -352,8 +338,11 @@ cuadro_8$cluster<- factor(cuadro_8$cluster, levels = c("1","2","3"))
 
 ```{r include=FALSE}
 ### Mapa de migraciony emigracion por provincia
+temp<- tempfile()
+download.file("https://github.com/alechain/investigacion2021/raw/main/macrolocalizacion/mapa/gadm36_ARG_shp.zip", temp)
+g<-unzip(temp,files = c("gadm36_ARG_1.shp","gadm36_ARG_1.cpg","gadm36_ARG_1.dbf","gadm36_ARG_1.prj","gadm36_ARG_1.shx"))
 
-datos_mapa_prov<- st_read( "./mapa/gadm36_ARG_1.shp")
+datos_mapa_prov<- st_read(g[1])
 datos_mapa_prov<- datos_mapa_prov %>% rename(Provincia=NAME_1)
 
 datos_mapa_prov<- datos_mapa_prov %>% mutate(Provincia=case_when(Provincia=="Ciudad de Buenos Aires"  ~ "Ciudad Autónoma de Buenos Aires",
@@ -375,9 +364,8 @@ Para completar el análisis, se presenta un resumen de los macrofactores que rep
 
 
 ```{r echo=FALSE, warning=FALSE, error=FALSE}
-kableExtra::kable(resumen2, caption = "Resumen de indicadores por regiones", format = 'markdown')
+kableExtra::kable(resumen2, caption = "Resumen de indicadores por regiones")
 
-stargazer(resumen2,summary = FALSE)
 ```
 La **región 1** se caracteriza en terminos sociales por una tasa de promoción secundaria relativamente baja, en comparación con las otras regiones, una leve mortalidad infantil, una alta tasa de robos agravados, homocidios dolosos y violaciones cada 100.000 habitantes y un nivel moderado de robos no agravados y muertes en accidentes viales cada 100.000 habitantes.
 En cuanto a términos económicos, esta región se caracteriza por tener la mejor integración a los mercados internacionales con la mayor cantidad de exportaciones per-cápita. 
@@ -396,16 +384,13 @@ En cuanto a factores económicos, esta región se caracteriza por tener un desem
 Dentro de las regiones existen provincias de las cuales salen gran cantidad de inmigrantes, al igual que existen provincias que son receptoras de estos mismos, en primer lugar se caracterizará a las regiones según el nivel de *expulsion* de inmigrantes interprovinciales.
 ```{r}
 cuadro_2<-ephinmi %>% group_by("Región"=cluster_origen) %>% summarise("Porcentaje"=formattable::percent((sum(PONDERA)/sum(ephinmi$PONDERA))))
-kableExtra::kable(cuadro_2,format = "markdown",caption = "Regiones de origen de los migrantes")
-#stargazer(cuadro_2,title = "Regiones de origen de los migrantes",summary = FALSE,label = "cuadro:origen_mig")
+kableExtra::kable(cuadro_2,format = "html",caption = "Regiones de origen de los migrantes")
 ```
 Se puede notar que las provincias de la  **Región Nº2** son las que mayor nivel de expulsión poseen, seguidas por las provincias pertenecientes a la Región Nº3, y por úlitmo se encuentran las pertenecientes a la Región Nº1.
 
 ```{r echo = FALSE, warning=FALSE, error=FALSE}
 cuadro_3<-ephinmi %>% group_by("Región"=cluster_destino) %>% summarise("Porcentaje"=formattable::percent((sum(PONDERA)/sum(ephinmi$PONDERA))))
-kableExtra::kable(cuadro_3,format = "markdown",caption = "Regiones de destino de los migrantes")
-#stargazer(cuadro_3,title = "Regiones de destino de los migrantes",summary = FALSE,label = "cuadro:destino_mig")
-
+kableExtra::kable(cuadro_3,format = "html",caption = "Regiones de destino de los migrantes")
 ```
 Sin embargo, analizando cuales son las regiones de destino  con mayor porcentaje  de migrantes, encontramos que la **Región Nº 3** es la que mayor nivel de *atracción* posee por elevada diferencia (`r cuadro_3 %>% filter("Región"==3) %>% pull()`), seguida por la Región Nº2 y en último lugar la Región Nº1.
 
@@ -420,14 +405,7 @@ Esta relación entre regiones con mayor atracción y expulsión de migrantes tam
 En el siguiente gráfico se puede observar la relación entre la tasa de emigración e inmigración de las provincias, diferenciando por la región a la cual pertenecen.
 
 ```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center', fig.cap="Tasa de inmigración y emigración por provincia"}
-cuadro_8 %>% ggplot(mapping=aes(x=tasa_inmigracion,y = tasa_emigracion, label=Provincia, color=cluster)) + geom_point(show.legend = T) + geom_abline(intercept=-0,slope = 1)+ scale_color_manual(values = color)+ scale_y_continuous(labels = scales::percent_format(),limits = c(0,0.75))+scale_x_continuous(labels = scales::percent_format(),limits = c(0,0.75)) + xlab("Tasa de inmigración") + ylab("Tasa de emigración")+ labs(title = "", color="Región:")+ ggrepel::geom_text_repel(size=3,family = "LM Roman 10",show.legend = F)+theme(text=element_text(family = "LM Roman 10"),axis.line = element_line(color="BLACK") ,axis.text = element_text(size=7, color = "BLACK") , panel.background = element_blank(),  axis.title = element_text(size=7), title = element_text(face = "bold"), legend.key = element_blank())
-```
-
-```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center', fig.cap="Tasa de inmigración y emigración por provincia"}
-#tikz(file = "tasas_emig_inmig_prov.tex", sanitize = TRUE,width = 6,height = 4)
-
-cuadro_8 %>% ggplot(mapping=aes(x=tasa_inmigracion,y = tasa_emigracion, label=Provincia, color=cluster)) + geom_point(show.legend = T) + geom_abline(intercept=-0,slope = 1)+ scale_color_manual(values = color)+ scale_y_continuous(labels = scales::percent_format(),limits = c(0,0.75))+scale_x_continuous(labels = scales::percent_format(),limits = c(0,0.75)) + xlab("Tasa de inmigración") + ylab("Tasa de emigración")+ labs(title = "", color="Región:")+ ggrepel::geom_text_repel(size=2,show.legend = F)+theme(axis.line = element_line(color="BLACK") ,axis.text = element_text(color = "BLACK", size = 5) , axis.title = element_text(size = 5),panel.background = element_blank(), title = element_text(face = "bold"), legend.key = element_blank())
-#dev.off()
+cuadro_8 %>% ggplot(mapping=aes(x=tasa_inmigracion,y = tasa_emigracion, label=Provincia, color=cluster)) + geom_point(show.legend = T) + geom_abline(intercept=-0,slope = 1)+ scale_color_manual(values = color)+ scale_y_continuous(labels = scales::percent_format(),limits = c(0,0.75))+scale_x_continuous(labels = scales::percent_format(),limits = c(0,0.75)) + xlab("Tasa de inmigración") + ylab("Tasa de emigración")+ labs(title = "", color="Región:")+ ggrepel::geom_text_repel(size=3,show.legend = F)+theme(text=element_text(),axis.line = element_line(color="BLACK") ,axis.text = element_text(size=7, color = "BLACK") , panel.background = element_blank(),  axis.title = element_text(size=7), title = element_text(face = "bold"), legend.key = element_blank())
 ```
 
 
@@ -436,11 +414,10 @@ La bisectriz divide el plano en dos zonas, todas las provincias que se encuentra
 Las provincias pertenecientes a la Región Nº2 se ubican en casi su totalidad por encima de la bisectriz, indicando que son provincias en donde la expulsión de migrantes es mucho mayor que la atracción de los mismos, por otro lado, las provincias de la Región Nº 1 tienen una mayor tendencia a ubicarse por debajo de la linea diagonal, en donde la atracción de migrantes es mayor que la expulsión en casi la totalidad de las provincias, con excepción de Tucumán, y por último, en la Región Nº3 se pueden encontrar tres provincias que se encuentran por debajo de la diagonal, en donde la atracción de migrantes es mayor que su nivel de expulsión (Buenos Aires, Ciudad Autónoma de Buenos Aires y Tierra del Fuego) y otras tres que se encuentran con tasa de inmigración y emigración muy similares, con diferencias muy leves a favor de la tasa de emigración.
 
 ```{r fig.align='center' ,  fig.cap="Tasas de emigración e inmigración por provincia"}
-#pdf(file = "emig_inmig_por_prov.pdf",height = 4, width = 6)
-mapa_inmigracion<-ggplot(data = datos_mapa_prov) + geom_sf(aes(fill=tasa_inmigracion),color="BLACK", size=0.2 ) + viridis::scale_fill_viridis(label=scales::percent) + labs(fill="Tasa de inmigración:") + theme(text=element_text(family="LM Roman 10"), panel.background = element_blank() , axis.text = element_blank(), axis.ticks = element_blank()) 
-mapa_emigracion<- ggplot(data = datos_mapa_prov) + geom_sf(aes(fill=tasa_emigracion),color="BLACK", size=0.2 ) + viridis::scale_fill_viridis(label=scales::percent) + labs(fill="Tasa de emigración:") + theme(text=element_text(family="LM Roman 10"), panel.background = element_blank() , axis.text = element_blank(), axis.ticks = element_blank()) 
+mapa_inmigracion<-ggplot(data = datos_mapa_prov) + geom_sf(aes(fill=tasa_inmigracion),color="BLACK", size=0.2 ) + viridis::scale_fill_viridis(label=scales::percent) + labs(fill="Tasa de inmigración:") + theme(text=element_text(), panel.background = element_blank() , axis.text = element_blank(), axis.ticks = element_blank()) 
+mapa_emigracion<- ggplot(data = datos_mapa_prov) + geom_sf(aes(fill=tasa_emigracion),color="BLACK", size=0.2 ) + viridis::scale_fill_viridis(label=scales::percent) + labs(fill="Tasa de emigración:") + theme(text=element_text(), panel.background = element_blank() , axis.text = element_blank(), axis.ticks = element_blank()) 
 gridExtra::grid.arrange(mapa_emigracion,mapa_inmigracion, ncol=2)
-#dev.off()
+
 ```
 En el Mapa Nº2 se observa la diferencia en la distribución de las provincias con mayor tasaa de migración e inmigración, las provincias de Chaco, Corrientes y Rio Negro son las que mayores tasa de emigración poseen, mientras que en el Sur de la Argentina se encuentran las provincias en donde la tasa de inmigración es mas elevada, con provincias como Tierra del Fuego, Santa Cruz y Neuquén.
 
@@ -451,9 +428,17 @@ En el Mapa Nº2 se observa la diferencia en la distribución de las provincias c
 
 
 ```{r include=FALSE}
-#Creación de regresores (feature engineerirng)
+#Creación de regresores 
+unlink(temp)
+temp<- tempfile()
+download.file("https://github.com/alechain/investigacion2021/blob/main/macrolocalizacion/deflactor.csv",temp)
+
 deflactor<- read_csv("deflactor.csv")
+unlink(temp)
+temp<- tempfile()
+download.file("https://github.com/alechain/investigacion2021/blob/main/macrolocalizacion/canasta.csv",temp)
 canastas<- read.csv("canasta.csv", sep=";", dec=".", header = TRUE)
+unlink(temp)
 
 ephtotal<- left_join(ephtotal, deflactor)
 ephtotal<- ephtotal %>% mutate(HIJO=case_when(CH03==3~1,
