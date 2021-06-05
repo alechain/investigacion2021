@@ -5,18 +5,39 @@
 \usepackage{amsmath} 
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage{tikz}
+\usepackage[babel]{csquotes}
 \usepackage[backend=biber,style=apa]{biblatex}
-\bibliography{Bibliography.bib}
+%\DefineBibliographyStrings{english}
+\DeclareLanguageMapping{spanish}{spanish-apa}
+\addbibresource{Bibliography.bib}
 \renewcommand{\baselinestretch}{1.2}
 \usepackage{caption}
 \newcommand{\source}[1]{\caption*{\scriptsize{Fuente: {#1}}} }
-
 \setlength{\parskip}{4mm}
 %\setcounter{secnumdepth}{0}
-\author{Alejandro Chain}
+\author{Alejandro Chaín}
 \title{Borrador determinantes de migraciones interregionales en Argentina}
 \begin{document}
-\maketitle
+\begin{titlepage}
+\centering
+\vspace{3cm}
+{\bfseries\LARGE Universidad Nacional del Nordeste\par}
+\vspace{1cm}
+{\includegraphics[width=0.3\textwidth]{logounne.png}\par}
+{\scshape\Large Facultad de Ciencias Econ\'omicas\par}
+\vspace{2cm}
+{\scshape\Huge Borrador del proyecto investigación \par}
+\vspace{2cm}
+{\itshape\Large ``Identificación de los factores socioeconómicos determinantes en la migración
+interregional en Argentina entre 2016 y 2019'' \par}
+\vfill
+{\Large Autor: \par}
+{\Large Alejandro Chaín\par}
+\vfill
+{\Large 4 de Junio del 2021 \par}
+\end{titlepage}
+
+%\maketitle
 \newpage
 \tableofcontents
 \newpage
@@ -29,28 +50,30 @@ Esta situación provoca un desconocimiento a la hora de analizar la ponderación
 Es de suma importancia identificar cuáles son los factores que juegan un rol predominante a la hora de incentivar a las personas a migrar desde su localidad de origen hacia otra localidad con un perfil de desarrollo totalmente distinto,  considerando que el crecimiento y la calidad de vida de un espacio geográfico determinado impacta en las decisiones de emigración de individuos que comparten ciertas características socioeconómicas homogéneas.
 
 \section{Regiones}
-En el estudio de los determinantes de las migraciones interprovinciales se pueden encontrar distintos niveles de factores según la generalidad del impacto que tengan en las personas que habitan un determinado espacio geográfico, por un lado se encuentran factores que son comunes a toda la población de una determinada comunidad, que son conocidos como macrofactores y estan conformados por aspectos políticos, sociales, económicos y demográficos, por el otro, se puden encontrar los microfactores, estos son características individuales que actúan como “mediadores” en la decisión migratoria e impactan de manera distinta dependiendo de los macrofactores que configuran los potenciales destinos u orígenes de migración.
+En el estudio de los determinantes de las migraciones interprovinciales se pueden encontrar distintos niveles de factores según la generalidad del impacto que tengan en las personas que habitan un determinado espacio geográfico, por un lado se encuentran factores que son comunes a toda la población de una determinada comunidad, que son conocidos como macrofactores y estan conformados por aspectos políticos, sociales, económicos y demográficos, por el otro, se puden encontrar los microfactores, estos son características individuales que actúan como “mediadores” en la decisión migratoria e impactan de manera distinta dependiendo de los macrofactores que configuran los potenciales destinos u orígenes de migración \parencite{kuhnt_literature_2019}.
 
 Este proceso de decisión migratoria consta de una interrelación constante entre los macrofactores y microfactores, que deben ser considerados a la hora de definir los determinantes que llevan a la decisión del éxodo interprovincial.
 
-En el análisis pormenorizado de las migraciones interprovinciales en la Argentina existen ciertas  limitaciones, debido a la elevada cantidad de provincias de origen y destino que surgen de la combinación de los movimientos migratorios, se torna dificultoso encontrar determinantes aislados para cada una de las provincias, esto no solo por la complicación en términos de disponibilidad y volumen de los datos, los cuales se ven ampliamente reducidos a causa de la subdivisión, sino también por el hecho de que se volvería tedioso y desordenado el análisis pormenorizado de ciertas combinaciones migratorias.
+Existen ciertas limitaciones para un análisis pormenorizado de las migraciones interprovinciales en la Argentina debido a la elevada cantidad de provincias de origen y destino que surgen de la combinación de los movimientos migratorios, esto provoca que se torne dificultoso encontrar determinantes aislados para cada una de las provincias, no solo por la complicación en términos de disponibilidad y volumen de los datos para lograr una estimación confiable, los cuales se ven ampliamente reducidos a causa de la subdivisión, sino también por el hecho de que se volvería tedioso y desordenado el análisis pormenorizado de ciertas combinaciones migratorias.
 
 Este problema trae ligado el cuestionante sobre cuales son los  determinantes óptimos que son compartidos por las  provincias y  que permiten configurar un macro-entorno en donde se pueda  observar dinámicas migratorias similares, una primera respuesta podría ser la típica definición regional del país, pero esta misma peca de ponderar con mayor peso a cuestiones geográficas, y dejan de lado consideraciones desde el punto de vista socio-económico de las regiones.
 
-Teniendo en cuenta esta problemática y las teorías de aglomeración espacial de la nueva geografía económica (Krugman 1994), en donde queda demostrado que, bajo supuestos de mercados de competencia monopolistica, costos de transporte, movilidad factorial y sectores de actividad de económica bien diferenciados, la movilidad de las personas (factor trabajo) converge a la aglomeración de la producción y el consumo en unas pocas regiones con dinámicas productivas similares, ergo, la problemática del análisis pormenorizado de la migraciones interprovinciales puede ser morigerado a través de una aglomeración de las provincias en regiones considerando determinados macrofactores que serán definidos posteriormente en este trabajo. 
+Teniendo en cuenta esta problemática y las teorías de aglomeración espacial de la nueva geografía económica \parencite{krugman_increasing_1991}, en donde queda demostrado que, bajo ciertos supuestos de mercados de competencia monopolística, costos de transporte, movilidad factorial y sectores de actividad de económica bien diferenciados, la movilidad de las personas (factor trabajo) converge a la aglomeración de la producción y el consumo en unas pocas regiones con dinámicas productivas similares, ergo, la problemática del análisis pormenorizado de la migraciones interprovinciales puede ser morigerado a través de una aglomeración de las provincias en regiones, considerando determinados macrofactores que serán definidos posteriormente en este trabajo. 
 
-Dicha simplificación tiene su base en la consideración de que  zonas altamente pobladas generan una mayor “atracción” debido a la mayor diversidad de bienes y de salarios reales mas elevados, mientras que las empresas se ven altamente beneficiadas a causa del amplio mercado local que se genera lo que permite que incurran en menores costos de transporte, al mismo tiempo que se benefician de las economías de escala y de los encadenamientos hacia adelante y hacia atrás que producen la concentración industrial, esto conlleva a que se generen procesos migratorios hacia áreas determinadas que comparten características en términos de estructuras productivas, funcionamiento del mercado laboral, distribución del factor trabajo entre sectores de actividad económica, costos de transporte, salario real, y por ende, otros determinantes sociales y culturales que son consecuencia de los efectos de la aglomeración espacial.
+Dicha simplificación tiene su base en la consideración de que  zonas altamente pobladas generan una mayor atracción de los migrantes a causa de una mayor diversidad de bienes y de salarios reales mas elevados, sumado a que las empresas se ven altamente beneficiadas debido al amplio mercado local que se genera, lo que permite que incurran en menores costos de transporte, al mismo tiempo que se benefician de las economías de escala y de los encadenamientos hacia adelante y hacia atrás que son producidos por la concentración industrial. 
+
+Esto conlleva a que se generen procesos migratorios hacia áreas determinadas que comparten características en términos de estructuras productivas, funcionamiento del mercado laboral, distribución del factor trabajo entre sectores de actividad económica, costos de transporte, salario real, y por ende, otros determinantes sociales y culturales que son consecuencia de los efectos de la aglomeración espacial.
 \subsection{Macrofactores}
 
- Para la selección de los macro factores (Jana Kuhnt, 2019) de aglomeración de las provincias de Argentina se optó por clasificarlos en factores sociodemográficos y económicos, se tomó como parámetros base el trabajo de Martín Cicowiez (2003) y se los amplió en pos de reflejar las variables compartidas según las teorías de aglomeración productiva de la nueva geografía económica, a continuación se dará una breve descripción de los mismos.
+Para la selección de los macrofactores de aglomeración de las provincias se optó por clasificarlos en aspectos sociodemográficos y económicos, se tomaron como base las características seleccionadas en  el trabajo de \textcite{cicowiez_caracterizacion_2003} y se agregaron algunas otras en pos de reflejar las variables compartidas por las regiones según las teorías de aglomeración productiva de la nueva geografía económica. A continuación se brinda una breve descripción de los macrofactores seleccionados:
 
 \textbf{Factores sociodemográficos de macrolocalización:}
 \begin{itemize}
-\item Cantidad de Habitantes: Esta variable indica la cantidad de habitantes de cada provincia, tiene como fuente el Censo Nacional de Población y Vivienda del INDEC realizado en el año 2010, e intenta representar el tamaño de las distintas provincias en términos poblacionales.
+%\item Cantidad de Habitantes: Esta variable indica la cantidad de habitantes de cada provincia, tiene como fuente el Censo Nacional de Población y Vivienda del INDEC realizado en el año 2010, e intenta representar el tamaño de las distintas provincias en términos poblacionales.
 
 \item Tasa de promoción efectiva secundaria: En esta variable se busca encontrar una aproximación a la calidad y efectividad del aparato educativo en cada provincia, siendo que no solo es importante el acceso a la educación media en términos de tasa de escolarización neta secundaria, sino también la posibilidad de sortear los obstáculos para lograr completar el nivel secundario.
 
-\item Mortalidad infantil: Se calcula como la mortalidad infantil por cada 1000 nacidos vivos según la provincia de residencia de la madre, estos datos tienen como fuente la secretaría de acceso a la salud del ministerio de salud de la Nación Argentina, e intenta mostrar las diferencias y similitudes en el acceso a la salud y a las posibilidades del desarrollo de un proyecto familiar.
+\item Mortalidad infantil: Se calcula como la mortalidad infantil por cada 1.000 nacidos vivos según la provincia de residencia de la madre, estos datos tienen como fuente la secretaría de acceso a la salud del ministerio de salud de la Nación Argentina, e intenta mostrar las diferencias y similitudes en el acceso a la salud y a las posibilidades del desarrollo de un proyecto familiar.
 
 \item Homicidios, robos, robos agravados, violaciones y muertes en accidentes de tránsito cada 100.000 habitantes: estas variables tienen como fuente el Sistema Nacional de Información Criminal del ministerio de seguridad de la nación y se utiliza para aproximar el nivel de seguridad social y jurídica de cada una de las provincias.
 \end{itemize}
@@ -70,64 +93,71 @@ Dicha simplificación tiene su base en la consideración de que  zonas altamente
 \item Porcentaje de empleados en los distintos sectores de actividad: esta variable que tiene como fuente al Observatorio de Empleo y Dinámicas Empresariales del Ministerio de Trabajo, Empleo y Seguridad Social demuestra el peso de los distintos sectores de actividad como generadores de empleo en las provincias y  demarca las diferencias en las estructuras productivas que existen entre ellas, esto significa que en algunas puede existir un mayor porcentaje de empleo proveniente de la Agricultura, ganadería, pesca y actividades extractivas (sector primario extractivo), en otras del sector de Comercio, servicios, electricidad, gas, agua y construcción (sector terciario de servicios) y en otras del sector industrial (sector secundario).
 \end{itemize}
 
-\subsection{Nivel de subdivisión}
+\subsection{Aglomeración}
 
 Para comenzar con la división en regiones de las provincias argentinas, es necesario definir el nivel optimo de aglomeración de acuerdo a los macrofactores elegidos, es decir, definir el numero de regiones en que serán divididas las provincias argentinas.
 
-Para esta aglomeración se utilizará el algoritmo de K-medias (\textit{K-means}), y el indicador a utilizar para definir el numero de regiones óptimas será el \textit{Within-cluster sum of square (WSS)}.
+Para esta aglomeración se utilizará el algoritmo de K-medias \parencite{macqueen_methods_1967}, particularmente el desarrollado por \textcite{hartigan_k-means_1979} que utiliza la distancia euclidiana para la medición de las discrepancias entre los objetos y los grupos, y el indicador a utilizar para definir el numero de regiones óptimas será el \textit{Within-cluster sum of square (WSS)}.
 
 \vspace{5mm}
 \begin {center}
 \begin{equation}\label{eq:wss}
-WSS=\sum_{i=1}^{N_{C}} \sum_{\textbf{x}\in Ci} distancia(\textbf{x},\bar{\textbf{x}}_{\tiny{\textit{Ci}}})
+WSS=\sum_{i=1}^{N_{C}} \sum_{\textbf{x}\in Ci} distancia(\textbf{x},\bar{\textbf{x}}_{\tiny{\textit{Ci}}})^{2}
 \end{equation}
 \end {center}
 \vspace{5mm}
 
 
-El WSS (\ref{eq:wss}) es un indicador que mide la suma de las distancias al cuadrado entre las variables dentro de  los cluster (regiones) y sus centroides($\bar{\textbf{x}}_{\tiny{\textit{Ci}}}$) , en donde el objetivo es minimizar dicha discrepancia dentro de cada grupo, teniendo en cuenta el *trade-off* que implica cuando este es mínimo, el cual es el caso en que el numero de clusters es igual al número de variables a clusterizar, en donde si tenemos $j$ observaciones, el numero de clusters $k$ sería tal que $j=k$, y no se estaría dando ninguna información relevante a los efectos de poder resumir caracteristicas comunes entre los grupos, esto provoca que se tenga que tomar una decisión en el numero de clusters óptimos (regiones óptimas), tal que las provincias dentro de cada cluster (region) sean lo más similares posibles en términos de los factores de macrolozalización, pero teniendo en cuenta que una división muy extensa en clusters (regiones) pierde utilidad analítica a los efectos de definir zonas con caracterísiticas similares para un posterior análisis de movilidad regional.
+El WSS (\ref{eq:wss}) es un indicador que mide la suma de las distancias al cuadrado entre las variables dentro de  los cluster (regiones) y sus centroides($\bar{\textbf{x}}_{\tiny{\textit{Ci}}}$) , en donde el objetivo es minimizar dicha discrepancia dentro de cada grupo para distintos números de clusters $k$, teniendo en cuenta el \textit{trade-off} que implica cuando éste es mínimo, el cual es el caso en que el numero de clusters (regiones) es igual al número de objetos (provincias) a clusterizar, en donde si tenemos $j$ objetos, el numero de clusters $k$ sería tal que $j=k$, y no se estaría dando ninguna información relevante a los efectos de poder resumir caracteristicas comunes entre los grupos, esto provoca que se tenga que tomar una decisión en el numero de clusters óptimos (regiones óptimas), tal que las provincias dentro de cada cluster (región) sean lo más similares posibles en términos de los factores de macrolocalización, pero teniendo en cuenta que una división muy extensa en clusters (regiones) pierde utilidad analítica a los efectos de definir zonas con caracterísiticas similares para un posterior análisis de movilidad regional.
 
 \begin{figure}[h!]
 \begin{center}
+	\caption{\\Número de regiones óptimas}
  	\input{./graficos/regiones_optimas.tex}
-	\caption{Número de regiones óptimas}
 	\label{figure:optimas}
 \end{center}
 \end{figure}
 \newpage
-Como se puede ver en la Figura \ref{figure:optimas}, luego de realizar el cálculo del \textit{WSS} se obtiene que el numero óptimo de regiones se encuentra en torno a \textbf{tres}, debido a que la contribución marginal de aumentar el numero de  clusters a cuatro no aportaría una reducción muy elevada al \textbf{WSS} y se seguiría perdiendo generalidad en la regionalización de las provincias sin una ganancia significativa de similitud dentro de las regiones.
 
-\subsection{Aglomeración de provincias}
+Como se puede ver en la Figura \ref{figure:optimas}, luego de realizar el cálculo del \textit{WSS} se obtiene que el numero óptimo de regiones se encuentra en torno a \textbf{tres}, debido a que la contribución marginal de aumentar el número de  regiones a cuatro no aportaría una reducción muy elevada al \textbf{WSS} y se seguiría perdiendo generalidad en la regionalización de las provincias sin una ganancia significativa de similitud dentro de las regiones.
+
 Una vez obtenido el número de regiones óptimas se procede a asignar a las provincias a las regiones que pertenecen, dependiendo de la similitud que poseen con respecto a los macrofactores definidos anteriormente.
 
-Para la división regional se utilizará el algoritmo de K-Medias, en donde se define una semilla para el cálculo de los centroides iniciales del algoritmo y se procede a realizar el cálculo de los clusters a través de 1.000 iteraciones, siendo seleccionada aquella  que arroje un menor numero del indicador de la suma de las distancias al cuadrado entre las variables dentro de  los cluster y sus centroides, tambien conocido como \textit{WSS}.
+Para la división regional se utilizará el algoritmo de K-Medias, en donde se definen aleatoriamente los centroides iniciales del algoritmo y se procede a realizar el cálculo de los clusters a través de 1.000 iteraciones, siendo seleccionada aquella  que arroje un menor numero del indicador de la suma de las distancias al cuadrado entre las variables dentro de  los cluster y sus centroides, tambien conocido como \textit{WSS}.
 
 Una vez ejecutado el algoritmo, se obtiene la division de las provincias de Argentina en tres regiones bien definidas (Figura \ref{figure:reg_resultantes}), las cuales comparten similitudes en los parámetros definidos en la macrolocalización.
 
-Se puede ver claramente la diferencia en la similitud de los tres grupos, siendo solamente la Capital Federal la única que presenta mayor disimilitud con respecto a su región, lo cual indica que esta  lleva una dinámica socio-económica muy peculiar con respecto al promedio de las provincias argentinas, inclusive considerablemente distinta que las provincias con la cual ostenta mayor similitud.
+
 \begin{figure}[ht!]
 \begin{center}
+\caption{\\Regiones resultantes de la aglomeración}
 \input{./graficos/regiones_resultantes.tex}
-\caption{Regiones resultantes de la macrolocalización}
 \label{figure:reg_resultantes}
 \end{center}
 \end{figure}
-\begin{figure}[ht!]
-\begin{center}
-\includegraphics[scale=0.7]{./graficos/mapa_regiones.pdf}
-\caption{Mapa de regiones resultantes de la macrolocalización}
-\label{figure:mapa_reg}
-\end{center}
-\end{figure}
 \newpage
-En la Figura \ref{figure:mapa_reg} se muestra la distribución geográfica de las regiones definidas anteriormente.
+Se puede ver claramente la diferencia en la similitud de los tres grupos, calculada a través del análisis de componentes principales de los macrofactores, siendo solamente la Ciudad Autónoma de Buenos Aires la única que presenta mayor disimilitud con respecto a su región, lo cual indica que esta  lleva una dinámica socio-económica muy peculiar con respecto al promedio de las provincias argentinas, inclusive considerablemente distinta a las provincias con la cual ostenta mayor similitud.
 
-Para completar el análisis, en el Cuadro \ref{cuadro:indicadores} se presenta un resumen de los macrofactores que representan en promedio a cada región, es decir, cuales son las características compartidas entre las provincias que provocaron que sean parte de un mismo aglomerado.
+En el Cuadro \ref{cuadro:indicadores} se presenta un resumen de los macrofactores que representan en promedio a cada región, es decir, cuales son las características compartidas entre las provincias que provocaron que sean parte de un mismo aglomerado.
+
+La \textbf{región 1} se caracteriza en terminos sociales por una tasa de promoción secundaria relativamente baja, en comparación con las otras regiones, una leve mortalidad infantil, una alta tasa de robos agravados, homocidios dolosos y violaciones cada 100.000 habitantes y un nivel moderado de robos no agravados y muertes en accidentes viales cada 100.000 habitantes. En términos económicos, esta región se caracteriza por tener la mejor integración a los mercados internacionales con la mayor cantidad de exportaciones per-cápita. 
+
+En cuanto al nivel de actividad, posee elevados niveles de consumo  de energía electrica per-cápita, la tasa de actividad promedio y la cantidad relativa de empresas es la segunda más elevada de las tres regiones, el salario real es el más alto, con amplia diferencia, de las tres regiones y la tasa de pobreza es la más baja de las tres. Por último, se caracteriza por una predominancia del sector terciario, seguido del sector primario (Agricultura, ganadería, pesca y actividades extractivas) y por último, con un porcentaje considerablemente menor, el sector secundario (industrial).
+
+La \textbf{región 2} se caracteriza en terminos sociales por una moderada tasa de promoción secundaria, en comparación con las otras regiones, una elevada tasa mortalidad infantil, una baja tasa de robos (agravados y no agravados) y homocidios dolosos cada 100.000 habitantes, un nivel moderado de violaciones cada 100.000 habitantes y una elevada tasa de muertes en accidentes viales cada 100.000 habitantes. 
+En cuanto a factores económicos, esta región se caracteriza por tener una pésima integración a los mercados internacionales con la más baja cantidad de exportaciones per-cápita, en cuanto a los niveles de actividad, posee los menores niveles de consumo  de energía electrica per-cápita, la menor tasa de actividad promedio, la menor cantidad relativa de empresas, el salario real es el más bajo de las tres regiones y la tasa de pobreza es la más alta de las tres, dejandola en el último puesto en términos de desempeño económico en términos relativos. 
+
+Por último, se caracteriza, al igual que las otras dos regiones, por una predominancia del sector terciario, seguido del sector secundario (industrial) y dejando en último lugar al sector primario (Agricultura, ganadería, pesca y actividades extractivas).
+
+La \textbf{región 3} se caracteriza en terminos sociales por una elevada tasa de promoción secundaria, en comparación con las otras regiones, una moderada tasa mortalidad infantil, muy similar a la región 2, una moderada tasa de robos agravados y homocidios dolosos cada 100.000 habitantes, un nivel bajo en términos relativos de violaciones y muertes en accidentes viales cada 100.000 habitantes y una elevada tasa de robos no agravados. 
+
+En cuanto a factores económicos, esta región se caracteriza por tener un desempeño intermedio en términos de integración a los mercados internacionales, con una cantidad de exportaciones per-cápita en dolares que se encuentra en un término medio entre las dos regiones restantes, en cuanto a los niveles de actividad, posee el segundo mayor nivel de consumo  de energía electrica per-cápita, la mayor tasa de actividad promedio, la mayor cantidad relativa de empresas cada 100.000 habitantes, un nivel intermedio de salario real  y una tasa de pobreza que se encuentra como la segunda más baja de las tres regiones. Por último, se caracteriza, al igual que las otras dos regiones, por una predominancia del sector terciario, seguido del sector secundario (industrial) y dejando en último lugar, con amplia diferencia, al sector primario (Agricultura, ganadería, pesca y actividades extractivas).
+
 \begin{table}[!htbp] 
 \center
 \footnotesize
 \raggedleft
-  \caption{Resumen de indicadores por regiones} 
+  \caption{\\Resumen de indicadores por regiones} 
   \label{cuadro:indicadores} 
 \begin{tabular}{@{\extracolsep{5pt}} lccc} 
 \\[-1.8ex]\hline 
@@ -156,19 +186,20 @@ Para completar el análisis, en el Cuadro \ref{cuadro:indicadores} se presenta u
 \end{tabular} 
 \end{table} 
 
-La \textbf{región 1} se caracteriza en terminos sociales por una tasa de promoción secundaria relativamente baja, en comparación con las otras regiones, una leve mortalidad infantil, una alta tasa de robos agravados, homocidios dolosos y violaciones cada 100.000 habitantes y un nivel moderado de robos no agravados y muertes en accidentes viales cada 100.000 habitantes. En términos económicos, esta región se caracteriza por tener la mejor integración a los mercados internacionales con la mayor cantidad de exportaciones per-cápita. 
-En cuanto al nivel de actividad, posee elevados niveles de consumo  de energía electrica per-cápita, la tasa de actividad promedio y la cantidad relativa de empresas es la segunda más elevada de las tres regiones, el salario real es el más alto, con amplia diferencia, de las tres regiones y la tasa de pobreza es la más baja de las tres. Por último, se caracteriza por una predominancia del sector terciario, seguido del sector primario (Agricultura, ganadería, pesca y actividades extractivas) y por último, con un porcentaje considerablemente menor, el sector secundario (industrial).
+\newpage
+Para finalizar el análisis de la aglomeración por macrofactores en la Figura \ref{figure:mapa_reg} se muestra la distribución geográfica de las provincias que componen las regiones definidas anteriormente.
+\begin{figure}[ht!]
+\begin{center}
+\caption{\\Mapa de las regiones resultantes de la macrolocalización}
+\includegraphics[scale=0.7]{./graficos/mapa_regiones.pdf}
+\label{figure:mapa_reg}
+\end{center}
+\end{figure}
+\newpage
 
-La \textbf{región 2} se caracteriza en terminos sociales por una moderada tasa de promoción secundaria, en comparación con las otras regiones, una elevada tasa mortalidad infantil, una baja tasa de robos (agravados y no agravados) y homocidios dolosos cada 100.000 habitantes, un nivel moderado de violaciones cada 100.000 habitantes y una elevada tasa de muertes en accidentes viales cada 100.000 habitantes. 
-En cuanto a factores económicos, esta región se caracteriza por tener una pésima integración a los mercados internacionales con la más baja cantidad de exportaciones per-cápita, en cuanto a los niveles de actividad, posee los menores niveles de consumo  de energía electrica per-cápita, la menor tasa de actividad promedio, la menor cantidad relativa de empresas, el salario real es el más bajo de las tres regiones y la tasa de pobreza es la más alta de las tres, dejandola en el último puesto en términos de desempeño económico en términos relativos. 
-Por último, se caracteriza, al igual que las otras dos regiones, por una predominancia del sector terciario, seguido del sector secundario (industrial) y dejando en último lugar al sector primario (Agricultura, ganadería, pesca y actividades extractivas).
+\subsection{Flujos migratorios}
 
-La \textbf{región 3} se caracteriza en terminos sociales por una elevada tasa de promoción secundaria, en comparación con las otras regiones, una moderada tasa mortalidad infantil, muy similar a la región 2, una moderada tasa de robos agravados y homocidios dolosos cada 100.000 habitantes, un nivel bajo en términos relativos de violaciones y muertes en accidentes viales cada 100.000 habitantes y una elevada tasa de robos no agravados. 
-En cuanto a factores económicos, esta región se caracteriza por tener un desempeño intermedio en términos de integración a los mercados internacionales, con una cantidad de exportaciones per-cápita en dolares que se encuentra en un término medio entre las dos regiones restantes, en cuanto a los niveles de actividad, posee el segundo mayor nivel de consumo  de energía electrica per-cápita, la mayor tasa de actividad promedio, la mayor cantidad relativa de empresas cada 100.000 habitantes, un nivel intermedio de salario real  y una tasa de pobreza que se encuentra como la segunda más baja de las tres regiones. Por último, se caracteriza, al igual que las otras dos regiones, por una predominancia del sector terciario, seguido del sector secundario (industrial) y dejando en último lugar, con amplia diferencia, al sector primario (Agricultura, ganadería, pesca y actividades extractivas).
-
-\subsection{Flujos migatrorios}
-
-Dentro de las regiones existen provincias de las cuales salen gran cantidad de inmigrantes, al igual que existen provincias que son receptoras de estos mismos, en primer lugar se caracterizará a las regiones según el nivel de \textit{expulsion} de inmigrantes interprovinciales.
+Dentro de las regiones existen provincias de las cuales salen una gran cantidad de emigrantes, al igual que existen provincias que son receptoras de estos mismos, en primer lugar se caracterizará a las regiones según el nivel de \textit{expulsión} de migrantes interprovinciales.
 \begin{table}[!htbp] \centering 
 \footnotesize
   \caption{\\Regiones de origen de los migrantes} 
@@ -186,7 +217,8 @@ Región & Porcentaje \\
 \hline \\[-1.8ex] 
 \end{tabular} 
 \end{table} 
-En el Cuadro \ref{cuadro:origen_mig} se puede ntoar que las provincias de la  \textbf{Región Nº2} son las que mayor nivel de expulsión poseen, seguidas por las provincias pertenecientes a la Región Nº3, y por úlitmo se encuentran las pertenecientes a la Región Nº1.
+
+En el Cuadro \ref{cuadro:origen_mig} se puede notar que las provincias de la  \textbf{Región Nº2} son las que mayor nivel de expulsión poseen, seguidas por las provincias pertenecientes a la Región Nº3, y por úlitmo se encuentran las pertenecientes a la Región Nº1.
 
 \begin{table}[!htbp] \centering 
 \footnotesize
@@ -216,63 +248,70 @@ Esta relación entre regiones con mayor atracción y expulsión de migrantes tam
 \label{figure:emig_inmig_prov}
 \end{center}
 \end{figure}
-
-En la Figura \ref{figure:emig_inmig_prov} se puede observar la relación entre la tasa de emigración e inmigración de las provincias, diferenciando por la región a la cual pertenecen.
+\newpage
+En la Figura \ref{figure:emig_inmig_prov} se puede observar la relación entre la tasa de emigración e inmigración de las provincias, diferenciadas por la región a la cual pertenecen.
 
 La bisectriz divide el plano en dos zonas, todas las provincias que se encuentran por encima de ella son aquellas en la que la tasa de emigración es superior a la tasa de inmigración, mientras que las que se encuentran por debajo, son quellas en la que existe una mayor tasa de inmigración que de emigración. 
 
 Las provincias pertenecientes a la Región Nº2 se ubican en casi su totalidad por encima de la bisectriz, indicando que son provincias en donde la expulsión de migrantes es mucho mayor que la atracción de los mismos, por otro lado, las provincias de la Región Nº 1 tienen una mayor tendencia a ubicarse por debajo de la linea diagonal, en donde la atracción de migrantes es mayor que la expulsión en casi la totalidad de las provincias, con excepción de Tucumán, y por último, en la Región Nº3 se pueden encontrar tres provincias que se encuentran por debajo de la diagonal, en donde la atracción de migrantes es mayor que su nivel de expulsión (Buenos Aires, Ciudad Autónoma de Buenos Aires y Tierra del Fuego) y otras tres que se encuentran con tasa de inmigración y emigración muy similares, con diferencias muy leves a favor de la tasa de emigración.
 
-En la Figura \ref{figure:emig_inmig_prov_mapa} se observa la diferencia en la distribución de las provincias con mayor tasa de migración e inmigración, las provincias de Chaco, Corrientes y Rio Negro son las que mayores tasa de emigración poseen, mientras que en el Sur de la Argentina se encuentran las provincias en donde la tasa de inmigración es mas elevada, con provincias como Tierra del Fuego, Santa Cruz y Neuquén.
+Estas diferencias entre tasa de emigración e inmigración pueden ser vistas desde un punto de vista geográfico en la Figura \ref{figure:emig_inmig_prov_mapa}, en donde se observa la diferencia en la distribución de las provincias con mayor tasa de migración e inmigración, las provincias de Chaco, Corrientes y Rio Negro son las que mayores tasa de emigración poseen, mientras que en el Sur de la Argentina se encuentran las provincias en donde la tasa de inmigración es más elevada, con provincias como Tierra del Fuego, Santa Cruz y Neuquén.
 \begin{figure}[h!]
 \begin{center}
+\caption{\\Mapa de tasas de emigración e inmigración por provincia}
 \includegraphics[scale=1.1]{./graficos/emig_inmig_por_prov.pdf}
-\caption{Mapa de tasas de emigración e inmigración por provincia}
 \label{figure:emig_inmig_prov_mapa}
 \end{center}
 \end{figure}
 \newpage
 \section{Migrantes}
-Las características individuales o familiares de las personas que toman la decisión de emprender un proceso migratorio forman parte de los microdeterminantes de las migraciones,si bien estas no deben ser tomadas como las principales impulsoras de la decisión del éxodo, funcionan como mediadoras en la decisión migratoria y tienen una elevada influencia en la auto-selección de los migrantes (Borjas, 1987) para cada una de las regiones.
+Las características individuales o familiares de las personas que toman la decisión de emprender un proceso migratorio forman parte de los microdeterminantes de las migraciones, si bien estos no deben ser tomados como los principales impulsores de la decisión del éxodo, funcionan como mediadores en la decisión migratoria y tienen una elevada influencia en la auto-selección de los migrantes \parencite{borjas_self-selection_1987} para cada una de las regiones.
 
-Se analizará si existen microdeterminantes dentro de las características de los migrantes que provoquen que ciertas personas con tengan una mayor propensión a migrar hacia determinadas localizaciones, es decir, se indagará en las diferencia entre los migrantes y los nativos de las distintas regiones con respecto a ciertas características que se consideran relevantes, como ser el sexo, la edad, la educación, entre otros. 
+Es por ello que se analizará si existen microdeterminantes dentro de las características de los migrantes que provoquen que ciertas personas posean una mayor propensión a migrar hacia determinadas localizaciones, es decir, se indagará en las diferencia entre los migrantes y los nativos de las distintas regiones con respecto a los microdeterminantes que se consideran relevantes, los cuales serán explicitados y desarrollados en los siguientes apartados.
 
 
 \subsection{Sexo y edad}
 El sexo y la edad de las personas son considerados dentro de los microfactores que pueden afectar considerablemente a la decisión migratoria, es por ello que se analizan estas características dentro de la población de cada región, diferenciando entre los que son nativos de la provincia en la que habitan de los que son migrantes.
 
-En la Figura \ref{figure:sexo_mig_} se puede ver el género de los migrantes y nativos de las tres regiones definidas. En las tres regiones los migrantes  son en su mayoría mujeres, siendo la región 3 la que mayor cantidad de migrantes mujeres posee con un $55.62\%$, seguido por la Región 2, y en donde menor cantidad de mujeres migrantes habitan es en la Región 1, con un $52.80\%$ de migrantes mujeres.
+En la Figura \ref{figure:sexo_mig_} se puede ver el sexo de los migrantes y nativos de las tres regiones definidas. En las tres regiones los migrantes  son en su mayoría mujeres, siendo la región 3 la que mayor cantidad de migrantes mujeres posee con un $55.62\%$, seguido por la Región 2, y en donde menor cantidad de mujeres migrantes habitan es en la Región 1, con un $52.80\%$ de migrantes mujeres.
 
-Otra particularidad que se puede observar en la Figura \ref{figure:sexo_mig_} es que en todas las regiones la proporción de mujeres nativas es menor que la proporción de mujeres migrantes, esto fenomeno es comunmente conocido en la literatura de migraciones internacionales como feminización de la migración (Carling, 2005), fenomeno que surje, en parte, de la particiación más activa que tomó la mujer en el mercado laboral en las últimas décadas, lo que permitió el acceso a la posibildiad de migrar para formar parte de mercados laborales en donde la valoración de su fuerza de trabajo sea mayor.
+Otra particularidad que se puede observar en la Figura \ref{figure:sexo_mig_} es que en todas las regiones la proporción de mujeres nativas es menor que la proporción de mujeres migrantes, esto fenomeno es comunmente conocido en la literatura de migraciones internacionales como feminización de la migración \parencite{carling_gender_2005}, fenomeno que surje, en parte, de la particiación más activa que tomó la mujer en el mercado laboral en las últimas décadas, lo que permitió el acceso a la posibilidad de migrar para formar parte de mercados laborales en donde la valoración de su fuerza de trabajo sea mayor.
 
 \begin{figure}[ht!]
 \begin{center}
+ 	\caption{\\Sexo de los nativos y migrantes por regiones}
 \input{./graficos/sexo_mig.tex} 
- 	\caption{Género de los nativos y migrantes}
  	\label{figure:sexo_mig_}
-	\source{Elaboración propia en base a EPH}
+\begin{flushleft}
+\begin{scriptsize}
+Fuente: Elaboración propia en base a EPH.
+\end{scriptsize}
+\end{flushleft}
 \end{center}
-
 \end{figure}
 
 \newpage
-En la Figura \ref{figure:edad_mig} se puede observar función de densidad de la edad de los nativos y migrantes de cada una de las tres regiones, la distribución de la edad de los nativos  está desplazada y centrada en valores de edad considerablemente menores que la de los migrantes, y esta relación se cumple para las tres regiones, sin embargo, es más notoria para la región 3 en donde la vejez de la población migrante difiere considerablemente de las características etárias de la población nativa, la cual deja entrever una población menos avejentada en términos relativos.
+En la Figura \ref{figure:edad_mig} se puede observar función de densidad de la edad de los nativos y migrantes de cada una de las tres regiones, la distribución de la edad de los nativos  está desplazada y centrada en valores de edad considerablemente menores que la de los migrantes, y esta relación se cumple para las tres regiones, sin embargo, es más notoria para la región 3 en donde la vejez de la población migrante difiere considerablemente de las características etarias de la población nativa, la cual deja entrever una población menos avejentada en términos relativos.
 
-La teoría clásica ve a la migración como una inversión en capital humano, siguiendo esta linea, un individuo calcula el valor actual descontado del flujo de ganancias de por vida esperado en su región de origen y en la región a la que proyecta migrar, y tomará la decisión del éxodo solamente si el retorno neto de los ``costos de migrar'' son mayores en la localidad de destino que en su localidad de origen (Zaiceva 2014). De acuerdo con esta teoría, mientras mas joven es el migrante, mas largo es el horizonte de vida proyectado y por ende sus ganancias esperadas, y mientras más viejo sea el migrante, no solo este horizonte esperado en el que podra realizar sus ganancias es menor, sino que también seran mayores  los ``costos de migrar'', como por ejemplo los costos psicologicos de separarse de familia y amigos, el mayor capital social que deberán dejar atras, la dificultad de integrarse en una nueva cultura, entre otros.
+La teoría clásica ve a la migración como una inversión en capital humano, siguiendo esta linea, un individuo calcula el valor actual descontado del flujo de ganancias de por vida esperado en su región de origen y en la región a la que proyecta migrar, y tomará la decisión del éxodo solamente si el retorno neto de los ``costos de migrar'' son mayores en la localidad de destino que en su localidad de origen \parencite{zaiceva_impact_2014}. De acuerdo con esta teoría, mientras más joven es el migrante, mas largo es el horizonte de vida proyectado y por ende sus ganancias esperadas, y mientras más viejo sea el migrante, no solo este horizonte esperado en el que podra realizar sus ganancias es menor, sino que también seran mayores  los ``costos de migrar'', como por ejemplo los costos psicologicos de separarse de familia y amigos, el mayor capital social que deberán dejar atras, la dificultad de integrarse en una nueva cultura, entre otros.
 
-Como se puede observar en el Cuadro \ref{cuadro:edad_mig}, la mitad de los migrantes en las regiones 1 y 2 se encuentra en torno a los 40 a 45 años, sin embargo, esta relación no se cumple para la región 3, en la cual la mediana de la edad de los migrantes se encuentra en edad mayores a los 50 años, siendo considerablemente mayor a la edad mediana de la población nativa.
-
-Este fenomeno conocido como ``avejentamiento de la migración'' (Zacieva 2014) viene de la mano de una reducción de la migración de personas en edad laboral por falta de demandas laborales atractivas que impliquen un diferencial en las ganancias de los migrantes y que justifiquen los costos de las migraciones.
 \begin{figure}[ht!]
 \begin{center}
+\caption{\\Edad de los nativos y migrantes por regiones}
 \input{./graficos/edad_mig.tex} 
-\caption{Género de los nativos y migrantes}
 \label{figure:edad_mig}
-\source{Elaboración propia en base a EPH}
+\begin{flushleft}
+\begin{scriptsize}
+Fuente: Elaboración propia en base a EPH.
+\end{scriptsize}
+\end{flushleft}
 \end{center}
 \end{figure}
+\newpage
+Como se puede observar en el Cuadro \ref{cuadro:edad_mig}, la mitad de los migrantes en las regiones 1 y 2 se encuentra en torno a los 40 a 45 años, sin embargo, esta relación no se cumple para la región 3, en la cual la mediana de la edad de los migrantes se encuentra en edad mayores a los 50 años, siendo considerablemente mayor a la edad mediana de la población nativa.
 
 \begin{table}[ht!]
+\caption{Edad y género de los migrantes por regiones} 
 \centering
 \footnotesize
 \begin{tabular}{cllc}
@@ -293,19 +332,25 @@ Región & Condición & Género & Mediana de Edad \\
   3 & Nativos & Mujeres & 31 \\ 
    \hline
 \end{tabular}
-\caption{Edad y género de los migrantes} 
 \label{cuadro:edad_mig}
+\begin{flushleft}
+\begin{scriptsize}
+Fuente: Elaboración propia en base a EPH.
+\end{scriptsize}
+\end{flushleft}
 \end{table}
 
+Este fenomeno conocido como ``avejentamiento de la migración'' (Zacieva 2014) viene de la mano de una reducción de la migración de personas en edad laboral por falta de demandas laborales atractivas que impliquen un diferencial en las ganancias de los migrantes y que justifiquen los costos de las migraciones.
+
 \subsection{Pobreza y patrimonio}
-Uno de los principales factores económicos de la migración es la busqueda de un estandar de vida más elevado del que se podría costear en la localida de origen (Simpson 2017), este factor económico de expulsión  puede verse reflejado en los ingresos que percibe una persona, laborales y no laborales(subsidios y transferencias), como en la posibilidad de acumulación de activos patrimoniales, como por ejemplo el acceso a la vivienda propia. 
+Uno de los principales factores económicos de la migración es la busqueda de un estandar de vida más elevado del que se podría costear en la localida de origen \parencite{simpson_demographic_2017}, este factor económico de expulsión  puede verse reflejado en los ingresos que percibe una persona, laborales y no laborales(subsidios y transferencias), como en la posibilidad de acumulación de activos patrimoniales, como por ejemplo el acceso a la vivienda propia. 
 
 En la Figura \ref{figure:pobre_mig} se puede observar como la incidencia en la pobreza de los migrantes es considerablemente menor que la de los nativos para las tres regiones analizadas, esta diferencia en torno a los 10 p.p en el caso de las regiones 2 y 3 y un poco más de 4 p.p.para la región 1 brinda un indicio de un mejor pasar económico, en promedio, de las personas que decidieron migrar para cada una de las regiones.
 
 
 \begin{figure}[hb!]
 \begin{center}
-\caption{Incidencia en la pobreza de los nativos y migrantes}
+\caption{\\Incidencia en la pobreza de los nativos y migrantes por regiones}
 \label{figure:pobre_mig}
 \input{./graficos/pobre_mig.tex} 
 \end{center}
@@ -320,7 +365,7 @@ En la Figura \ref{figure:vivienda_mig} podemos ver las diferencias en el acceso 
 
 \begin{figure}[ht!]
 \begin{center}
-\caption{Propiedad de la vivienda de los nativos y migrantes}
+\caption{\\Propiedad de la vivienda de los nativos y migrantes por regiones}
 \label{figure:vivienda_mig}
 \input{./graficos/vivienda_mig.tex} 
 \end{center}
@@ -330,18 +375,16 @@ Fuente: Elaboración propia en base a EPH
 \end{scriptsize}
 \end{flushleft}
 \end{figure}
-\newpage
 
+En un estudio de \textcite{liebig_fiscal_2013} que se realizo para los paises de la \textit{``OCDE''}, se llegó a la conclusión de que en aquellos en donde la cuota de migrantes de edad avanzada no es tan elevada, los migrantes contribuyen en mayor medida en impuestos y contribuciones sociales de lo que reciben en forma de beneficios individuales por parte del estado en comparación con los nativos. 
 
-En un estudio que se realizo para los paises de la \textit{``OCDE''}, se llegó a la conclusión de que en aquellos en donde la cuota de migrantes de edad avanzada no es tan elevada, los migrantes contribuyen en mayor medida en impuestos y contribuciones sociales de lo que reciben en forma de beneficios individuales por parte del Estado en comparación con los nativos (Liebig, Mo, 2013). 
-
-Este patrón puede ser analizado a nivel de migraciones interprovinciales considerando la recepción de ingresos no laborales (subsidios) de los migrantes y nativos para cada región. Es menester aclarar que solamente se está observando una dimensión del fenómeno, que es la asimetria en la recepción de beneficios individuales en forma de transferencias, es decir, que no se observa la recepción de otro tipo de beneficios individuales otorgado por el estado, como tampoco se puede observar el nivel de constribución a las arcas publicas de los distintos segmentos, con lo que se podría armar un panorama completo sobre la posicion fiscal neta de los migrantes y nativos.
+Este patrón puede ser analizado a nivel de migraciones interprovinciales considerando la recepción de ingresos no laborales (subsidios) de los migrantes y nativos para cada región. Es menester aclarar que solamente se está observando una dimensión del fenómeno, que es la asimetria en la recepción de beneficios individuales en forma de transferencias, es decir, que no se observa la recepción de otro tipo de beneficios individuales otorgado por el estado, como tampoco se puede observar el nivel de constribución a las arcas publicas de los distintos segmentos, con lo que se podría armar un panorama completo sobre la posición fiscal neta de los migrantes y nativos.
 
 Se puede observar en la Figura \ref{figure:subsidio_mig} que para las tres regiones, es más probable que un nativo reciba algun tipo de subsidio que un migrante, siendo estos los que menor participación en la percepción de subsidios poseen en promedio.
 
 \begin{figure}[ht!]
 \begin{center}
-\caption{\\Percepción de subsidios de los nativos y migrantes}
+\caption{\\Percepción de subsidios de los nativos y migrantes por regiones}
 \label{figure:subsidio_mig}
 \input{./graficos/subsidio_mig.tex} 
 \end{center}
@@ -353,7 +396,7 @@ Fuente: Elaboración propia en base a EPH
 \end{figure}
 
 \subsection{Ocupación y calificación}
-En el cuadro \ref{cuadro:tasaactiv_mig} se pude ver como los migrantes tienen una tasa de actividad superior a la de los nativos para todas las reigones, esto indica que los migrantes forman parte de la fuerza de trabajo en una en una mayor proporción que los nativos.
+En el cuadro \ref{cuadro:tasaactiv_mig} se pude ver como los migrantes tienen una tasa de actividad superior a la de los nativos para todas las regiones, esto indica que los migrantes forman parte de la fuerza de trabajo en una en una mayor proporción que los nativos.
 \begin{table}[ht]
 \centering
 \caption{\\Tasa de actividad de nativos y migrantes} 
@@ -367,8 +410,13 @@ En el cuadro \ref{cuadro:tasaactiv_mig} se pude ver como los migrantes tienen un
    \hline
 \end{tabular}
 \label{cuadro:tasaactiv_mig}
+\begin{flushleft}
+\begin{scriptsize}
+Fuente: Elaboración propia en base a EPH
+\end{scriptsize}
+\end{flushleft}
 \end{table}
-
+\newpage
 Tomando como referencia a la población ocupada, dentro de la población activa considerada anteriormente, se puede observar en la Figura \ref{figure:calif_mig} la calificación de los empleados en cada región dependiendo si son nativos o migrantes, para la región 1 y 2 los migrantes ocupan puestos de mayor calificación que los nativos, esta relación se invierte para la región 3, en la cual no solo los nativos poseen trabajos más calificados en comparación con las otras dos regiones, sino tambien que los migrantes ocupan puestos de calificación mas baja en términos relativos.
 
 \begin{figure}[ht!]
@@ -380,13 +428,14 @@ Tomando como referencia a la población ocupada, dentro de la población activa 
 \begin{flushleft}
 \begin{scriptsize}
 Fuente: Elaboración propia en base a EPH.
+\\Nota: Nativos y migrantes pertenecientes a la población ocupada.
 \end{scriptsize}
 \end{flushleft}
 \end{figure}
 
-\subsection{Estado civil y situación familiar}
+\subsection{Estado civil y organización familiar}
 
-La situación familiar y relacional de las personas afecta directamente las ganancias y los costos de migrar, en especial considerando que la teoría indica que las ganancias provenientes de la migración se incrementan en menor proporción que los costos cuando existe una familia vinculada a la decisión del éxodo (Mincer 1977), por esta razón es necesario caracterizar el estado civil y la situación familiar de los nativos y los migrantes en las distintas regiones con el fin de reconocer si existen heterogeneidades en los distintos grupos.
+La situación familiar y relacional de las personas afecta directamente las ganancias y los costos de migrar, en especial considerando que la teoría indica que las ganancias provenientes de la migración se incrementan en menor proporción que los costos cuando existe una familia vinculada a la decisión del éxodo \parencite{mincer_family_1978}, por esta razón es necesario caracterizar el estado civil y la situación familiar de los nativos y los migrantes en las distintas regiones con el fin de reconocer si existen heterogeneidades en los distintos grupos.
 
 En la Figura \ref{figure:estadociv_mig} se puede observar como los porcentajes de personas solteras sin hijos son mayores para los migrantes que para los nativos en las tres regiones, sin embargo, yendo al otro extremo de las personas que estan casadas y con hijos, no se encuentra una diferencia tan demarcada entre nativos y migrantes como podría indicar la teoría.
 
@@ -407,16 +456,11 @@ Nota: Nativos y migrantes mayores a 18 años.
 \end{figure}
 
 \subsection{Nivel educativo}
-La educación de las personas es un componente del capital humano que juega un  papel importante en la decisión migratoria, sobre todo considerando la transferencia de este capital humano a otras localidades en donde pueda conseguir mayores retornos, en donde es de esperar que mientras más factible sea esta transferencia, mayores serán los incentivos a migrar.
-Esta relación no está exenta de ambigüedades, debido a que en la localidad de origen también puede enfrentar mejores retornos o mayores facilidades para conseguir un empleo a causa de poseer niveles educativos más elevados, actuando como un incentivo a no realizar el éxodo migratorio (Danzer Dietz 2008).
+La educación de las personas es un componente del capital humano que juega un  papel importante en la decisión migratoria, sobre todo considerando la posibilidad de transferencia de este capital humano a otras localidades en donde pueda conseguir mayores retornos, es de esperar que mientras más factible sea esta transferencia, mayores serán los incentivos a migrar.
 
-Por último, la teoría indica que en ciertos casos los mercados laborales de las localidades receptoras de migrantes solamente están abiertas a personas con bajo nivel de calificación, lo que puede actuar como una auto selección de migrantes en la cual quedan excluidos aquellos con elevado nivel educativo (Stark y Taylor 1991).
+Esta relación no está exenta de ambigüedades, debido a que en la localidad de origen también puede enfrentar mejores retornos o mayores facilidades para conseguir un empleo a causa de poseer niveles educativos más elevados, actuando como un incentivo a no realizar el éxodo migratorio \parencite{danzer_economic_2008}.
 
-En la Figura \ref{figure:niveled_mig} se puede observar las diferencias en los niveles educativos de los nativos y migrantes mayores a 18 años, dentro del nivel educativo bajo se encuentran aquellos sin instrucción o cuyo nivel máximo de educación es el primario, el nivel educativo medio está compuesto por aquellos cuyo nivel educativo maximo alcanzado es el secundario, y por último los que componen el grupo de nivel educativo alto son aquellos cuyo nivel educativo máximo alcanzado es la educación superior o universitaria.
-
-Las regiones 1 y 2 se caracterizan por una mayor proporción de migrantes con nivel educativo alto y una menor proporción de migrantes con nivel educativo bajo en comparacion con la población nativa, esta relación queda rotundamente invertida para el caso de la región 3, para la cual la proporción de personas con nivel educativo bajo es considerablemente mayor para el caso de los migrantes que para el caso de la población nativa, y en el segmento de personas con nivel educativo alto, los nativos superan en terminos porcentuales a la población migrante.
-
-Esto brinda una panorama en el cual las regiones 1 y 2 están compuestas por migrantes con un nivel educativo avanzado, mientras que la región 3 posee una mayor composición de migrantes con una menor preparación en términos de educación formal.
+Por último, en trabajos como el de \textcite{stark_migration_1991} quedo demostrado que en ciertos casos los mercados laborales de las localidades receptoras de migrantes solamente están abiertas a personas con bajo nivel de calificación, lo que puede actuar como una auto selección de migrantes en la cual quedan excluidos aquellos con elevado nivel educativo.
 
 \begin{figure}[ht!]
 \begin{center}
@@ -432,14 +476,21 @@ Nota: Nativos y migrantes mayores a 18 años.
 \end{flushleft}
 \end{figure}
 
+En la Figura \ref{figure:niveled_mig} se puede observar las diferencias en los niveles educativos de los nativos y migrantes mayores a 18 años, dentro del nivel educativo bajo se encuentran aquellos sin instrucción o cuyo nivel máximo de educación es el primario, el nivel educativo medio está compuesto por aquellos cuyo nivel educativo maximo alcanzado es el secundario, y por último los que componen el grupo de nivel educativo alto son aquellos cuyo nivel educativo máximo alcanzado es la educación superior o universitaria.
 
+Las regiones 1 y 2 se caracterizan por una mayor proporción de migrantes con nivel educativo alto y una menor proporción de migrantes con nivel educativo bajo en comparación con la población nativa, esta relación queda rotundamente invertida para el caso de la región 3, para la cual la proporción de personas con nivel educativo bajo es considerablemente mayor para el caso de los migrantes que para el caso de la población nativa, y en el segmento de personas con nivel educativo alto, los nativos superan en terminos porcentuales a la población migrante.
+
+Esto brinda una panorama en el cual las regiones 1 y 2 están compuestas por migrantes con un nivel educativo elevado, mientras que la región 3 posee una mayor composición de migrantes con una menor preparación en términos de educación formal.
+
+
+\newpage
 \section{Factores determinantes de la migración}
 \subsection{Modelo}
 El análisis de los factores determinantes de la migración  encuentra su base en que las personas se desplazan a partir de una decisión racional que maximiza su utilidad, en esta decisión intervienen una serie de factores socio económicos que hacen más o menos propenso que la misma decida permanecer en su localidad de origen o migrar hacia alguna otra region.
 
-Para determinar el impacto de los distintos factores en la decisión migratoria, se recurre a la formulación de un modelo de probabilidad \textit{logit multinomial}, en el cual los individuos se enfrentan a $n$ alternativas mutuamente excluyentes que no siguen un orden específico (greene), estas son la decisión de no migrar, la de migrar hacia la región 1, la de migrar hacia la región 2 o la de migrar hacia la región 3.
+Para determinar el impacto de los distintos factores en la decisión migratoria, se recurre a la formulación de un modelo de probabilidad \textit{logit multinomial}, en el cual los individuos se enfrentan a $n$ alternativas mutuamente excluyentes que no siguen un orden específico \parencite{greene_econometric_2018}, estas son la decisión de no migrar, la de migrar hacia la región 1, la de migrar hacia la región 2 o la de migrar hacia la región 3.
 
-Este modelo se basa en la teoría de la utilidad aleatoria (McFadden 1975) que permite fundamentar teoricamente el modelo de elección discreta de los individuos en el caso de que se enfrente a un conjunto finito de alternativas mutuamente excluyente, como es el caso de la decisión del éxodo.
+Este modelo se basa en la teoría de la utilidad aleatoria \parencite{domencich_urban_1975} que permite fundamentar teoricamente el modelo de elección discreta de los individuos en el caso de que se enfrente a un conjunto finito de alternativas mutuamente excluyente, como es el caso de la decisión del éxodo.
 Según esta teoría la utilidad de los $i$ individuos que se enfrentan a $j$ alternativas estan representadas por una función $U_{ij}$(\ref{eq:utility}) que posee dos componentes, un componente observable $\beta_{j} \textbf{x}_{i}$  que en este caso está determinado por un vector de factores socio-económicos determinantes de la migración $\textbf{x}_{i}$ que varía para cada individuio $i$ y un vector de parámetros $\beta_{j}$ que varía para cada alternativa $j$, y un componente inobservable $\varepsilon_{ij}$ que para este caso sigue una distribución de valor máximo de tipo I (Distribución Gumbel) independiente e identicamente distribuida.
 \begin {center}
 \begin{equation}\label{eq:utility}
@@ -461,7 +512,7 @@ P{(Y_{i}=j)}=\frac{e^{\ \beta_{j} \textbf{x}_{i}}}{\sum_{k=0}^{n-1}e^{\ \beta_{k
 \end{equation}
 \end {center}
 
-Para evitar el problema de indeterminación en la estimación de los parámetros $\beta_{j}$ se normaliza el modelo representado por la ecuación (\ref{eq:multinom}) asignando el valor de cero para todos los parámetros de la alternativa correspondiente a ``No migrar" ($\beta_{0}=0$), de esta manera la estimación de la probabildiad en el modelo logit multinomial será relativa a esta ``alternativa base" de no migrar (Coxhead, Nguyen, Linh 2015).
+Para evitar el problema de indeterminación en la estimación de los parámetros $\beta_{j}$ se normaliza el modelo representado por la ecuación (\ref{eq:multinom}) asignando el valor de cero para todos los parámetros de la alternativa correspondiente a ``No migrar" ($\beta_{0}=0$), de esta manera la estimación de la probabildiad en el modelo logit multinomial será relativa a esta ``alternativa base" de no migrar \parencite{coxhead_migration_2015}.
 Luego de esa normalización, se pueden definir las probabilidades de las $n$ alternativas de la siguiente forma:
 \begin {center}
 \begin{equation}\label{eq:multinom_2}
@@ -492,7 +543,7 @@ Tomando logaritmos neperianos para ambos términos de la ecuación \ref{eq:odds}
 \end{equation}
 \end {center}
 
-En el primer término de la ecuación \ref{eq:logodds} encontramos el logaritmo del ratio de probabilidades(\textit{log-odds}) y en el segundo término se encuentra el vector de parametros $\beta_{j}$ acompañado del vector de las características individuales $\textbf{x}_{i}$. 
+En el primer término de la ecuación \ref{eq:logodds} encontramos el logaritmo del ratio de probabilidades (\textit{log-odds}) y en el segundo término se encuentra el vector de parametros $\beta_{j}$ acompañado del vector de las características individuales $\textbf{x}_{i}$. 
 
 La lienalidad del segundo término implica que la dirección del impacto al logaritmo del ratio de probabilidades ante  un cambio en las características individuales del individuo estará dado por el signo del parametro $\beta_{j}$ correspondiente a esa característica específica, es decir, si el parámetro  $\beta_{jc}$ de una característica $\textbf{x}_{ic}$ es positivo y ese $\textbf{x}_{ic}$  aumenta su valor, el logaritmo del ratio de probabilidades tambien se verá aumentado, y considerando que el logaritmo es una función monótona estrictamente concava (creciente), se puede demostrar que un aumento del logaritmo del ratio de probabilidades implica un aumento del ratio de probabilidades.
 
@@ -501,7 +552,7 @@ A modo de resumen, el signo del parámetro $\beta_{jc}$ indica la dirección del
 \subsection{Base de datos y variables}
 La totalidad de los datos referidos a los flujos migratorios y las características socio económicas de los individuos que se utilizan para la estimación de los factores determinantes de las migraciones a través del modelo tienen como fuente un pool de cortes transversales  armado a través de la Encuesta Permanente de Hogares (EPH) relevada por el Instituto de Estadísticas y Censos de la República Argentina desde el segundo trimestre del año 2016 hasta el cuarto trimestre del año 2019.
 
-Se tomara como unidad de análisis al Jefe de Hogar, con el fin de condensar la decisión familiar de la migración en un solo sujeto, y reconocer la importancia de los vinculos y las ganancias familiares en las decisiones migratorias de los sujetos (Mincer, 1978).
+Se tomara como unidad de análisis al Jefe de Hogar, con el fin de condensar la decisión familiar de la migración en un solo sujeto, y reconocer la importancia de los vinculos y las ganancias familiares en las decisiones migratorias de los sujetos \parencite{mincer_family_1978}.
 
 Por otro lado, para este análisis no se consideran a los migrantes que tienen como región de destino y origen a la misma región ni tampoco a los migrantes internacionales.
 
@@ -519,7 +570,7 @@ En cuanto a los regresores o variables dependientes del modelo se encuentran:
 \item Pobre: Esta variable binaria indica la incidencia en la pobreza de la persona en el momento del relevamiento, toma el valor de uno para las personas pobres y cero para las no pobres (grupo base).
 \item Subsidio: Esta variable binaria indica si la persona recibe o no  subsidios o ayudas sociales en dinero al momento del relevamiento, toma el valor de uno para las personas que reciben esta transferencia económica y cero para las que no lo reciben (grupo base).
 \item Ocupado baja calificación y ocupado de alta calificación: estas variables binarias son del tipo categórica y representan a tres categorías, en donde el grupo base esta representado por las personas inactivas o desocupadas, el grupo de ocupados de baja calificación está compuesto por trabajadores con puestos no calificados u operativos y el grupo de ocupados de alta calificación está compuesto por personas que poseen un trabajo con calificación profesional o técnica.
-\item Soltero con hijo, casado con hijo y casado sin hijo: estas variables binarias son del tipo categórica y representan a cuatro categorías, en donde el grupo base esta representado por las personas solteras sin hijos. Otra forma en la que normalmente se presentan las variables categóricas en estos casos es en forma de interacciones de binarias, sin embargo se desistió la utilización de las mismas debido a que presentan conflictos en la interpretación de los parámetros estimados cuando los modelos son no lineales, para un tratamiento completo del tema ver  AI Norton (2003).
+\item Soltero con hijo, casado con hijo y casado sin hijo: estas variables binarias son del tipo categórica y representan a cuatro categorías, en donde el grupo base esta representado por las personas solteras sin hijos. Otra forma en la que normalmente se presentan las variables categóricas en estos casos es en forma de interacciones de binarias, sin embargo se desistió la utilización de las mismas debido a que presentan conflictos en la interpretación de los parámetros estimados cuando los modelos son no lineales, para un tratamiento completo del tema ver  \textcite{ai_interaction_2003}.
 \item Propietario: Esta variable binaria indica la condición de tenencia de la vivienda de la persona de la persona en el momento del relevamiento, toma el valor de uno para las personas que son dueñas de la vivienda que habitan y cero para las que no lo son (grupo base).
 \item Edad y Edad$^{2}$: Estas variables continuas indican la edad  y la edad elevada al cuadrado del individuo. 
 \item Educación media y educación alta: estas variables binarias son del tipo categórica y representan a tres categorías, en donde el grupo base esta representado por las personas que como mucho poseen un nivel primario de educación, el grupo de personas con educación media está compuesto por aquellas que lograron terminar el secundario como nivel máximo de educación y el grupo con educación alta está compuesto por todos aquellos que lograron un título superior o universitario de educación.
@@ -542,7 +593,7 @@ Otro factor relevante a la hora de analizar los factores determinantes de la dec
 
 La condición de ser propietario de la vivienda tiene efectos diferenciados en la probabilidad de que una persona migre hacia alguna de las regiones, mientras ser propietario de la vivienda aumenta la probabilidad de ser un migrante con destino a la región 2 en relación con las personas que no son propietarias de las viviendas (en adelante grupo base), la probabilidad de ser migrante disminuye para una persona que es propietaria de su vivienda en relación al grupo base si la región de destino es la 1 y 3.
 
-Por último se analiza el efecto que tiene la educación en la probabilidad de ser migrante. La probabilidad de ser migrante aumenta si la persona posee un nivel educativo medio o alto en relación con una persona con un nivel educativo bajo (en adelante grupo base), tanto para los que deciden migrar hacia la región 1 como hacia la region 2, sin embargo, la probabilidad de ser migrante con un nivel educativo medio o alto disminuye en relación al grupo base si al región de destino es la 3 \cite{hanson_international_2005}     \textcite{hanson_international_2005}
+Por último se analiza el efecto que tiene la educación en la probabilidad de ser migrante. La probabilidad de ser migrante aumenta si la persona posee un nivel educativo medio o alto en relación con una persona con un nivel educativo bajo (en adelante grupo base), tanto para los que deciden migrar hacia la región 1 como hacia la region 2, sin embargo, la probabilidad de ser migrante con un nivel educativo medio o alto disminuye en relación al grupo base si al región de destino es la 3.
 
 \begin{table}[!htbp] \centering \footnotesize 
   \caption{Estimación de factores determinantes de la migración} 
@@ -603,9 +654,9 @@ Akaike Inf. Crit. & 246,758.200 & 246,758.200 & 246,758.200 \\
 \textit{Nota:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
 \end{tabular} 
 \end{table} 
-
-\printbibliography[title={Bibliografía}][heading=bibintoc]
-
+%%%%
+\newpage
+\printbibliography[title={Bibliografía}, heading=bibintoc]
 
 
 \end{document}

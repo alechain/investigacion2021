@@ -363,7 +363,7 @@ cuadro_9<- cuadro_8 %>% mutate(tasa_inmigracion=formattable::percent(tasa_inmigr
 datos_mapa_prov<- inner_join(datos_mapa_prov, cuadro_9)
 ```
 ```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center', fig.cap="Macrolocalización de regiones por provincia"}
-#extrafont::font_import(paths = "/home/alejandrochain/Documentos/GitHub/investigacion2021/macrolocalizacion/fuentes")
+extrafont::font_import(paths = "/home/alejandrochain/Documentos/GitHub/investigacion2021/macrolocalizacion/fuentes")
 #extrafont::loadfonts(device = "pdf",quiet = T)
 #pdf(file = "mapa_regiones.pdf", width = 4,height = 4)
 mapa_cluster<- ggplot(data = datos_mapa_prov) + geom_sf(aes(fill=cluster),color="BLACK", size=0.2 ) + labs(fill="Región:") + scale_fill_manual(values=color)+ theme(text=element_text(family="LM Roman 10"), panel.background = element_blank() , axis.text = element_blank(), axis.ticks = element_blank())
