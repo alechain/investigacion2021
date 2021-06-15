@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2021.4.12)  5 JUN 2021 17:32
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2021.4.12)  5 JUN 2021 18:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -919,12 +919,12 @@ File: ./graficos/emig_inmig_por_prov.pdf Graphic file (type pdf)
 (./graficos/estadociv_mig.tex) [20] (./graficos/niveled_mig.tex) [21] [22]
 [23] [24] [25] [26] [27]
 
-LaTeX Warning: Float too large for page by 4.0134pt on input line 656.
+LaTeX Warning: Float too large for page by 4.0134pt on input line 655.
 
 [28] [29]
 Missing character: There is no � in font [lmroman12-italic]:mapping=tex-text;!
 
-Overfull \hbox (248.03288pt too wide) in paragraph at lines 659--659
+Overfull \hbox (248.03288pt too wide) in paragraph at lines 658--658
 [][]\TU/lmr/m/n/12 Hartigan, J. A. & Wong, M. A. (1979). A K-Means Clustering A
 lgorithm [_eprint: https://rss.onlinelibrary.wiley.com/doi/pdf/10.2307/2346830]
 .
