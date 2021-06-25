@@ -1,34 +1,34 @@
 \boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
 \babel@toc {spanish}{}
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {1}Introducción}{2}%
+\contentsline {section}{\numberline {1}Introducción}{2}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2}Regiones}{2}%
+\contentsline {section}{\numberline {2}Regiones}{2}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1}Macrofactores}{3}%
+\contentsline {subsection}{\numberline {2.1}Macrofactores}{3}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2}Aglomeración}{5}%
+\contentsline {subsection}{\numberline {2.2}Aglomeración}{5}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.3}Flujos migratorios}{10}%
+\contentsline {subsection}{\numberline {2.3}Flujos migratorios}{10}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3}Migrantes}{13}%
+\contentsline {section}{\numberline {3}Migrantes}{13}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1}Sexo y edad}{13}%
+\contentsline {subsection}{\numberline {3.1}Sexo y edad}{13}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.2}Pobreza y patrimonio}{16}%
+\contentsline {subsection}{\numberline {3.2}Pobreza y patrimonio}{16}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3}Ocupación y calificación}{18}%
+\contentsline {subsection}{\numberline {3.3}Ocupación y calificación}{18}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.4}Estado civil y organización familiar}{19}%
+\contentsline {subsection}{\numberline {3.4}Estado civil y organización familiar}{19}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.5}Nivel educativo}{20}%
+\contentsline {subsection}{\numberline {3.5}Nivel educativo}{20}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Factores determinantes de la migración}{23}%
+\contentsline {section}{\numberline {4}Factores determinantes de la migración}{23}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.1}Modelo}{23}%
+\contentsline {subsection}{\numberline {4.1}Modelo}{23}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.2}Base de datos y variables}{25}%
+\contentsline {subsection}{\numberline {4.2}Base de datos y variables}{25}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.3}Estimación del modelo}{27}%
+\contentsline {subsection}{\numberline {4.3}Estimación del modelo}{27}{}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{Bibliografía}{30}%
+\contentsline {section}{Bibliografía}{30}{}%

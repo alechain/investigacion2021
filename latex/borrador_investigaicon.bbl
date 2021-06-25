@@ -577,7 +577,7 @@
       \field{pages}{125\bibrangedash 190}
       \range{pages}{66}
     \endentry
-    \entry{macqueen_methods_1967}{inproceedings}{}
+    \entry{macqueen_methods_1967}{article}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=9a914809b2ac7de1c9aa16dc5e4d2173}{%
            family={Macqueen},
@@ -600,7 +600,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{The main purpose of this paper is to describe a process for partitioning an N-dimensional population into k sets on the basis of a sample. The process, which is called 'k-means, ' appears to give partitions which are reasonably}
-      \field{booktitle}{In 5-th {Berkeley} {Symposium} on {Mathematical} {Statistics} and {Probability}}
+      \field{journaltitle}{In 5-th {Berkeley} {Symposium} on {Mathematical} {Statistics} and {Probability}}
       \field{title}{Some methods for classification and analysis of multivariate observations}
       \field{year}{1967}
       \field{pages}{281\bibrangedash 297}
