@@ -1,0 +1,805 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.1 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{apa/global//global/global}
+    \entry{ai_interaction_2003}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=1ccc2d4d2cb8e566d431552091eb3663}{%
+           family={Ai},
+           familyi={A\bibinitperiod},
+           given={Chunrong},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4146bd10bd8287757605188ba3023777}{%
+           family={Norton},
+           familyi={N\bibinitperiod},
+           given={Edward\bibnamedelima C.},
+           giveni={E\bibinitperiod\bibinitdelim C\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \strng{namehash}{bc82bf69ab8956b5fc997897dd56b9b7}
+      \strng{fullhash}{bc82bf69ab8956b5fc997897dd56b9b7}
+      \strng{bibnamehash}{bc82bf69ab8956b5fc997897dd56b9b7}
+      \strng{authorbibnamehash}{bc82bf69ab8956b5fc997897dd56b9b7}
+      \strng{authornamehash}{bc82bf69ab8956b5fc997897dd56b9b7}
+      \strng{authorfullhash}{bc82bf69ab8956b5fc997897dd56b9b7}
+      \field{sortinit}{A}
+      \field{sortinithash}{a3dcedd53b04d1adfd5ac303ecd5e6fa}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The magnitude of the interaction effect in nonlinear models does not equal the marginal effect of the interaction term, can be of opposite sign, and its statistical significance is not calculated by standard software. We present the correct way to estimate the magnitude and standard errors of the interaction effect in nonlinear models.}
+      \field{issn}{0165-1765}
+      \field{journaltitle}{Economics Letters}
+      \field{month}{7}
+      \field{number}{1}
+      \field{title}{Interaction terms in logit and probit models}
+      \field{urlday}{3}
+      \field{urlmonth}{6}
+      \field{urlyear}{2021}
+      \field{volume}{80}
+      \field{year}{2003}
+      \field{urldateera}{ce}
+      \field{pages}{123\bibrangedash 129}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1016/S0165-1765(03)00032-6
+      \endverb
+      \verb{file}
+      \verb ScienceDirect Snapshot:/home/alejandrochain/Zotero/storage/JQEZ5DTZ/S0165176503000326.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0165176503000326
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0165176503000326
+      \endverb
+      \keyw{Interaction effect,Interaction term,Logit,Nonlinear models,Probit}
+    \endentry
+    \entry{borjas_self-selection_1987}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=2bbc4693cc6e25946b1ae21cf51483a4}{%
+           family={Borjas},
+           familyi={B\bibinitperiod},
+           given={George\bibnamedelima J.},
+           giveni={G\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{2bbc4693cc6e25946b1ae21cf51483a4}
+      \strng{fullhash}{2bbc4693cc6e25946b1ae21cf51483a4}
+      \strng{bibnamehash}{2bbc4693cc6e25946b1ae21cf51483a4}
+      \strng{authorbibnamehash}{2bbc4693cc6e25946b1ae21cf51483a4}
+      \strng{authornamehash}{2bbc4693cc6e25946b1ae21cf51483a4}
+      \strng{authorfullhash}{2bbc4693cc6e25946b1ae21cf51483a4}
+      \field{sortinit}{B}
+      \field{sortinithash}{8de16967003c7207dae369d874f1456e}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This paper analyzes the way in which the earnings of the immigrant population may be expected to differ from the earnings of the native population because of the endogeneity of the decision to migrate. The empirical study shows that differences in the U.S. earnings of immigrants with the same measured skills, but from different home countries, are attributable to variations in political and economic conditions in the countries of origin at the time of migration.}
+      \field{issn}{0002-8282}
+      \field{journaltitle}{The American Economic Review}
+      \field{note}{Publisher: American Economic Association}
+      \field{number}{4}
+      \field{title}{Self-{Selection} and the {Earnings} of {Immigrants}}
+      \field{urlday}{22}
+      \field{urlmonth}{5}
+      \field{urlyear}{2021}
+      \field{volume}{77}
+      \field{year}{1987}
+      \field{urldateera}{ce}
+      \field{pages}{531\bibrangedash 553}
+      \range{pages}{23}
+      \verb{urlraw}
+      \verb https://www.jstor.org/stable/1814529
+      \endverb
+      \verb{url}
+      \verb https://www.jstor.org/stable/1814529
+      \endverb
+    \endentry
+    \entry{carling_gender_2005}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=84b957c9fcb6a979d76503e5c065dc83}{%
+           family={Carling},
+           familyi={C\bibinitperiod},
+           given={Jørgen},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{84b957c9fcb6a979d76503e5c065dc83}
+      \strng{fullhash}{84b957c9fcb6a979d76503e5c065dc83}
+      \strng{bibnamehash}{84b957c9fcb6a979d76503e5c065dc83}
+      \strng{authorbibnamehash}{84b957c9fcb6a979d76503e5c065dc83}
+      \strng{authornamehash}{84b957c9fcb6a979d76503e5c065dc83}
+      \strng{authorfullhash}{84b957c9fcb6a979d76503e5c065dc83}
+      \field{sortinit}{C}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Global Migration Perspectives}
+      \field{month}{1}
+      \field{title}{Gender {Dimensions} of {International} {Migration}}
+      \field{volume}{35}
+      \field{year}{2005}
+      \verb{file}
+      \verb Full Text PDF:/home/alejandrochain/Zotero/storage/23RZBCEM/Carling - 2005 - Gender Dimensions of International Migration.pdf:application/pdf
+      \endverb
+    \endentry
+    \entry{cicowiez_caracterizacion_2003}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=78de13818e5588de20bd061504325177}{%
+           family={Cicowiez},
+           familyi={C\bibinitperiod},
+           given={Martín},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {es}%
+      }
+      \strng{namehash}{78de13818e5588de20bd061504325177}
+      \strng{fullhash}{78de13818e5588de20bd061504325177}
+      \strng{bibnamehash}{78de13818e5588de20bd061504325177}
+      \strng{authorbibnamehash}{78de13818e5588de20bd061504325177}
+      \strng{authornamehash}{78de13818e5588de20bd061504325177}
+      \strng{authorfullhash}{78de13818e5588de20bd061504325177}
+      \field{sortinit}{C}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{En este trabajo se emplea la metodología del análisis de factores para construir indicadores sintéticos que permiten caracterizar la situación económica-social de las provincias argentinas. Partiendo de dieciséis variables se construyen tres indicadores sintéticos: económico-social; de mercado laboral; y de tasa de desempleo. Los resultados muestran el siguiente ordenamiento de las provincias argentinas según su ubicación en el ranking económico-social: 1) Ciudad de Buenos Aires; 2) Santa Cruz; 3) Chubut; 4) La Pampa; 5) Tierra del Fuego; 6) Neuquén; 7) Buenos Aires; 8) Santa Fe; 9) Córdoba; 10) Río Negro; 11) Mendoza; 12) Entre Ríos; 13) San Luis; 14) Catamarca; 15) San Juan; 16) Tucumán; 17) La Rioja; 18) Salta; 19) Jujuy; 20) Misiones; 21)Corrientes; 22) Santiago del Estero; 23) Chaco; y 24) Formosa. Una ubicación menor (mayor) indica un mejor (peor) desempeño económico-social. Se analiza la evolución temporal de la situación relativa de las provincias argentinas mediante la comparación de los resultados obtenidos con los del trabajo de Nuñez Miñana (1972). Se evalúa también la hipótesis de convergencia económico-social de las provincias argentinas.}
+      \field{journaltitle}{Documentos de Federalismo Fiscal}
+      \field{month}{8}
+      \field{title}{Caracterización económico-social de las provincias argentinas}
+      \field{urlday}{3}
+      \field{urlmonth}{6}
+      \field{urlyear}{2021}
+      \field{volume}{no. 5}
+      \field{year}{2003}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb Full Text PDF:/home/alejandrochain/Zotero/storage/DSRCMNYW/Cicowiez - 2003 - Caracterización económico-social de las provincias.pdf:application/pdf;Snapshot:/home/alejandrochain/Zotero/storage/HFD3URTK/3523.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb http://sedici.unlp.edu.ar/handle/10915/3523
+      \endverb
+      \verb{url}
+      \verb http://sedici.unlp.edu.ar/handle/10915/3523
+      \endverb
+    \endentry
+    \entry{coxhead_migration_2015}{report}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=49054334f7fe4b622d5db33d57507820}{%
+           family={Coxhead},
+           familyi={C\bibinitperiod},
+           given={Ian},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=60304cfb3f8fa36c6d75c6e411770d9a}{%
+           family={Nguyen},
+           familyi={N\bibinitperiod},
+           given={Cuong\bibnamedelima Viet},
+           giveni={C\bibinitperiod\bibinitdelim V\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7ebe7e436518ec86dd02790e373a29d2}{%
+           family={Vu},
+           familyi={V\bibinitperiod},
+           given={Linh\bibnamedelima Hoang},
+           giveni={L\bibinitperiod\bibinitdelim H\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {Social Science Research Network}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \list{location}{1}{%
+        {Rochester, NY}%
+      }
+      \strng{namehash}{cf29b839b48755f2a2a737d2e98ae4a5}
+      \strng{fullhash}{63a8ab854b669c39f840a3f64058a17e}
+      \strng{bibnamehash}{63a8ab854b669c39f840a3f64058a17e}
+      \strng{authorbibnamehash}{63a8ab854b669c39f840a3f64058a17e}
+      \strng{authornamehash}{cf29b839b48755f2a2a737d2e98ae4a5}
+      \strng{authorfullhash}{63a8ab854b669c39f840a3f64058a17e}
+      \field{sortinit}{C}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{We investigate determinants of individual migration decisions in Vietnam, a country with increasingly high levels of geographical labor mobility. Using data from the Vietnam Household Living Standards Survey (VHLSS) of 2012, we find that probability of migration is strongly associated with individual, household and community-level characteristics. The probability of migration is higher for young people and those with post-secondary education. Migrants are more likely to be from households with better-educated household heads, female-headed households, and households with higher youth dependency ratios. Members of ethnic minority groups are much less likely to migrate, other things equal. Using multinomial logit methods, we distinguish migration by broad destination, and find that those moving to Ho Chi Minh City or Hanoi have broadly similar characteristics to those moving to other destinations. We also use VHLSS 2012 together with VHLSS 2010 to identify recent migrants — those present in the household in 2010, but who have moved away by 2012. This yields much tighter results. For education below upper secondary school, the evidence on positive selection by education is much stronger. However, the ethnic minority “penalty” on spatial labor mobility remains strong and significant. This lack of mobility is a leading candidate to explain the distinctive persistence of poverty among Vietnam’s ethnic minority populations, even as national poverty has sharply diminished.}
+      \field{month}{11}
+      \field{number}{ID 2752834}
+      \field{shorttitle}{Migration in {Vietnam}}
+      \field{title}{Migration in {Vietnam}: {New} {Evidence} from {Recent} {Surveys}}
+      \field{type}{{SSRN} {Scholarly} {Paper}}
+      \field{urlday}{3}
+      \field{urlmonth}{6}
+      \field{urlyear}{2021}
+      \field{year}{2015}
+      \field{urldateera}{ce}
+      \verb{doi}
+      \verb 10.2139/ssrn.2752834
+      \endverb
+      \verb{file}
+      \verb Versión enviada:/home/alejandrochain/Zotero/storage/EQ9EGGQA/Coxhead et al. - 2015 - Migration in Vietnam New Evidence from Recent Sur.pdf:application/pdf;Snapshot:/home/alejandrochain/Zotero/storage/83M7I4GA/papers.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb https://papers.ssrn.com/abstract=2752834
+      \endverb
+      \verb{url}
+      \verb https://papers.ssrn.com/abstract=2752834
+      \endverb
+      \keyw{migration,household survey,migration decision,remittances,Vietnam}
+    \endentry
+    \entry{danzer_economic_2008}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=198de3f4547d9b6ea917a34ed1469ab1}{%
+           family={Danzer},
+           familyi={D\bibinitperiod},
+           given={Alexander},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fdb85dd24f7e3932e983c4c372214405}{%
+           family={Dietz},
+           familyi={D\bibinitperiod},
+           given={Barbara},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{1b24fb3403877b0cdb849683aacf8d74}
+      \strng{fullhash}{1b24fb3403877b0cdb849683aacf8d74}
+      \strng{bibnamehash}{1b24fb3403877b0cdb849683aacf8d74}
+      \strng{authorbibnamehash}{1b24fb3403877b0cdb849683aacf8d74}
+      \strng{authornamehash}{1b24fb3403877b0cdb849683aacf8d74}
+      \strng{authorfullhash}{1b24fb3403877b0cdb849683aacf8d74}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In the paper we use a unique new data set which has been collected in late 2006 in Armenia, Belarus, Georgia, Moldova and Ukraine to investigate the determinants for short term migration and its destination and duration patterns. Special attention is paid to the role played by personal networks to Eastern and Western destinations as well as investments into the transferability of human capital made by migrants prior to their stay abroad. We find that many determinants and migration patterns are quite similar across the CIS countries under consideration but exhibit some surprising differences to standard results from the migration literature, e.g. the prevalence of older migrants and the low importance of children in the migration decision process. Networks and human capital transferability are the main explaining factors for the migration and destination decision, a result proofing robust after correcting for endogeneity. We expect that migration is likely to grow in importance for some countries at the European Borderlands, as networks develop and the costs of migration decrease. However, our analysis reveals that fears of brain drain have little substance as the educational background of migrants is rather low. As a considerable number of migrants have invested into destination country specific human capital prior to migration, this improved human capital endowment can benefit both, migrants and the society of sending countries, alike. --}
+      \field{journaltitle}{Verein f�r Socialpolitik, Research Committee Development Economics, Proceedings of the German Development Economics Conference, Zurich 2008}
+      \field{month}{1}
+      \field{title}{Economic {Migration}, {Networks} and {Human} {Capital} {Transferability} from the {New} {European} {Borderlands}. {A} {Comparison} of {Five} {Eastern} {European} {Countries}}
+      \field{year}{2008}
+      \verb{file}
+      \verb Full Text PDF:/home/alejandrochain/Zotero/storage/LXK2T3CN/Danzer y Dietz - 2008 - Economic Migration, Networks and Human Capital Tra.pdf:application/pdf
+      \endverb
+    \endentry
+    \entry{domencich_urban_1975}{book}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=48d27329f63d6f03d9f7aafdea787821}{%
+           family={Domencich},
+           familyi={D\bibinitperiod},
+           given={Thomas\bibnamedelima A.},
+           giveni={T\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1327829299e572b76be93fafcdca8d7b}{%
+           family={McFadden},
+           familyi={M\bibinitperiod},
+           given={Daniel},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=96fabb6916e7d1e48e48d5fce80b35bb}{%
+           family={McFadden},
+           familyi={M\bibinitperiod},
+           given={Daniel\bibnamedelima L.},
+           giveni={D\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \list{publisher}{1}{%
+        {North-Holland Publishing Company}%
+      }
+      \strng{namehash}{27897c5e91e15568798f19880c95eeff}
+      \strng{fullhash}{df7ef009a5221448ee3ac146dbc91b09}
+      \strng{bibnamehash}{df7ef009a5221448ee3ac146dbc91b09}
+      \strng{authorbibnamehash}{df7ef009a5221448ee3ac146dbc91b09}
+      \strng{authornamehash}{27897c5e91e15568798f19880c95eeff}
+      \strng{authorfullhash}{df7ef009a5221448ee3ac146dbc91b09}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{A Charles River Associates research study.}
+      \field{isbn}{978-0-444-10830-2}
+      \field{note}{Google-Books-ID: 7bKUuAEACAAJ}
+      \field{shorttitle}{Urban {Travel} {Demand}}
+      \field{title}{Urban {Travel} {Demand}: {A} {Behavioral} {Analysis} : a {Charles} {River} {Associates} {Research} {Study}}
+      \field{year}{1975}
+    \endentry
+    \entry{greene_econometric_2018}{book}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=6aeaa164d917d0657b4f141378594e78}{%
+           family={Greene},
+           familyi={G\bibinitperiod},
+           given={William\bibnamedelima H.},
+           giveni={W\bibinitperiod\bibinitdelim H\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \list{publisher}{1}{%
+        {Pearson}%
+      }
+      \strng{namehash}{6aeaa164d917d0657b4f141378594e78}
+      \strng{fullhash}{6aeaa164d917d0657b4f141378594e78}
+      \strng{bibnamehash}{6aeaa164d917d0657b4f141378594e78}
+      \strng{authorbibnamehash}{6aeaa164d917d0657b4f141378594e78}
+      \strng{authornamehash}{6aeaa164d917d0657b4f141378594e78}
+      \strng{authorfullhash}{6aeaa164d917d0657b4f141378594e78}
+      \field{sortinit}{G}
+      \field{sortinithash}{62eb2aa29549e4fdbd3cb154ec5711cb}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{For first-¿year graduate courses in Econometrics for Social Scientists. Bridging the gap between social science studies and econometric analysis Designed to bridge the gap between social science studies and field-econometrics, Econometric Analysis, 8th Edition presents this ever-growing area at an accessible level. The book first introduces readers to basic techniques, a rich variety of models, and underlying theory that is easy to put into practice. It then presents readers with a sufficient theoretical background to understand advanced techniques and to recognize new variants of established models. This focus, along with hundreds of worked numerical examples, ensures that readers can apply the theory to real-world application and are prepared to be successful economists in the field.}
+      \field{isbn}{978-0-13-446136-6}
+      \field{note}{Google-Books-ID: xGZRvgAACAAJ}
+      \field{title}{Econometric {Analysis}}
+      \field{year}{2018}
+      \keyw{Business \& Economics / Econometrics,Business \& Economics / Economics / General}
+    \endentry
+    \entry{hartigan_k-means_1979}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=d07e899eaa3b022a98cbc71ba28e65b4}{%
+           family={Hartigan},
+           familyi={H\bibinitperiod},
+           given={J.\bibnamedelimi A.},
+           giveni={J\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=23a90a644d84adfe48769d987438b5aa}{%
+           family={Wong},
+           familyi={W\bibinitperiod},
+           given={M.\bibnamedelimi A.},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \strng{namehash}{d096857507d183a420040574e231603a}
+      \strng{fullhash}{d096857507d183a420040574e231603a}
+      \strng{bibnamehash}{d096857507d183a420040574e231603a}
+      \strng{authorbibnamehash}{d096857507d183a420040574e231603a}
+      \strng{authornamehash}{d096857507d183a420040574e231603a}
+      \strng{authorfullhash}{d096857507d183a420040574e231603a}
+      \field{sortinit}{H}
+      \field{sortinithash}{6db6145dae8dc9e1271a8d556090b50a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1467-9876}
+      \field{journaltitle}{Journal of the Royal Statistical Society: Series C (Applied Statistics)}
+      \field{note}{\_eprint: https://rss.onlinelibrary.wiley.com/doi/pdf/10.2307/2346830}
+      \field{number}{1}
+      \field{title}{A {K}-{Means} {Clustering} {Algorithm}}
+      \field{urlday}{3}
+      \field{urlmonth}{6}
+      \field{urlyear}{2021}
+      \field{volume}{28}
+      \field{year}{1979}
+      \field{urldateera}{ce}
+      \field{pages}{100\bibrangedash 108}
+      \range{pages}{9}
+      \verb{doi}
+      \verb https://doi.org/10.2307/2346830
+      \endverb
+      \verb{file}
+      \verb Snapshot:/home/alejandrochain/Zotero/storage/NBTGT3GP/2346830.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb https://rss.onlinelibrary.wiley.com/doi/abs/10.2307/2346830
+      \endverb
+      \verb{url}
+      \verb https://rss.onlinelibrary.wiley.com/doi/abs/10.2307/2346830
+      \endverb
+      \keyw{K-means clustering algorithm,transfer algorithm}
+    \endentry
+    \entry{krugman_increasing_1991}{report}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=1dc32e0388d1f3dd99440cc8a5c3333b}{%
+           family={Krugman},
+           familyi={K\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {Social Science Research Network}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \list{location}{1}{%
+        {Rochester, NY}%
+      }
+      \strng{namehash}{1dc32e0388d1f3dd99440cc8a5c3333b}
+      \strng{fullhash}{1dc32e0388d1f3dd99440cc8a5c3333b}
+      \strng{bibnamehash}{1dc32e0388d1f3dd99440cc8a5c3333b}
+      \strng{authorbibnamehash}{1dc32e0388d1f3dd99440cc8a5c3333b}
+      \strng{authornamehash}{1dc32e0388d1f3dd99440cc8a5c3333b}
+      \strng{authorfullhash}{1dc32e0388d1f3dd99440cc8a5c3333b}
+      \field{sortinit}{K}
+      \field{sortinithash}{d3edc18d54b9438a72c24c925bfb38f4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Economic geography (the study of the location of factors of production in space) plays a small role in economic modeling, but facts of economic modeling are an intuitively striking feature of real-world economies. The paper intends to show how models and techniques derived from theoretical industrial organization allow a reconsideration of the insights possible from economic geography. To show the application, the paper considers one of the key questions -- why and when manufacturing is concentrated in a few regions. To realize economies of scale while minimizing transportation costs, manufacturing firms tend to locate in regions with larger demand, but location of demand depends on the distribution of manufacturing. The externalities that lead to emergence of the core-periphery pattern are pecuniary (due to supply or demand) rather than primarily technological spillovers. Concentration of manufacturing need not always happen and may depend on a few key parameters. Once population starts to concentrate and regions to diverge, the process will feed upon itself. A model of geographical concentration of manufacturing, based on the interaction of economies of scale with transportation costs, is developed to explain how countries endogenously become differentiated into an industrialized core and agricultural periphery. The model has two regions, and two kinds of production, manufacturing and agriculture, in each region. Also considered in the model are transportation costs, firm behavior, economies of scale, and conditions for manufacturing concentration. The concepts of short-run and full equilibrium are also introduced. The model shows that in an economy with high transportation costs, a small portion of footloose manufacturing, or weak economies of scale, the distribution of the primary strata of peasants will determine the distribution of manufacturing production. When opposite conditions prevail, circular causation sets in, and manufacturing concentrates in the region that gets a head start. (TNM)}
+      \field{number}{ID 1505245}
+      \field{title}{Increasing {Returns} and {Economic} {Geography}}
+      \field{type}{{SSRN} {Scholarly} {Paper}}
+      \field{urlday}{3}
+      \field{urlmonth}{6}
+      \field{urlyear}{2021}
+      \field{year}{1991}
+      \field{urldateera}{ce}
+      \verb{file}
+      \verb Snapshot:/home/alejandrochain/Zotero/storage/TGPDN3RT/papers.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb https://papers.ssrn.com/abstract=1505245
+      \endverb
+      \verb{url}
+      \verb https://papers.ssrn.com/abstract=1505245
+      \endverb
+      \keyw{Agriculture industry,Economic geography,Economic models,Economies of scale,Geography,Location factors,Manufacturing clusters,Manufacturing industries,Regional analysis,Regional differences,Supply \& demand,Transportation costs}
+    \endentry
+    \entry{kuhnt_literature_2019}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=ef42fca7abacbfceecfc14b6492ea789}{%
+           family={Kuhnt},
+           familyi={K\bibinitperiod},
+           given={Jana},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \strng{namehash}{ef42fca7abacbfceecfc14b6492ea789}
+      \strng{fullhash}{ef42fca7abacbfceecfc14b6492ea789}
+      \strng{bibnamehash}{ef42fca7abacbfceecfc14b6492ea789}
+      \strng{authorbibnamehash}{ef42fca7abacbfceecfc14b6492ea789}
+      \strng{authornamehash}{ef42fca7abacbfceecfc14b6492ea789}
+      \strng{authorfullhash}{ef42fca7abacbfceecfc14b6492ea789}
+      \field{sortinit}{K}
+      \field{sortinithash}{d3edc18d54b9438a72c24c925bfb38f4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Why do people leave their homes? This seemingly easy question requires a more complex answer. What ultimately prompts a person to leave if it is impossible to find a job due to a conflict that has destroyed all economic opportunities? Evidence suggests that the migration decision is a complex process that is dependent on a multitude of factors, such as migration governance regimes, migration and smuggler networks, access to technology, or individual characteristics such as age, gender and educational background. I use a theoretical framework to present the variety of determinants that have been put forward as influencing migration decisions at the macro-, meso-, and micro-level. This structured overview discusses their importance for different forms of migration and subsequently helps to identify gaps for further research.}
+      \field{annotation}{SeriesInformation Discussion Paper}
+      \field{journaltitle}{Discussion Paper}
+      \field{note}{Publisher: German Development Institute / Deutsches Institut für Entwicklungspolitik (DIE) Version Number: 1.0}
+      \field{shorttitle}{Literature review}
+      \field{title}{Literature review: drivers of migration {Why} do people leave their homes? {Is} there an easy answer? {A} structured overview of migratory determinants}
+      \field{urlday}{24}
+      \field{urlmonth}{3}
+      \field{urlyear}{2021}
+      \field{year}{2019}
+      \field{urldateera}{ce}
+      \verb{doi}
+      \verb 10.23661/DP9.2019
+      \endverb
+      \verb{file}
+      \verb Kuhnt - 2019 - Literature review drivers of migration Why do peo.pdf:/home/alejandrochain/Zotero/storage/JP26HBFP/Kuhnt - 2019 - Literature review drivers of migration Why do peo.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://www.die-gdi.de/discussion-paper/article/literature-review-drivers-of-migration-why-do-people-leave-their-homes-is-there-an-easy-answer-a-structured-overview-of-migratory-determinants/
+      \endverb
+      \verb{url}
+      \verb https://www.die-gdi.de/discussion-paper/article/literature-review-drivers-of-migration-why-do-people-leave-their-homes-is-there-an-easy-answer-a-structured-overview-of-migratory-determinants/
+      \endverb
+    \endentry
+    \entry{liebig_fiscal_2013}{inbook}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=47fdfb2393f0d2ef4dd45422781dbd6a}{%
+           family={Liebig},
+           familyi={L\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=df4dda988b004f8cc2c669dc60a4343c}{%
+           family={Mo},
+           familyi={M\bibinitperiod},
+           given={Jeffrey},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{97f3454dc894a72f04b37a9e872217f0}
+      \strng{fullhash}{97f3454dc894a72f04b37a9e872217f0}
+      \strng{bibnamehash}{97f3454dc894a72f04b37a9e872217f0}
+      \strng{authorbibnamehash}{97f3454dc894a72f04b37a9e872217f0}
+      \strng{authornamehash}{97f3454dc894a72f04b37a9e872217f0}
+      \strng{authorfullhash}{97f3454dc894a72f04b37a9e872217f0}
+      \field{sortinit}{L}
+      \field{sortinithash}{dad3efd0836470093a7b4a7bb756eb8c}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This Chapter provides a first-time comparative analysis of the fiscal impact of immigration in OECD countries, using data for all European OECD countries, as well as Australia, Canada and the United States. It also includes a comprehensive overview of the literature and the methodological issues involved in estimating the fiscal impact of migration.}
+      \field{month}{6}
+      \field{title}{The fiscal impact of immigration in {OECD} countries; {Chapter} 3 in {OECD} (ed.) {International} {Migration} {Outlook} 2013 (with {J}. {Mo}).}
+      \field{year}{2013}
+      \field{pages}{125\bibrangedash 190}
+      \range{pages}{66}
+    \endentry
+    \entry{macqueen_methods_1967}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=9a914809b2ac7de1c9aa16dc5e4d2173}{%
+           family={Macqueen},
+           familyi={M\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{9a914809b2ac7de1c9aa16dc5e4d2173}
+      \strng{fullhash}{9a914809b2ac7de1c9aa16dc5e4d2173}
+      \strng{bibnamehash}{9a914809b2ac7de1c9aa16dc5e4d2173}
+      \strng{authorbibnamehash}{9a914809b2ac7de1c9aa16dc5e4d2173}
+      \strng{authornamehash}{9a914809b2ac7de1c9aa16dc5e4d2173}
+      \strng{authorfullhash}{9a914809b2ac7de1c9aa16dc5e4d2173}
+      \field{sortinit}{M}
+      \field{sortinithash}{2e5c2f51f7fa2d957f3206819bf86dc3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The main purpose of this paper is to describe a process for partitioning an N-dimensional population into k sets on the basis of a sample. The process, which is called 'k-means, ' appears to give partitions which are reasonably}
+      \field{journaltitle}{In 5-th {Berkeley} {Symposium} on {Mathematical} {Statistics} and {Probability}}
+      \field{title}{Some methods for classification and analysis of multivariate observations}
+      \field{year}{1967}
+      \field{pages}{281\bibrangedash 297}
+      \range{pages}{17}
+      \verb{file}
+      \verb Citeseer - Snapshot:/home/alejandrochain/Zotero/storage/WBDS96V9/summary.html:text/html;Citeseer - Full Text PDF:/home/alejandrochain/Zotero/storage/TRZG4CRH/Macqueen - 1967 - Some methods for classification and analysis of mu.pdf:application/pdf
+      \endverb
+    \endentry
+    \entry{mincer_family_1978}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=acc439dff0bb381ea083555637e18efa}{%
+           family={Mincer},
+           familyi={M\bibinitperiod},
+           given={Jacob},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{acc439dff0bb381ea083555637e18efa}
+      \strng{fullhash}{acc439dff0bb381ea083555637e18efa}
+      \strng{bibnamehash}{acc439dff0bb381ea083555637e18efa}
+      \strng{authorbibnamehash}{acc439dff0bb381ea083555637e18efa}
+      \strng{authornamehash}{acc439dff0bb381ea083555637e18efa}
+      \strng{authorfullhash}{acc439dff0bb381ea083555637e18efa}
+      \field{sortinit}{M}
+      \field{sortinithash}{2e5c2f51f7fa2d957f3206819bf86dc3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Political Economy}
+      \field{note}{Publisher: University of Chicago Press}
+      \field{number}{5}
+      \field{title}{Family {Migration} {Decisions}}
+      \field{urlday}{22}
+      \field{urlmonth}{5}
+      \field{urlyear}{2021}
+      \field{volume}{86}
+      \field{year}{1978}
+      \field{urldateera}{ce}
+      \field{pages}{749\bibrangedash 73}
+      \range{pages}{25}
+      \verb{file}
+      \verb RePEc Snapshot:/home/alejandrochain/Zotero/storage/936BMB5S/v_3a86_3ay_3a1978_3ai_3a5_3ap_3a749-73.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb https://econpapers.repec.org/article/ucpjpolec/v_3a86_3ay_3a1978_3ai_3a5_3ap_3a749-73.htm
+      \endverb
+      \verb{url}
+      \verb https://econpapers.repec.org/article/ucpjpolec/v_3a86_3ay_3a1978_3ai_3a5_3ap_3a749-73.htm
+      \endverb
+    \endentry
+    \entry{simpson_demographic_2017}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=7493c852b66c7e63ec7b498add971679}{%
+           family={Simpson},
+           familyi={S\bibinitperiod},
+           given={Nicole\bibnamedelima B.},
+           giveni={N\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {en-US}%
+      }
+      \strng{namehash}{7493c852b66c7e63ec7b498add971679}
+      \strng{fullhash}{7493c852b66c7e63ec7b498add971679}
+      \strng{bibnamehash}{7493c852b66c7e63ec7b498add971679}
+      \strng{authorbibnamehash}{7493c852b66c7e63ec7b498add971679}
+      \strng{authornamehash}{7493c852b66c7e63ec7b498add971679}
+      \strng{authorfullhash}{7493c852b66c7e63ec7b498add971679}
+      \field{sortinit}{S}
+      \field{sortinithash}{c319cff79d99c853d775f88277d4e45f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Push and pull factors drive the decision to stay or move}
+      \field{journaltitle}{IZA World of Labor}
+      \field{month}{6}
+      \field{title}{Demographic and economic determinants of migration}
+      \field{urlday}{23}
+      \field{urlmonth}{5}
+      \field{urlyear}{2021}
+      \field{year}{2017}
+      \field{urldateera}{ce}
+      \verb{doi}
+      \verb 10.15185/izawol.373
+      \endverb
+      \verb{file}
+      \verb Full Text PDF:/home/alejandrochain/Zotero/storage/K2G4SGP9/Simpson - 2017 - Demographic and economic determinants of migration.pdf:application/pdf;Snapshot:/home/alejandrochain/Zotero/storage/XR5992TX/long.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb https://wol.iza.org/articles/demographic-and-economic-determinants-of-migration/long
+      \endverb
+      \verb{url}
+      \verb https://wol.iza.org/articles/demographic-and-economic-determinants-of-migration/long
+      \endverb
+    \endentry
+    \entry{stark_migration_1991}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=6fb7c76f3a687de5ddeeb0a35f90ac45}{%
+           family={Stark},
+           familyi={S\bibinitperiod},
+           given={Oded},
+           giveni={O\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b11c454be6664944b5a1f55b438f9302}{%
+           family={Taylor},
+           familyi={T\bibinitperiod},
+           given={J.\bibnamedelimi Edward},
+           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{f75d29dba08a256bfc6fb5f15e975497}
+      \strng{fullhash}{f75d29dba08a256bfc6fb5f15e975497}
+      \strng{bibnamehash}{f75d29dba08a256bfc6fb5f15e975497}
+      \strng{authorbibnamehash}{f75d29dba08a256bfc6fb5f15e975497}
+      \strng{authornamehash}{f75d29dba08a256bfc6fb5f15e975497}
+      \strng{authorfullhash}{f75d29dba08a256bfc6fb5f15e975497}
+      \field{sortinit}{S}
+      \field{sortinithash}{c319cff79d99c853d775f88277d4e45f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{The importance of absolute income and relative deprivation incentives is examined for internal and international migration in developing country households. Empirical results, based on Mexican village data, support the hypothesis that households' relative deprivation in the village reference group is significant in explaining migration by household members to destinations where a reference group substitution is unlikely and the returns to migration are high. Independent of relative deprivation, village households wisely pair their members with the labor markets in which the returns to their human capital are likely to be greatest. The results suggest that a specific type of migration constitutes a response to a specific configuration of variables, and the role of relative deprivation appears to differ for internal and international migration. Taking relative deprivation into account when studying migration is shown to have important implications for development policy. For example, economic development that does not redress intra-village income inequalities may become associated with more migration. Copyright 1991 by Royal Economic Society.}
+      \field{journaltitle}{Economic Journal}
+      \field{note}{Publisher: Royal Economic Society}
+      \field{number}{408}
+      \field{shorttitle}{Migration {Incentives}, {Migration} {Types}}
+      \field{title}{Migration {Incentives}, {Migration} {Types}: {The} {Role} of {Relative} {Deprivation}}
+      \field{urlday}{25}
+      \field{urlmonth}{5}
+      \field{urlyear}{2021}
+      \field{volume}{101}
+      \field{year}{1991}
+      \field{urldateera}{ce}
+      \field{pages}{1163\bibrangedash 78}
+      \range{pages}{16}
+      \verb{file}
+      \verb RePEc Snapshot:/home/alejandrochain/Zotero/storage/RIKQTQ2J/v_3a101_3ay_3a1991_3ai_3a408_3ap_3a1163-78.html:text/html
+      \endverb
+      \verb{urlraw}
+      \verb https://econpapers.repec.org/article/ecjeconjl/v_3a101_3ay_3a1991_3ai_3a408_3ap_3a1163-78.htm
+      \endverb
+      \verb{url}
+      \verb https://econpapers.repec.org/article/ecjeconjl/v_3a101_3ay_3a1991_3ai_3a408_3ap_3a1163-78.htm
+      \endverb
+    \endentry
+    \entry{zaiceva_impact_2014}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=619bcd24d2d144fc91c19b09aaaa645b}{%
+           family={Zaiceva},
+           familyi={Z\bibinitperiod},
+           given={Anzelika},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \strng{namehash}{619bcd24d2d144fc91c19b09aaaa645b}
+      \strng{fullhash}{619bcd24d2d144fc91c19b09aaaa645b}
+      \strng{bibnamehash}{619bcd24d2d144fc91c19b09aaaa645b}
+      \strng{authorbibnamehash}{619bcd24d2d144fc91c19b09aaaa645b}
+      \strng{authornamehash}{619bcd24d2d144fc91c19b09aaaa645b}
+      \strng{authorfullhash}{619bcd24d2d144fc91c19b09aaaa645b}
+      \field{sortinit}{Z}
+      \field{sortinithash}{8f7b480688e809b50b6f6577b16f3db5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Population aging will continue in the future, in both developed and developing countries. This may lead to lower migration, since the desire to migrate declines later in the life cycle. In addition, indirect labor demand effects may also reduce migration. However, migration of the elderly, return retirement migration, as well as mobility of certain specialist workers such as health and longer-term care providers, may increase. Also, in a family context, the emigration of children may have significant consequences for the elderly left behind, both in terms of poverty risk and health care.}
+      \field{journaltitle}{IZA World of Labor}
+      \field{note}{Publisher: Institute of Labor Economics (IZA)}
+      \field{title}{The impact of aging on the scale of migration}
+      \field{urlday}{23}
+      \field{urlmonth}{5}
+      \field{urlyear}{2021}
+      \field{year}{2014}
+      \field{urldateera}{ce}
+      \field{pages}{1\bibrangedash 99}
+      \range{pages}{99}
+      \verb{file}
+      \verb Snapshot:/home/alejandrochain/Zotero/storage/LVZ8QPT7/journly2014n99.html:text/html;Fullext PDF:/home/alejandrochain/Zotero/storage/9YCBFXUX/Zaiceva - 2014 - The impact of aging on the scale of migration.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://ideas.repec.org/a/iza/izawol/journly2014n99.html
+      \endverb
+      \verb{url}
+      \verb https://ideas.repec.org/a/iza/izawol/journly2014n99.html
+      \endverb
+      \keyw{elderly migration,migration,population aging}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
