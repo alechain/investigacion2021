@@ -1,0 +1,2 @@
+https://stats.stackexchange.com/questions/87248/is-binary-logistic-regression-a-special-case-of-multinomial-logistic-regression
+https://towardsdatascience.com/logistic-regression-detailed-overview-46c4da4303bc
