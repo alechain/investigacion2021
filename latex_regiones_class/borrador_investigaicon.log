@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2021.4.12)  4 JUL 2021 19:48
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2021.4.12)  7 JUL 2021 19:06
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -924,39 +924,51 @@ ne 409.
 LaTeX Warning: No positions in optional float specifier.
                Default added (so using `tbp') on input line 411.
 
-[17] [18] (./graficos/calif_mig.tex) [19] (./graficos/estadociv_mig.tex)
-[20] (./graficos/niveled_mig.tex) [21] [22] [23] [24] [25] [26] [27] [28]
-[29]
+[17] [18] (./graficos/calif_mig.tex) [19] [20] (./graficos/prima_sal_1.tex)
+(./graficos/prima_sal_2.tex) (./graficos/prima_sal_3.tex)
 
-LaTeX Warning: Float too large for page by 4.0134pt on input line 797.
+LaTeX Warning: Float too large for page by 22.43393pt on input line 509.
 
-[30] [31]
+(./graficos/estadociv_mig.tex) (./graficos/niveled_mig.tex) [21] [22] [23]
+[24] [25] [26] [27] [28] [29]
+
+LaTeX Warning: Reference `cuadro:estimacion' on page 30 undefined on input line
+ 766.
+
+[30] [31] [32] [33]
 Missing character: There is no � in font [lmroman12-italic]:mapping=tex-text;!
 
-Overfull \hbox (248.03288pt too wide) in paragraph at lines 800--800
+Overfull \hbox (248.03288pt too wide) in paragraph at lines 847--847
 [][]\TU/lmr/m/n/12 Hartigan, J. A. & Wong, M. A. (1979). A K-Means Clustering A
 lgorithm [_eprint: https://rss.onlinelibrary.wiley.com/doi/pdf/10.2307/2346830]
 .
  []
 
-[32] [33] (./borrador_investigaicon.aux
+[34] [35] (./borrador_investigaicon.aux
 LaTeX Info: Redefining \. on input line 11.
 LaTeX Info: Redefining \% on input line 11.
 )
 
 LaTeX Warning: There were undefined references.
 
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+
+Package biblatex Warning: Please rerun LaTeX.
+(biblatex)                Page breaks have changed.
+
 Package logreq Info: Writing requests to 'borrador_investigaicon.run.xml'.
 \openout1 = `borrador_investigaicon.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 23041 strings out of 479819
- 448606 string characters out of 5895846
- 1297273 words of memory out of 5000000
- 39772 multiletter control sequences out of 15000+600000
+ 23053 strings out of 479819
+ 448880 string characters out of 5895846
+ 2825590 words of memory out of 5000000
+ 39775 multiletter control sequences out of 15000+600000
  536362 words of font info for 58 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  60i,10n,60p,2163b,4873s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on borrador_investigaicon.pdf (34 pages).
+Output written on borrador_investigaicon.pdf (36 pages).

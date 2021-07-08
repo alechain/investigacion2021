@@ -19,20 +19,22 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {subsection}{\numberline {3.3}Ocupación y calificación}{18}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.4}Estado civil y organización familiar}{19}%
+\contentsline {subsection}{\numberline {3.4}Prima salarial}{19}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.5}Nivel educativo}{20}%
+\contentsline {subsection}{\numberline {3.5}Estado civil y organización familiar}{21}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Factores determinantes de la migración}{22}%
+\contentsline {subsection}{\numberline {3.6}Nivel educativo}{21}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.1}Modelo}{22}%
+\contentsline {section}{\numberline {4}Factores determinantes de la migración}{24}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.2}Base de datos y variables}{25}%
+\contentsline {subsection}{\numberline {4.1}Modelo}{24}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.3}Estimación del modelo}{26}%
+\contentsline {subsection}{\numberline {4.2}Base de datos y variables}{27}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.3.1}Determinantes generales de la migración}{27}%
+\contentsline {subsection}{\numberline {4.3}Estimación del modelo}{28}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.3.2}Determinantes regionales de la migración}{27}%
+\contentsline {subsubsection}{\numberline {4.3.1}Determinantes generales de la migración}{29}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{Bibliografía}{32}%
+\contentsline {subsubsection}{\numberline {4.3.2}Determinantes regionales de la migración}{30}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{Bibliografía}{34}%

@@ -426,6 +426,8 @@ ephtotal<- ephtotal %>% mutate(hombre=case_when(Sexo=="Hombres"~1,
                                                                     TRUE ~ 0),
                                                    alto=case_when(niveled=="Superior/Universitario\ncompleto"~ 1,
                                                                     TRUE ~ 0),
+                                                    ING_LAB_REAL=P21/DEFLACTOR,
+                                                    ING_LAB_HOR=ING_LAB_REAL/PP3E_TOT,
                                                     IPCFR=IPCF/DEFLACTOR,
                                                     IPCFRL=log(IPCFR),
                                                     OCUPADO_BAJO=case_when(ESTADO==1 & CALIFICACION %in% c("No Calificados", "Operativos") ~ 1,
@@ -458,6 +460,7 @@ eph_carac<- ephtotal %>% mutate(migrante=case_when(CH16==3 ~ 1,
                                                  TRUE ~ 0))
 #asignamos el cluster de destino para los migrantes, que es el cluster en donde le hicieron la encuensta, que en el caso de #los nativos es su cluster de origen
 eph_carac<- left_join(eph_carac,cluster_destino)
+eph_carac <- left_join(eph_carac, cluster_nombres_eph_ch16)
 ```
 ## Sexo y edad de los nativos
 El sexo y la edad de las personas son considerados dentro de los microfactores que pueden afectar considerablemente a la decisión migratoria, es por ello que se analizan estas características dentro de la población de cada región, diferenciando entre los que son nativos de la provincia en la que habitan de los que son migrantes.
@@ -738,6 +741,100 @@ niveled  %>%   ggplot(mapping=aes(x = condicion_mig, y =Porcentaje, fill=niveled
 #dev.off()
 
 ```
+## Primas salariales
+
+```{r}
+primassal_1<- eph_carac  %>%  mutate(condicion_mig=case_when(migrante==1 ~ "Migrantes",
+                                                         nativo==1 ~ "Nativos"),
+                                 pea=case_when(ESTADO %in% c(1,2) ~ 1,
+                                               ESTADO %in% c(3,4)~ 0),
+                                 mig_class= case_when(nativo==1 & cluster_destino==1~ "Nativos\nRegión Sur",
+                                                      migrante==1 & cluster_origen==1 & cluster_destino==2 ~ "Migrante\nRegión Norte",
+                                                      migrante==1 & cluster_origen==1 & cluster_destino==3 ~ "Migrante\nRegión Centro"),
+                                  calif_ocup=case_when(OCUPADO_BAJO==1~ "Calificación baja",
+                                                      OCUPADO_ALTO==1 ~ "Calificación alta"))
+
+primassal_1 %>% filter(edad>25 & edad<60 & !is.na(calif_ocup) & !is.na(mig_class) & ING_LAB_REAL>0 &PP3E_TOT>0)%>%  group_by(calif_ocup,mig_class) %>% summarise(weighted.mean(x = ING_LAB_HOR, w = PONDIIO ))
+
+primassal_2<- eph_carac  %>%  mutate(condicion_mig=case_when(migrante==1 ~ "Migrantes",
+                                                         nativo==1 ~ "Nativos"),
+                                 pea=case_when(ESTADO %in% c(1,2) ~ 1,
+                                               ESTADO %in% c(3,4)~ 0),
+                                 mig_class= case_when(nativo==1 & cluster_destino==2~ "Nativos\nRegión Norte",
+                                                      migrante==1 & cluster_origen==2 & cluster_destino==1 ~ "Migrante\nRegión Sur",
+                                                      migrante==1 & cluster_origen==2 & cluster_destino==3 ~ "Migrante\nRegión Centro"),
+                                  calif_ocup=case_when(OCUPADO_BAJO==1~ "Calificación baja",
+                                                      OCUPADO_ALTO==1 ~ "Calificación alta"))
+
+primassal_2 %>% filter(edad>25 & edad<60 & !is.na(calif_ocup) & !is.na(mig_class) & ING_LAB_REAL>0 &PP3E_TOT>0)%>%  group_by(calif_ocup,mig_class) %>% summarise(weighted.mean(x = ING_LAB_REAL, w = PONDIIO ))
+
+primassal_3<- eph_carac  %>%  mutate(condicion_mig=case_when(migrante==1 ~ "Migrantes",
+                                                         nativo==1 ~ "Nativos"),
+                                 pea=case_when(ESTADO %in% c(1,2) ~ 1,
+                                               ESTADO %in% c(3,4)~ 0),
+                                 mig_class= case_when(nativo==1 & cluster_destino==3~ "Nativos\nRegión Centro",
+                                                      migrante==1 & cluster_origen==3 & cluster_destino==2 ~ "Migrante\nRegión Norte",
+                                                      migrante==1 & cluster_origen==3 & cluster_destino==1 ~ "Migrante\nRegión Sur"),
+                                  calif_ocup=case_when(OCUPADO_BAJO==1~ "Calificación baja",
+                                                      OCUPADO_ALTO==1 ~ "Calificación alta"))
+
+
+primassal_3 %>% filter(edad>25 & edad<60 & !is.na(calif_ocup) & !is.na(mig_class) & ING_LAB_REAL>0 &PP3E_TOT>0)%>%  group_by(calif_ocup,mig_class) %>% summarise(weighted.mean(x = ING_LAB_REAL, w = PONDIIO ))
+
+primassal_1$mig_class<- factor(primassal_1$mig_class, levels = c('Nativos\nRegión Sur','Migrante\nRegión Centro','Migrante\nRegión Norte' ))
+prima_graf_1<-primassal_1 %>% filter(edad>25 & edad<60 & !is.na(calif_ocup) & !is.na(mig_class) & ING_LAB_REAL>0 & PP3E_TOT>0)%>%
+  ggplot( aes(x=mig_class, y=ING_LAB_HOR, fill=mig_class)) +
+    geom_boxplot() +
+     scale_fill_manual(values = color) +
+    theme(axis.text.y = element_text(color="BLACK"),
+      legend.position="none", axis.text.x.bottom = element_text(colour = 'BLACK',angle = 90),
+      plot.title = element_text(size=11),strip.background = element_blank(),  strip.text = element_text(color="BLACK"),panel.background = element_blank(),
+    ) + facet_wrap(.~CALIFICACION,ncol = 4) + ylim(c(0,700)) + #coord_flip()+
+    xlab("")  + ylab("Ingreso laboral por hora")
+
+primassal_2$mig_class<- factor(primassal_2$mig_class, levels = c('Nativos\nRegión Norte','Migrante\nRegión Centro','Migrante\nRegión Sur' ))
+prima_graf_2<-primassal_2 %>% filter(edad>25 & edad<60 & !is.na(calif_ocup) & !is.na(mig_class) & ING_LAB_REAL>0 & PP3E_TOT>0)%>%
+  ggplot( aes(x=mig_class, y=ING_LAB_HOR, fill=mig_class)) +
+    geom_boxplot() +
+    scale_fill_manual(values = color) +
+    theme(axis.text.y = element_text(color="BLACK"),
+      legend.position="none",axis.text.x.bottom = element_text(colour = 'BLACK',angle = 90),
+      plot.title = element_text(size=11),strip.background = element_blank(),  strip.text = element_text(color="BLACK"),panel.background = element_blank(),
+    ) + facet_wrap(.~CALIFICACION,ncol = 4) + ylim(c(0,700)) + #coord_flip()+
+    xlab("")  + ylab("Ingreso laboral por hora")
+
+primassal_3$mig_class<- factor(primassal_3$mig_class, levels = c('Nativos\nRegión Centro','Migrante\nRegión Norte','Migrante\nRegión Sur' ))
+prima_graf_3<-primassal_3 %>% filter(edad>25 & edad<60 & !is.na(calif_ocup) & !is.na(mig_class) & ING_LAB_REAL>0 & PP3E_TOT>0)%>%
+  ggplot( aes(x=mig_class, y=ING_LAB_HOR, fill=mig_class)) +
+    geom_boxplot() +
+    scale_fill_manual(values = color) +
+    theme(axis.text.y = element_text(color="BLACK"),
+      legend.position="none", axis.text.x.bottom = element_text(colour = 'BLACK',angle = 90),
+      plot.title = element_text(size=11),strip.background = element_blank(), strip.text = element_text(color="BLACK"),panel.background = element_blank(),
+    ) + facet_wrap(.~CALIFICACION,ncol = 4) + ylim(c(0,700)) + #coord_flip()+
+    xlab("") + ylab("Ingreso laboral por hora")
+
+prima_graf_1
+prima_graf_2
+prima_graf_3
+
+ggpubr::ggarrange(prima_graf_1,prima_graf_2,prima_graf_3, nrow = 3)
+
+#tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex_regiones_class/graficos/prima_sal_1.tex",width = 6, height = 3,sanitize = TRUE)
+prima_graf_1
+#dev.off()
+
+#tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex_regiones_class/graficos/prima_sal_2.tex",width = 6, height = 3,sanitize = TRUE)
+prima_graf_2
+#dev.off()
+
+#tikz("/home/alejandrochain/Documentos/GitHub/investigacion2021/latex_regiones_class/graficos/prima_sal_3.tex",width = 6, height = 3,sanitize = TRUE)
+prima_graf_3
+#dev.off()
+
+```
+
+
 ### Estimación del modelo Logit de los factores determinantes de la migreación 
 
 ```{r}
@@ -761,11 +858,15 @@ data_migracion<- data_migracion %>% mutate(inmigrante=case_when(migrante==1 ~ 1,
                                                          TRUE ~ 0))
 data_migracion<- data_migracion %>% filter(!is.na(inmigrante))
 
-modelo_a_logit<- glm(inmigrante ~ hombre +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO  + edad + edad2   , data=data_migracion,family = 'binomial')
-modelo_b_logit<- glm(inmigrante ~ hombre +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO + edad + edad2+   POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + PROPIETARIO+medio + alto, data=data_migracion,family = 'binomial')
-modelo_c_logit<- glm(inmigrante ~ hombre +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO + edad + edad2+   POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + PROPIETARIO+medio + alto + SUR_destino + CENTRO_destino, data=data_migracion,family = 'binomial')
+#modelo_a_logit<- glm(inmigrante ~ hombre +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO  + edad + edad2   , data=data_migracion,family = 'binomial')
+#modelo_b_logit<- glm(inmigrante ~ hombre +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO + edad + edad2+   POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + PROPIETARIO+medio + alto, data=data_migracion,family = 'binomial')
+#modelo_c_logit<- glm(inmigrante ~ hombre +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO + edad + edad2+   POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + PROPIETARIO+medio + alto + SUR_destino + CENTRO_destino, data=data_migracion,family = 'binomial')
+modelo_a_logit<- glm(inmigrante ~ hombre + CASADO+ HIJO_DUMMY + edad + edad2   , data=data_migracion,family = 'binomial')
+modelo_b_logit<- glm(inmigrante ~ hombre +  CASADO+ HIJO_DUMMY + edad + edad2+   POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + PROPIETARIO+medio + alto, data=data_migracion,family = 'binomial')
+modelo_c_logit<- glm(inmigrante ~ hombre + CASADO+ HIJO_DUMMY + edad + edad2+   POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO + PROPIETARIO+medio + alto + SUR_destino + CENTRO_destino, data=data_migracion,family = 'binomial')
 #summary(logit_migracion)
 stargazer(modelo_a_logit,modelo_b_logit,modelo_c_logit,type = 'text' )
+stargazer(modelo_a_logit,modelo_b_logit,modelo_c_logit,type = 'latex' )
 
 ```
 
@@ -810,7 +911,8 @@ table(cluster_multinom$inmigrante)
 cluster_multinom$inmigrante<- as.factor(cluster_multinom$inmigrante)
 cluster_multinom$inmigrante<- relevel(cluster_multinom$inmigrante, ref = "0")
 # estimamos el modelo con los regresores determinados
-cluster_multinom_model<-multinom(inmigrante~ hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto, data=cluster_multinom)
+cluster_multinom_model<-multinom(inmigrante~ hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  SOLTERO_C_HIJO+CASADO_S_HIJO + CASADO_C_HIJO+ PROPIETARIO+  + edad + edad2  + medio + alto, data=cluster_multinom,maxit = 1000)
+cluster_multinom_model<-multinom(inmigrante~ hombre + POBRE + SUBSIDIO + OCUPADO_BAJO+OCUPADO_ALTO +  CASADO + HIJO_DUMMY+ PROPIETARIO+  + edad + edad2  + medio + alto, data=cluster_multinom,maxit = 1000)
 
 #vemos el resultado de la Regresion logit multinomial
 summary(cluster_multinom_model)
@@ -819,7 +921,7 @@ summary(cluster_multinom_model)
 
 `Como el summary de la regresion no brinda por default los p-values, se los puede calcular a traves del siguente codigo
 ```{r}
-stargazer(cluster_multinom_model,type = 'text' )
+stargazer(cluster_multinom_model,type = 'latex' )
 ```
 
 
