@@ -154,22 +154,19 @@
     \endentry
     \entry{cicowiez_caracterizacion_2003}{article}{}
       \name{author}{1}{}{%
-        {{un=0,uniquepart=base,hash=78de13818e5588de20bd061504325177}{%
+        {{un=0,uniquepart=base,hash=9e456bff60f898f7bf527af238453e3e}{%
            family={Cicowiez},
            familyi={C\bibinitperiod},
-           given={Martín},
+           given={Martin},
            giveni={M\bibinitperiod},
            givenun=0}}%
       }
-      \list{language}{1}{%
-        {es}%
-      }
-      \strng{namehash}{78de13818e5588de20bd061504325177}
-      \strng{fullhash}{78de13818e5588de20bd061504325177}
-      \strng{bibnamehash}{78de13818e5588de20bd061504325177}
-      \strng{authorbibnamehash}{78de13818e5588de20bd061504325177}
-      \strng{authornamehash}{78de13818e5588de20bd061504325177}
-      \strng{authorfullhash}{78de13818e5588de20bd061504325177}
+      \strng{namehash}{9e456bff60f898f7bf527af238453e3e}
+      \strng{fullhash}{9e456bff60f898f7bf527af238453e3e}
+      \strng{bibnamehash}{9e456bff60f898f7bf527af238453e3e}
+      \strng{authorbibnamehash}{9e456bff60f898f7bf527af238453e3e}
+      \strng{authornamehash}{9e456bff60f898f7bf527af238453e3e}
+      \strng{authorfullhash}{9e456bff60f898f7bf527af238453e3e}
       \field{sortinit}{C}
       \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
       \field{extradatescope}{labelyear}
@@ -177,24 +174,11 @@
       \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{abstract}{En este trabajo se emplea la metodología del análisis de factores para construir indicadores sintéticos que permiten caracterizar la situación económica-social de las provincias argentinas. Partiendo de dieciséis variables se construyen tres indicadores sintéticos: económico-social; de mercado laboral; y de tasa de desempleo. Los resultados muestran el siguiente ordenamiento de las provincias argentinas según su ubicación en el ranking económico-social: 1) Ciudad de Buenos Aires; 2) Santa Cruz; 3) Chubut; 4) La Pampa; 5) Tierra del Fuego; 6) Neuquén; 7) Buenos Aires; 8) Santa Fe; 9) Córdoba; 10) Río Negro; 11) Mendoza; 12) Entre Ríos; 13) San Luis; 14) Catamarca; 15) San Juan; 16) Tucumán; 17) La Rioja; 18) Salta; 19) Jujuy; 20) Misiones; 21)Corrientes; 22) Santiago del Estero; 23) Chaco; y 24) Formosa. Una ubicación menor (mayor) indica un mejor (peor) desempeño económico-social. Se analiza la evolución temporal de la situación relativa de las provincias argentinas mediante la comparación de los resultados obtenidos con los del trabajo de Nuñez Miñana (1972). Se evalúa también la hipótesis de convergencia económico-social de las provincias argentinas.}
-      \field{journaltitle}{Documentos de Federalismo Fiscal}
-      \field{month}{8}
-      \field{title}{Caracterización económico-social de las provincias argentinas}
-      \field{urlday}{3}
-      \field{urlmonth}{6}
-      \field{urlyear}{2021}
-      \field{volume}{no. 5}
+      \field{month}{1}
+      \field{title}{Caracterización {Economico}-{Social} de las {Provincias} {Argentinas}}
       \field{year}{2003}
-      \field{urldateera}{ce}
       \verb{file}
-      \verb Full Text PDF:/home/alejandrochain/Zotero/storage/DSRCMNYW/Cicowiez - 2003 - Caracterización económico-social de las provincias.pdf:application/pdf;Snapshot:/home/alejandrochain/Zotero/storage/HFD3URTK/3523.html:text/html
-      \endverb
-      \verb{urlraw}
-      \verb http://sedici.unlp.edu.ar/handle/10915/3523
-      \endverb
-      \verb{url}
-      \verb http://sedici.unlp.edu.ar/handle/10915/3523
+      \verb Full Text PDF:/home/alejandrochain/Zotero/storage/B5FL34R2/Cicowiez - 2003 - Caracterización Economico-Social de las Provincias.pdf:application/pdf
       \endverb
     \endentry
     \entry{coxhead_migration_2015}{report}{}
@@ -348,6 +332,44 @@
       \field{shorttitle}{Urban {Travel} {Demand}}
       \field{title}{Urban {Travel} {Demand}: {A} {Behavioral} {Analysis} : a {Charles} {River} {Associates} {Research} {Study}}
       \field{year}{1975}
+    \endentry
+    \entry{dumont_is_2014}{misc}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=896d0536af3d428dbec961df0040fa19}{%
+           family={Dumont},
+           familyi={D\bibinitperiod},
+           given={Jean-Cristophe},
+           giveni={J\bibinithyphendelim C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=47fdfb2393f0d2ef4dd45422781dbd6a}{%
+           family={Liebig},
+           familyi={L\bibinitperiod},
+           given={Thomas},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \list{publisher}{1}{%
+        {Migration Policy Debates OECD}%
+      }
+      \strng{namehash}{7b5cd7ce2ad79b28fc0a5bad131c0ca9}
+      \strng{fullhash}{7b5cd7ce2ad79b28fc0a5bad131c0ca9}
+      \strng{bibnamehash}{7b5cd7ce2ad79b28fc0a5bad131c0ca9}
+      \strng{authorbibnamehash}{7b5cd7ce2ad79b28fc0a5bad131c0ca9}
+      \strng{authornamehash}{7b5cd7ce2ad79b28fc0a5bad131c0ca9}
+      \strng{authorfullhash}{7b5cd7ce2ad79b28fc0a5bad131c0ca9}
+      \field{sortinit}{D}
+      \field{sortinithash}{c438b3d5d027251ba63f5ed538d98af5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{month}{5}
+      \field{title}{Is migration good for the economy?}
+      \field{year}{2014}
     \endentry
     \entry{greene_econometric_2018}{book}{}
       \name{author}{1}{}{%
@@ -577,7 +599,7 @@
       \field{pages}{125\bibrangedash 190}
       \range{pages}{66}
     \endentry
-    \entry{macqueen_methods_1967}{article}{}
+    \entry{macqueen_methods_1967}{inproceedings}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=9a914809b2ac7de1c9aa16dc5e4d2173}{%
            family={Macqueen},
@@ -600,7 +622,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{The main purpose of this paper is to describe a process for partitioning an N-dimensional population into k sets on the basis of a sample. The process, which is called 'k-means, ' appears to give partitions which are reasonably}
-      \field{journaltitle}{In 5-th {Berkeley} {Symposium} on {Mathematical} {Statistics} and {Probability}}
+      \field{booktitle}{In 5-th {Berkeley} {Symposium} on {Mathematical} {Statistics} and {Probability}}
       \field{title}{Some methods for classification and analysis of multivariate observations}
       \field{year}{1967}
       \field{pages}{281\bibrangedash 297}
@@ -653,6 +675,51 @@
       \verb https://econpapers.repec.org/article/ucpjpolec/v_3a86_3ay_3a1978_3ai_3a5_3ap_3a749-73.htm
       \endverb
     \endentry
+    \entry{ravenstein_laws_1885}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=3482113e2b0f11b670db42f8bfd7ade6}{%
+           family={Ravenstein},
+           familyi={R\bibinitperiod},
+           given={E.\bibnamedelimi G.},
+           giveni={E\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{3482113e2b0f11b670db42f8bfd7ade6}
+      \strng{fullhash}{3482113e2b0f11b670db42f8bfd7ade6}
+      \strng{bibnamehash}{3482113e2b0f11b670db42f8bfd7ade6}
+      \strng{authorbibnamehash}{3482113e2b0f11b670db42f8bfd7ade6}
+      \strng{authornamehash}{3482113e2b0f11b670db42f8bfd7ade6}
+      \strng{authorfullhash}{3482113e2b0f11b670db42f8bfd7ade6}
+      \field{sortinit}{R}
+      \field{sortinithash}{b9c68a358aea118dfa887b6e902414a7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0959-5341}
+      \field{journaltitle}{Journal of the Statistical Society of London}
+      \field{note}{Publisher: [Royal Statistical Society, Wiley]}
+      \field{number}{2}
+      \field{title}{The {Laws} of {Migration}}
+      \field{urlday}{9}
+      \field{urlmonth}{7}
+      \field{urlyear}{2021}
+      \field{volume}{48}
+      \field{year}{1885}
+      \field{urldateera}{ce}
+      \field{pages}{167\bibrangedash 235}
+      \range{pages}{69}
+      \verb{doi}
+      \verb 10.2307/2979181
+      \endverb
+      \verb{urlraw}
+      \verb https://www.jstor.org/stable/2979181
+      \endverb
+      \verb{url}
+      \verb https://www.jstor.org/stable/2979181
+      \endverb
+    \endentry
     \entry{simpson_demographic_2017}{article}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=7493c852b66c7e63ec7b498add971679}{%
@@ -698,6 +765,48 @@
       \endverb
       \verb{url}
       \verb https://wol.iza.org/articles/demographic-and-economic-determinants-of-migration/long
+      \endverb
+    \endentry
+    \entry{sjaastad_costs_1962}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=dfa6abffa8fcdf70021646e5f2430313}{%
+           family={Sjaastad},
+           familyi={S\bibinitperiod},
+           given={Larry\bibnamedelima A.},
+           giveni={L\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{dfa6abffa8fcdf70021646e5f2430313}
+      \strng{fullhash}{dfa6abffa8fcdf70021646e5f2430313}
+      \strng{bibnamehash}{dfa6abffa8fcdf70021646e5f2430313}
+      \strng{authorbibnamehash}{dfa6abffa8fcdf70021646e5f2430313}
+      \strng{authornamehash}{dfa6abffa8fcdf70021646e5f2430313}
+      \strng{authorfullhash}{dfa6abffa8fcdf70021646e5f2430313}
+      \field{sortinit}{S}
+      \field{sortinithash}{c319cff79d99c853d775f88277d4e45f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0022-3808}
+      \field{journaltitle}{Journal of Political Economy}
+      \field{note}{Publisher: University of Chicago Press}
+      \field{number}{5}
+      \field{title}{The {Costs} and {Returns} of {Human} {Migration}}
+      \field{urlday}{10}
+      \field{urlmonth}{7}
+      \field{urlyear}{2021}
+      \field{volume}{70}
+      \field{year}{1962}
+      \field{urldateera}{ce}
+      \field{pages}{80\bibrangedash 93}
+      \range{pages}{14}
+      \verb{urlraw}
+      \verb https://www.jstor.org/stable/1829105
+      \endverb
+      \verb{url}
+      \verb https://www.jstor.org/stable/1829105
       \endverb
     \endentry
     \entry{stark_migration_1991}{article}{}
@@ -750,6 +859,48 @@
       \endverb
       \verb{url}
       \verb https://econpapers.repec.org/article/ecjeconjl/v_3a101_3ay_3a1991_3ai_3a408_3ap_3a1163-78.htm
+      \endverb
+    \endentry
+    \entry{todaro_model_1969}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=d54524e11677b9dd4880b2beb5e96a9b}{%
+           family={Todaro},
+           familyi={T\bibinitperiod},
+           given={Michael\bibnamedelima P.},
+           giveni={M\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{d54524e11677b9dd4880b2beb5e96a9b}
+      \strng{fullhash}{d54524e11677b9dd4880b2beb5e96a9b}
+      \strng{bibnamehash}{d54524e11677b9dd4880b2beb5e96a9b}
+      \strng{authorbibnamehash}{d54524e11677b9dd4880b2beb5e96a9b}
+      \strng{authornamehash}{d54524e11677b9dd4880b2beb5e96a9b}
+      \strng{authorfullhash}{d54524e11677b9dd4880b2beb5e96a9b}
+      \field{sortinit}{T}
+      \field{sortinithash}{51f9faf24c60c62ca764a77f78cf5666}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0002-8282}
+      \field{journaltitle}{The American Economic Review}
+      \field{note}{Publisher: American Economic Association}
+      \field{number}{1}
+      \field{title}{A {Model} of {Labor} {Migration} and {Urban} {Unemployment} in {Less} {Developed} {Countries}}
+      \field{urlday}{10}
+      \field{urlmonth}{7}
+      \field{urlyear}{2021}
+      \field{volume}{59}
+      \field{year}{1969}
+      \field{urldateera}{ce}
+      \field{pages}{138\bibrangedash 148}
+      \range{pages}{11}
+      \verb{urlraw}
+      \verb https://www.jstor.org/stable/1811100
+      \endverb
+      \verb{url}
+      \verb https://www.jstor.org/stable/1811100
       \endverb
     \endentry
     \entry{zaiceva_impact_2014}{article}{}

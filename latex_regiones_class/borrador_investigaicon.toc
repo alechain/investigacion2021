@@ -3,38 +3,40 @@
 \defcounter {refsection}{0}\relax 
 \contentsline {section}{\numberline {1}Introducción}{2}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {2}Regiones}{2}%
+\contentsline {section}{\numberline {2}Marco teórico y antecedentes}{2}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.1}Macrofactores}{3}%
+\contentsline {section}{\numberline {3}Regiones}{5}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.2}Aglomeración}{5}%
+\contentsline {subsection}{\numberline {3.1}Macrofactores}{6}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {2.3}Flujos migratorios}{11}%
+\contentsline {subsection}{\numberline {3.2}Aglomeración}{8}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {3}Migrantes}{13}%
+\contentsline {subsection}{\numberline {3.3}Flujos migratorios}{13}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.1}Sexo y edad}{13}%
+\contentsline {section}{\numberline {4}Migrantes}{16}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.2}Pobreza y patrimonio}{16}%
+\contentsline {subsection}{\numberline {4.1}Género y edad}{16}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.3}Ocupación y calificación}{18}%
+\contentsline {subsection}{\numberline {4.2}Pobreza y patrimonio}{19}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.4}Prima salarial}{19}%
+\contentsline {subsection}{\numberline {4.3}Ocupación y calificación}{21}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.5}Estado civil y organización familiar}{21}%
+\contentsline {subsection}{\numberline {4.4}Prima salarial}{23}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {3.6}Nivel educativo}{21}%
+\contentsline {subsection}{\numberline {4.5}Estado civil y organización familiar}{25}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{\numberline {4}Factores determinantes de la migración}{24}%
+\contentsline {subsection}{\numberline {4.6}Nivel educativo}{26}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.1}Modelo}{24}%
+\contentsline {section}{\numberline {5}Factores determinantes de la migración}{28}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.2}Base de datos y variables}{27}%
+\contentsline {subsection}{\numberline {5.1}Modelo}{28}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsection}{\numberline {4.3}Estimación del modelo}{28}%
+\contentsline {subsection}{\numberline {5.2}Base de datos y variables}{30}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.3.1}Determinantes generales de la migración}{29}%
+\contentsline {subsection}{\numberline {5.3}Estimación del modelo}{32}%
 \defcounter {refsection}{0}\relax 
-\contentsline {subsubsection}{\numberline {4.3.2}Determinantes regionales de la migración}{30}%
+\contentsline {subsubsection}{\numberline {5.3.1}Determinantes generales de la migración}{32}%
 \defcounter {refsection}{0}\relax 
-\contentsline {section}{Bibliografía}{34}%
+\contentsline {subsubsection}{\numberline {5.3.2}Determinantes regionales de la migración}{35}%
+\defcounter {refsection}{0}\relax 
+\contentsline {section}{Bibliografía}{38}%

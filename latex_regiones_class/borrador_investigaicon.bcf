@@ -2558,24 +2558,28 @@
     <bcf:datasource type="file" datatype="bibtex">Bibliography.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">kuhnt_literature_2019</bcf:citekey>
-    <bcf:citekey order="2">krugman_increasing_1991</bcf:citekey>
-    <bcf:citekey order="3">cicowiez_caracterizacion_2003</bcf:citekey>
-    <bcf:citekey order="4">macqueen_methods_1967</bcf:citekey>
-    <bcf:citekey order="5">hartigan_k-means_1979</bcf:citekey>
-    <bcf:citekey order="6">borjas_self-selection_1987</bcf:citekey>
-    <bcf:citekey order="7">carling_gender_2005</bcf:citekey>
-    <bcf:citekey order="8">zaiceva_impact_2014</bcf:citekey>
-    <bcf:citekey order="9">simpson_demographic_2017</bcf:citekey>
-    <bcf:citekey order="10">liebig_fiscal_2013</bcf:citekey>
-    <bcf:citekey order="11">mincer_family_1978</bcf:citekey>
-    <bcf:citekey order="12">danzer_economic_2008</bcf:citekey>
-    <bcf:citekey order="13">stark_migration_1991</bcf:citekey>
-    <bcf:citekey order="14">greene_econometric_2018</bcf:citekey>
-    <bcf:citekey order="15">domencich_urban_1975</bcf:citekey>
-    <bcf:citekey order="16">coxhead_migration_2015</bcf:citekey>
-    <bcf:citekey order="17">mincer_family_1978</bcf:citekey>
-    <bcf:citekey order="18">ai_interaction_2003</bcf:citekey>
+    <bcf:citekey order="1">ravenstein_laws_1885</bcf:citekey>
+    <bcf:citekey order="2">sjaastad_costs_1962</bcf:citekey>
+    <bcf:citekey order="3">todaro_model_1969</bcf:citekey>
+    <bcf:citekey order="4">sjaastad_costs_1962</bcf:citekey>
+    <bcf:citekey order="5">zaiceva_impact_2014</bcf:citekey>
+    <bcf:citekey order="6">todaro_model_1969</bcf:citekey>
+    <bcf:citekey order="7">mincer_family_1978</bcf:citekey>
+    <bcf:citekey order="8">kuhnt_literature_2019</bcf:citekey>
+    <bcf:citekey order="9">krugman_increasing_1991</bcf:citekey>
+    <bcf:citekey order="10">simpson_demographic_2017</bcf:citekey>
+    <bcf:citekey order="11">borjas_self-selection_1987</bcf:citekey>
+    <bcf:citekey order="12">stark_migration_1991</bcf:citekey>
+    <bcf:citekey order="13">danzer_economic_2008</bcf:citekey>
+    <bcf:citekey order="14">dumont_is_2014</bcf:citekey>
+    <bcf:citekey order="15">liebig_fiscal_2013</bcf:citekey>
+    <bcf:citekey order="16">carling_gender_2005</bcf:citekey>
+    <bcf:citekey order="17">cicowiez_caracterizacion_2003</bcf:citekey>
+    <bcf:citekey order="18">macqueen_methods_1967</bcf:citekey>
+    <bcf:citekey order="19">hartigan_k-means_1979</bcf:citekey>
+    <bcf:citekey order="20">greene_econometric_2018</bcf:citekey>
+    <bcf:citekey order="21">domencich_urban_1975</bcf:citekey>
+    <bcf:citekey order="22">coxhead_migration_2015</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="apa">
