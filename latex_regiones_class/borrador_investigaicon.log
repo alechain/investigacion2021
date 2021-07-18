@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2021.4.12)  17 JUL 2021 20:35
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2021.4.12)  17 JUL 2021 21:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -914,15 +914,11 @@ File: ./graficos/emig_inmig_por_prov.pdf Graphic file (type pdf)
 [20] (./graficos/vivienda_mig.tex) (./graficos/calif_mig.tex) [21] [22]
 (./graficos/prima_sal_1.tex) (./graficos/prima_sal_2.tex)
 (./graficos/prima_sal_3.tex) [23] [24] (./graficos/estadociv_mig.tex) [25]
-(./graficos/niveled_mig.tex) [26] [27] [28] [29] [30] [31] [32] [33]
-
-LaTeX Warning: Reference `cuadro:estimacion' on page 34 undefined on input line
- 839.
-
-[34] [35] [36] [37]
+(./graficos/niveled_mig.tex) [26] [27] [28] [29] [30] [31] [32] [33] [34]
+[35] [36] [37]
 Missing character: There is no � in font [lmroman12-italic]:mapping=tex-text;!
 
-Overfull \hbox (248.03288pt too wide) in paragraph at lines 920--920
+Overfull \hbox (248.03288pt too wide) in paragraph at lines 917--917
 [][]\TU/lmr/m/n/12 Hartigan, J. A. & Wong, M. A. (1979). A K-Means Clustering A
 lgorithm [_eprint: https://rss.onlinelibrary.wiley.com/doi/pdf/10.2307/2346830]
 .
@@ -932,18 +928,15 @@ lgorithm [_eprint: https://rss.onlinelibrary.wiley.com/doi/pdf/10.2307/2346830]
 LaTeX Info: Redefining \. on input line 11.
 LaTeX Info: Redefining \% on input line 11.
 )
-
-LaTeX Warning: There were undefined references.
-
 Package logreq Info: Writing requests to 'borrador_investigaicon.run.xml'.
 \openout1 = `borrador_investigaicon.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 23072 strings out of 479819
- 449416 string characters out of 5895846
+ 23071 strings out of 479819
+ 449397 string characters out of 5895846
  2735673 words of memory out of 5000000
- 39794 multiletter control sequences out of 15000+600000
+ 39793 multiletter control sequences out of 15000+600000
  536362 words of font info for 58 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  60i,10n,60p,2163b,4873s stack positions out of 5000i,500n,10000p,200000b,80000s

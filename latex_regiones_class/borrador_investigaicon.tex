@@ -744,8 +744,8 @@ En las siguientes subsecciones se estiman dos modelos de probabilidad no lineal.
 El resultado de las estimación de los parámetros del modelo se encuentra resumido en el Cuadro \ref{cuadro:estimacion_general} a través de tres submodelos.
 Los tres submodelos comparten la misma variable dependiente, se diferencian entre ellos en la cantidad y generalidad de los regresores.
 
-En el \textit{``Modelo A''} se incluyen los determinantes más generales de las migraciones, que son el sexo de la persona, la edad y su organización familiar.
-En el \textit{``Modelo B''} se adicionan al modelo general determinantes de la situación económica, patrimonial, laboral y educativa de las personas.
+En el \textit{``Modelo A''} se incluyen los determinantes más amplios de las migraciones, que son el sexo de la persona, la edad y su organización familiar.
+En el \textit{``Modelo B''} se adicionan al modelo amplio determinantes de la situación económica, patrimonial, laboral y educativa de las personas.
 En el \textit{``Modelo C''} se adiciona en última instancia una variable de control relativa a la región donde habita la persona.
 
 Cabe aclarar que en la interpretación de los mismos se utiliza implicitamente o explicitamente la comparación contra el grupo base, que está conformado por la alternativa de no migrar.
@@ -764,7 +764,7 @@ Otro factor relevante a la hora de analizar los factores determinantes de la dec
 
 Las personas que son propietarias de su residencia tienen una menor probabilidad de ser migrantes que  las personas que no lo son.
 
-Por último se analiza el efecto que tiene la educación en la probabilidad de ser migrante. La probabilidad de ser migrante aumenta si la persona posee un nivel educativo medio o alto en relación con una persona con un nivel educativo bajo, este efecto se mantiene significativo para los dos submodelos en donde esta variable se encuentra incluida.
+Por último, se analiza el efecto que tiene la educación en la probabilidad de ser migrante. La probabilidad de ser migrante aumenta si la persona posee un nivel educativo medio o alto en relación con una persona con un nivel educativo bajo, este efecto se mantiene significativo para los dos submodelos en donde esta variable se encuentra incluida.
 
 \begin{table}[!htbp] \centering \scriptsize 
   \caption{\\Estimación de los determinantes generales de la migración} 
@@ -836,25 +836,22 @@ Akaike Inf. Crit. & 35,442.020 & 32,843.050 & 31,677.320 \\
 
 
 \subsubsection{Determinantes regionales de la migración}
-El resultado de las estimación de los parámetros del modelo se encuentra resumido en el Cuadro \ref{cuadro:estimacion}, en el se puede ver los coeficientes $\beta_{j}$ estimados para cada una de las alternativas del éxodo, cabe aclarar que en la interpretación de los mismos se utiliza implicitamente o explicitamente la comparación contra el grupo base, que está conformado por la alternativa de no migrar, es decir,se entienden de la alternativa de migrar hacia la región $j$ en comparación con la opción de no migrar.
+Este modelo de determinantes regionales es una variante del modelo general pero con un mayor nivel de especificidad, por esta razón es esperable que muchos factores determinantes mantengan su dirección y significatividad estimada. En el análisis de estos resultados se prestará mayor atención a los impactos heterogeneos que se presenten entre regiones con respecto al caso general.
+
+El resultado de las estimación de los parámetros del modelo se encuentra resumido en el Cuadro \ref{cuadro:estimacion_regional}, en el se puede ver los coeficientes estimados para cada una de las alternativas del éxodo. Cabe aclarar que en la interpretación de los mismos se utiliza implicitamente o explicitamente la comparación contra el grupo base, que está conformado por la alternativa de no migrar, es decir, se entiende de la alternativa de migrar hacia la región $j$ en comparación con la opción de no migrar.
 
 \textbf{Resultados}
 
-El sexo es un factor determinante de la migración hacia las tres regiones, en donde ser hombre aumenta la probabilidad de ser migrante, sin embargo, no es un factor determinante significativo si la migración es hacia la región 3. La edad tiene una relación positiva con la probabilidad de migrar hacia cualquiera de las tres regiones, lo que indica que la probabilidad de migrar aumenta conforme la persona es mayor, sin embargo existe una relación cuadrática significativa, lo que genera que cada año que aumente la edad aportará cada vez menos en el aumento de  la probabilidad de ser migrante hacia cualquiera de las regiones.
+El sexo, la edad, la incidencia en la pobreza, la calificación de las personas, tener hijos a cargo, disponer de un nivel educativo alto y ser propietario de la vivienda siguen siendo factores determinantes de la migración hacia las tres regiones. En particular, todas estas características continuan  manteniendo el signo del impacto y su significatividad en la probabilidad de ser migrante como en el caso general. 
 
-La incidencia en la pobreza es un factor determinante significativo en la migración de las personas, las personas pobres tienen menos probabilidad de ser migrantes con destino hacia la región 1 y 2, sin embargo esta relación se invierte si consideramos como destino de la migración a la región 3, en donde ser pobre aumenta la probabilidad de ser un migrante hacia la región 3.
+La incidencia en la pobreza y la calificación de las perosnas es un factor determinante significativo en la migración de las personas, las personas pobres tienen menos probabilidad de ser migrantes con destino hacia la región 1 y 2, sin embargo esta relación se invierte si consideramos como destino de la migración a la región 3, en donde ser pobre aumenta la probabilidad de ser un migrante hacia la región 3.
 
-La recepción de susidios o ayudas por parte del gobierno, instituciones, iglesias, etc, aumenta la probabibilidad de ser migrante con destino hacia la región 2 en relación a una persona que no recibe ningun tipo de transferencia económica (grupo base), sin embargo, para los migrantes que tienen como destino las regiones 1 y 3 la recepción de alguna transferencia económica  disminuye la probabilidad de ser migrante.
+La recepción de susidios o ayudas monetarias no presentaba un impacto significativo en el caso general, sin embargo, en este modelo aumenta la probabibilidad de ser migrante con destino hacia la Región Norte en relación a una persona que no recibe ningun tipo de transferencia económica (grupo base). Para los migrantes que tienen como destino las regiones Centro y Sur la recepción de alguna transferencia económica  sigue sin tener un impacto estadisticamente significativo en la probabilidad de ser migrante.
 
-La probabilidad de migrar hacia cualquiera de las dos regiones de las personas que nacieron en la región 1 se reduce en presencia de un trabajo de alta calificación en relación a una persona que está desocupada o inactiva (en adelante grupo base). Para los migrantes que tienen como destino a la región 2 se encuentra  un efecto con igual signo si la persona posee un trabajo de baja calificación, en donde la probabilidad de migrar se reduce en comparación con el grupo base, lo cual indica que una persona  con un trabajo de baja calificación que nació en la región 1 tiene menos probabilidad de migrar hacia la región 2 que una persona desocupada o inactiva.
+Estar en pareja tiene un impacto diferente en la probabilidad de ser migrante dependiendo de la región que se tome como destino. Las personas que estan casadas o unidas tienen una menor probabilidad de ser migrante con destino a la Región Norte y Centro en comparación con una persona soltera (en adelante grupo base). Esta relación es completamente inversa si el migrante tiene como provincia de destino alguna de las que se encuentran en la Región Sur, en donde estar en pareja aumenta la probabilidad de ser migrante con destino a esta misma en comparación con el grupo base.
 
-La probabilidad de migrar hacia cualquiera de las tres regiones se reduce en presencia de un trabajo de alta o baja calificación en relación a una persona que está desocupada o inactiva (grupo base), en este sentido no existen efectos con signos diferenciados dependiendo de la región de destino.
 
-Otro factor relevante a la hora de analizar los factores determinantes de la decisión del éxodo es la organización familiar, en este caso, ser soltero con hijos disminuye la probabilidad de ser migrante en comparación con una persona soltera sin hijos (en adelante grupo base), independientemente de cual sea su región de destino, efecto similar se puede encontrar en las personas que están en pareja (casados o unidos) y tienen hijos, las cuales tienen una menor probabilidad de ser migrantes en comparación con el grupo base para las tres regiones de destino. Por último, para el caso de las personas que estan en parejas y no tienen hijos la probabilidad de ser migrante aumenta con respecto al grupo base si la región de destino es la 1 o la 2, pero esta  probabilidad  disminuye si la región de destino es la 3.
-
-La condición de ser propietario de la vivienda tiene efectos diferenciados en la probabilidad de que una persona migre hacia alguna de las regiones, mientras ser propietario de la vivienda aumenta la probabilidad de ser un migrante con destino a la región 2 en relación con las personas que no son propietarias de las viviendas (en adelante grupo base), la probabilidad de ser migrante disminuye para una persona que es propietaria de su vivienda en relación al grupo base si la región de destino es la 1 o la 3.
-
-Por último se analiza el efecto que tiene la educación en la probabilidad de ser migrante. La probabilidad de ser migrante aumenta si la persona posee un nivel educativo medio o alto en relación con una persona con un nivel educativo bajo (en adelante grupo base), tanto para los que deciden migrar hacia la región 1 como hacia la region 2, sin embargo, la probabilidad de ser migrante con un nivel educativo medio o alto disminuye en relación al grupo base si al región de destino es la 3.
+Por último se analiza el efecto que tiene la educación media en la probabilidad de ser migrante. Tener un nivel educativo medio no impacta en la probabilidad de ser migrante con destino a la Región Sur en relación con una persona con un nivel educativo bajo (en adelante grupo base). Para la región Norte y Centro el efecto y la significatividad de poseer un nivel educativo medio se mantiene al igual que en el caso general, en donde este aumenta la probabilida de ser migrante con respecto al grupo base.
 
 \begin{table}[!htbp] \centering \footnotesize 
   \caption{Estimación de los determinantes regionales de la migración} 
