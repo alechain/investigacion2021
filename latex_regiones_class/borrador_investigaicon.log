@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2021.4.12)  17 JUL 2021 21:22
+This is XeTeX, Version 3.14159265-2.6-0.999991 (TeX Live 2019/Debian) (preloaded format=xelatex 2021.4.12)  19 JUL 2021 23:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -772,46 +772,57 @@ Package caption Info: Standard document class detected.
 \c@caption@flags=\count420
 \c@continuedfloat=\count421
 )
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/rotating.sty
+Package: rotating 2016/08/11 v2.16d rotated objects in LaTeX
+\c@r@tfl@t=\count422
+\rotFPtop=\skip74
+\rotFPbot=\skip75
+\rot@float@box=\box58
+\rot@mess@toks=\toks37
+)
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-xdvipdfmx.def
 File: l3backend-xdvipdfmx.def 2020-02-03 L3 backend support: xdvipdfmx
-\g__graphics_track_int=\count422
-\l__pdf_internal_box=\box58
-\g__pdf_backend_object_int=\count423
-\g__pdf_backend_annotation_int=\count424
+\g__graphics_track_int=\count423
+\l__pdf_internal_box=\box59
+\g__pdf_backend_object_int=\count424
+\g__pdf_backend_annotation_int=\count425
 )
 (./borrador_investigaicon.aux
 LaTeX Info: Redefining \. on input line 11.
 LaTeX Info: Redefining \% on input line 11.
+
+
+LaTeX Warning: Label `' multiply defined.
+
 )
 \openout1 = `borrador_investigaicon.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 20.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 21.
 LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 2
-0.
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
+1.
+ (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Info: Redefining \. on input line 20.
-LaTeX Info: Redefining \% on input line 20.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Info: Redefining \. on input line 21.
+LaTeX Info: Redefining \% on input line 21.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
@@ -875,9 +886,10 @@ Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'borrador_investigaicon.bbl' found.
 
 (./borrador_investigaicon.bbl)
-Package biblatex Info: Reference section=0 on input line 20.
-Package biblatex Info: Reference segment=0 on input line 20.
+Package biblatex Info: Reference section=0 on input line 21.
+Package biblatex Info: Reference segment=0 on input line 21.
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: rotating package is loaded.
 Package caption Info: End \AtBeginDocument code.
 File: logounne.png Graphic file (type bmp)
 <logounne.png>
@@ -891,54 +903,57 @@ LaTeX Info: Redefining \% on input line 2.
 \openout5 = `borrador_investigaicon.toc'.
 
  [1] [2]
-[3] [4] [5] [6] [7]
+[3] [4] [5] [6] [7] [8] [9]
 
-LaTeX Font Warning: Command \tiny invalid in math mode on input line 149.
+LaTeX Font Warning: Command \tiny invalid in math mode on input line 161.
 
 
-LaTeX Font Warning: Command \tiny invalid in math mode on input line 155.
+LaTeX Font Warning: Command \tiny invalid in math mode on input line 167.
 
 (./graficos/regiones_optimas.tex)
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[8] (./graficos/regiones_resultantes.tex) [9] [10] [11]
+[10] (./graficos/regiones_resultantes.tex) [11] [12] [13]
 File: ./graficos/mapa_regiones.pdf Graphic file (type pdf)
 <use ./graficos/mapa_regiones.pdf>
- [12] [13]
+ [14] [15]
 (./graficos/tasas_emig_inmig_prov.tex)
 File: ./graficos/emig_inmig_por_prov.pdf Graphic file (type pdf)
 <use ./graficos/emig_inmig_por_prov.pdf>
- [14] [15] (./graficos/sexo_mig.tex)
-[16] (./graficos/edad_mig.tex) [17] [18] [19] (./graficos/pobre_mig.tex)
-[20] (./graficos/vivienda_mig.tex) (./graficos/calif_mig.tex) [21] [22]
+ [16] [17] (./graficos/sexo_mig.tex)
+[18] (./graficos/edad_mig.tex) [19] [20] [21] (./graficos/pobre_mig.tex)
+[22] (./graficos/vivienda_mig.tex) (./graficos/calif_mig.tex) [23] [24]
 (./graficos/prima_sal_1.tex) (./graficos/prima_sal_2.tex)
-(./graficos/prima_sal_3.tex) [23] [24] (./graficos/estadociv_mig.tex) [25]
-(./graficos/niveled_mig.tex) [26] [27] [28] [29] [30] [31] [32] [33] [34]
-[35] [36] [37]
+(./graficos/prima_sal_3.tex) [25] [26] (./graficos/estadociv_mig.tex) [27]
+(./graficos/niveled_mig.tex) [28] [29] [30] [31] [32] [33] [34] [35] [36]
+[37] [38] [39]
 Missing character: There is no � in font [lmroman12-italic]:mapping=tex-text;!
 
-Overfull \hbox (248.03288pt too wide) in paragraph at lines 917--917
+Overfull \hbox (248.03288pt too wide) in paragraph at lines 941--941
 [][]\TU/lmr/m/n/12 Hartigan, J. A. & Wong, M. A. (1979). A K-Means Clustering A
 lgorithm [_eprint: https://rss.onlinelibrary.wiley.com/doi/pdf/10.2307/2346830]
 .
  []
 
-[38] [39] (./borrador_investigaicon.aux
+[40] [41] [42] [43] [44] [45] (./borrador_investigaicon.aux
 LaTeX Info: Redefining \. on input line 11.
 LaTeX Info: Redefining \% on input line 11.
 )
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package logreq Info: Writing requests to 'borrador_investigaicon.run.xml'.
 \openout1 = `borrador_investigaicon.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 23071 strings out of 479819
- 449397 string characters out of 5895846
- 2735673 words of memory out of 5000000
- 39793 multiletter control sequences out of 15000+600000
+ 23137 strings out of 479819
+ 450275 string characters out of 5895846
+ 2736838 words of memory out of 5000000
+ 39856 multiletter control sequences out of 15000+600000
  536362 words of font info for 58 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 60i,10n,60p,2163b,4873s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,12n,60p,2163b,4873s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on borrador_investigaicon.pdf (40 pages).
+Output written on borrador_investigaicon.pdf (46 pages).
