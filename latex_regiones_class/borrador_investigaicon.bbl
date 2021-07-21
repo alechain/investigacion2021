@@ -19,65 +19,6 @@
 
 \refsection{0}
   \datalist[entry]{apa/global//global/global}
-    \entry{ai_interaction_2003}{article}{}
-      \name{author}{2}{}{%
-        {{un=0,uniquepart=base,hash=1ccc2d4d2cb8e566d431552091eb3663}{%
-           family={Ai},
-           familyi={A\bibinitperiod},
-           given={Chunrong},
-           giveni={C\bibinitperiod},
-           givenun=0}}%
-        {{un=0,uniquepart=base,hash=4146bd10bd8287757605188ba3023777}{%
-           family={Norton},
-           familyi={N\bibinitperiod},
-           given={Edward\bibnamedelima C.},
-           giveni={E\bibinitperiod\bibinitdelim C\bibinitperiod},
-           givenun=0}}%
-      }
-      \list{language}{1}{%
-        {en}%
-      }
-      \strng{namehash}{bc82bf69ab8956b5fc997897dd56b9b7}
-      \strng{fullhash}{bc82bf69ab8956b5fc997897dd56b9b7}
-      \strng{bibnamehash}{bc82bf69ab8956b5fc997897dd56b9b7}
-      \strng{authorbibnamehash}{bc82bf69ab8956b5fc997897dd56b9b7}
-      \strng{authornamehash}{bc82bf69ab8956b5fc997897dd56b9b7}
-      \strng{authorfullhash}{bc82bf69ab8956b5fc997897dd56b9b7}
-      \field{sortinit}{A}
-      \field{sortinithash}{a3dcedd53b04d1adfd5ac303ecd5e6fa}
-      \field{extradatescope}{labelyear}
-      \field{labeldatesource}{year}
-      \true{uniqueprimaryauthor}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{abstract}{The magnitude of the interaction effect in nonlinear models does not equal the marginal effect of the interaction term, can be of opposite sign, and its statistical significance is not calculated by standard software. We present the correct way to estimate the magnitude and standard errors of the interaction effect in nonlinear models.}
-      \field{issn}{0165-1765}
-      \field{journaltitle}{Economics Letters}
-      \field{month}{7}
-      \field{number}{1}
-      \field{title}{Interaction terms in logit and probit models}
-      \field{urlday}{3}
-      \field{urlmonth}{6}
-      \field{urlyear}{2021}
-      \field{volume}{80}
-      \field{year}{2003}
-      \field{urldateera}{ce}
-      \field{pages}{123\bibrangedash 129}
-      \range{pages}{7}
-      \verb{doi}
-      \verb 10.1016/S0165-1765(03)00032-6
-      \endverb
-      \verb{file}
-      \verb ScienceDirect Snapshot:/home/alejandrochain/Zotero/storage/JQEZ5DTZ/S0165176503000326.html:text/html
-      \endverb
-      \verb{urlraw}
-      \verb https://www.sciencedirect.com/science/article/pii/S0165176503000326
-      \endverb
-      \verb{url}
-      \verb https://www.sciencedirect.com/science/article/pii/S0165176503000326
-      \endverb
-      \keyw{Interaction effect,Interaction term,Logit,Nonlinear models,Probit}
-    \endentry
     \entry{borjas_self-selection_1987}{article}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=2bbc4693cc6e25946b1ae21cf51483a4}{%

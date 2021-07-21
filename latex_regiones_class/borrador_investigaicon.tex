@@ -1,12 +1,19 @@
 \documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
+\usepackage[spanish, es-tabla]{babel}
 \usepackage{graphicx}
 \usepackage{amsmath} 
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage{tikz}
 \usepackage[babel]{csquotes}
 \usepackage[backend=biber,style=apa]{biblatex}
+
+\usepackage{appendix} %apendice
+\renewcommand{\appendixname}{Anexos}
+\renewcommand{\appendixtocname}{Anexos}
+\renewcommand{\appendixpagename}{Anexos}
+
+
 %\DefineBibliographyStrings{english}
 \DeclareLanguageMapping{spanish}{spanish-apa}
 \addbibresource{Bibliography.bib}
@@ -27,7 +34,7 @@
 {\includegraphics[width=0.3\textwidth]{logounne.png}\par}
 {\scshape\Large Facultad de Ciencias Econ\'omicas\par}
 \vspace{2cm}
-{\scshape\Huge Borrador del proyecto investigación \par}
+{\scshape\Huge Proyecto de Investigación \par}
 \vspace{2cm}
 {\itshape\Large ``Identificación de los factores socioeconómicos determinantes en la migración
 interregional en Argentina entre 2016 y 2019'' \par}
@@ -40,11 +47,17 @@ interregional en Argentina entre 2016 y 2019'' \par}
 
 %\maketitle
 \newpage
+\begin{center}
+Resumen:
+\end{center}
+En este trabajo se realiza una estimación de los determinantes socioeconómicos de la migración interna en Argentina. Para esto se utilizan los microdatos de
+la Encuesta Permanente de Hogares correspondientes al período comprendido entre el segundo trimestre de 2016 y el cuarto trimestre de 2019. Se estiman dos modelos, un Logit Binomial para los determinantes generales y un Logit Multinomial para los determinantes específicos de cada una de las regiones de destino. Los resultados sugieren que el volumen de los flujos migratorios evidencia diferencias sustanciales con respecto a las estructuras productivas y el desarrollo relativo en las distintas localidades de destino. La Región Centro la que mayor volumen de atracción de migrantes posee y la Region Norte la que mayor volumen de expulsión de migrantes ostenta. No obstante, el nivel de desarrollo de las regiones no parece presentar discrepancias importantes en los factores socioeconómicos que afectan la propensión a migrar de las personas. Una persona es más propensa a migrar si  pertenece al género masculino, es jóven y posee un nivel educativo medio o alto. De manera contraria, una persona será menos propensa a migrar internamente si tiene hijos a su cargo,  es pobre, dispone de alguna ocupación laboral o si es propietario de su vivienda. 
+\newpage
 \tableofcontents
 \newpage
 \section{Introducción}
 
-La migración y el ideal de alcanzar una mejor calidad de vida son dos conceptos que estan en constante interrelación desde tiempos primitivos. Las motivaciones de estos movimientos fueron variando conforme a la evolución del ser humano y de la sociedad, desde los primeros viajes del homo-sapiens hasta los actuales movimientos migratorios, las personas se enfrentaron a distintos impulsores para abandonar su tierra e ir en busqueda de nuevos horizontes. 
+La migración y el ideal de alcanzar una mejor calidad de vida son dos conceptos que estan en constante interrelación desde tiempos primitivos. Las motivaciones de estos movimientos fueron variando conforme a la evolución del ser humano y de la sociedad. Desde los primeros viajes del homo-sapiens hasta los actuales movimientos migratorios, las personas se enfrentaron a distintos impulsores para abandonar su tierra e ir en busqueda de nuevos horizontes. 
 
 La falta de oportunidades laborales, la posibilidad de crecimiento académico o profesional, mejores niveles de seguridad jurídica, remuneraciones más elevadas y los vínculos familiares son algunas de las motivaciones más frecuentes del proceso migratorio. Estas motivaciones condicionan las características socioeconómicas de los migrantes potenciales. A modo de ejemplo, si las migraciones estan siendo impulsadas por falta de oportunidades laborales, es de esperar que las personas desempleadas tengan una mayor propensión a migrar. Esto indica que es posible reconocer una serie de determinantes socioeconómicos que hacen más propensas a ciertas personas para encarar un proceso de migración. 
 
@@ -52,15 +65,15 @@ En los últimos años en la Argentina se evidenció un éxodo interno de habitan
 
 Los volumenes y las direcciones que toman los flujos migratorios al interior del país permiten mostrar los patrones de expulsión y atracción de las distintas provincias. Esto muchas veces esta impulsado por las redes que se generan a causa de la aglomeración de un perfil migratorio. Estas redes facilitan que personas con acceso a la misma puedan sortear los costos de la migración con mayor facilidad y sufran en menor medida las consecuencias del desarraigo.
 
-La caracterización de la población migrante es un paso esencial para entender si existen un proceso de selección en la atracción de los migrantes hacia determinadas regiones. Las diferencias en términos sociales, demográficos y económicos de la población nativa y migrante permiten dar un paneo de esta situación.
+La caracterización de la población migrante es un paso esencial para analizar si existe un proceso de selección en la atracción de los migrantes hacia determinadas regiones. Las diferencias en términos sociales, demográficos y económicos de la población nativa y migrante permiten dar un paneo de esta situación.
 
 La identificación empírica de los determinantes socioeconómicos de la migración permite comprender mejor el perfil de los migrantes impulsado al interior del país. Estos determinantes son las características que afectan en mayor o menor medida a la decisión migratoria, la cual tiene su base en la maximización de utilidad del individuo. Existiran características que hagan más o menos propenso que una persona vea maximizada su utilidad si toma la decisión de migrar.
 
 El objetivo fundamental de este trabajo es identificar los factores socioeconómicos determinantes de la migración interregional en la Argentina durante los años 2016 a 2019. Para esto se analiza la composición de la población de los aglomerados a través del cuestionario de la Encuesta Permanente de Hogares. En particular se presta especial atención a las preguntas atenientes al lugar de nacimiento del individuo y su lugar de residencia con un lapso de permanencia de cinco años. Luego se realiza la caracterización de la población nativa y migrante. Por último se estima la probabilidad de migración de los individuos entre las distintas regiones a través de criterios socioeconómicos determinados y se determina cuáles de ellos juegan un rol más importante en la decisión de movilización
 
-Para lograr estos objetivos se organizo el trabajo en cinco secciones. En primer lugar se presenta una breve revisión de antecedentes y un marco teórico ateniente a estudios relevantes en el ámbito de las migraciones y sus determinantes. Luego se da lugar a la división regional que será utilizada para caracterizar y cuantificar los flujos migratorios. Seguido a esto, se realiza una descripción de las características principales de los migrantes internos en el país. Para finalizar, se presentan y estiman los modelos de determinantes generales y regionales de la migración, seguido de una conclusión que busca resaltar los resultados mas importantes que surjen de esta investigación.
+Para lograr estos objetivos se organizo el trabajo en cinco secciones. Primero se realiza una breve revisión de antecedentes y un marco teórico ateniente a estudios relevantes en el ámbito de las migraciones y sus determinantes. Luego se da lugar a la división regional que será utilizada para caracterizar y cuantificar los flujos migratorios. Seguido a esto, se lleva a cabo una descripción de las características principales de los migrantes internos en el país. Para finalizar, se presentan y estiman los modelos de determinantes generales y regionales de la migración, seguido de una conclusión que busca resaltar los resultados más importantes que surjen de esta investigación.
 
-
+\newpage
 \section{Marco teórico y antecedentes}
 A lo largo de los años han surgido multiples teorías y acercamientos empíricos que buscaron explicar los procesos migratorios. Son multiples y muy disímiles los enfoques que se han utilizado al rededor del mundo, aqui se intentará resumir las principales obras que sirvieron de base para la elaboración de este trabajo.
 
@@ -87,7 +100,7 @@ En el análisis del impacto de las migraciones en los mercados laborales, el cre
 Las dimensiones del género en la migración son tratadas en la investigación hecha por el Profesor \textcite{carling_gender_2005}. Uno de los fenómenos que resalta en este trabajo es el concepto de la "feminización de la migración", el cual hace encuentra su fundamento en la particiación más activa que tomó la mujer en el mercado laboral en las últimas décadas. Esta facilidad en el acceso al mercado laboral posibilito la opción de migrar para formar parte de mercados laborales en donde la valoración de su fuerza de trabajo sea mayor.
 
 
-
+\newpage
 \section{Regiones}
 
 Una región es una zona territorial de un país que comparten determinadas características homogéneas. Las características elegidas para realizar la división van a determinar directamente que provincias integran cada una de las regiones.
@@ -118,7 +131,7 @@ A continuación se brinda una breve descripción de los macrofactores selecciona
 
 \item Mortalidad infantil: Se calcula como la mortalidad infantil por cada 1.000 nacidos vivos según la provincia de residencia de la madre. Estos datos tienen como fuente la secretaría de acceso a la salud del Ministerio de Salud de la Nación Argentina. Lo que se intenta mostrar son las diferencias y similitudes en el acceso a la salud y a las posibilidades del desarrollo de un proyecto familiar.
 
-\item Homicidios, robos, robos agravados, violaciones y muertes en accidentes de tránsito cada 100.000 habitantes: estas variables tienen como fuente el Sistema Nacional de Información Criminal del ministerio de seguridad de la nación. La utilidad buscada en su inclusión es la de aproximar el nivel de seguridad social y jurídica de cada una de las provincias.
+\item Homicidios, robos, robos agravados, violaciones y muertes en accidentes de tránsito cada 100.000 habitantes: Estas variables tienen como fuente el Sistema Nacional de Información Criminal del ministerio de seguridad de la nación. La utilidad buscada en su inclusión es la de aproximar el nivel de seguridad social y jurídica de cada una de las provincias.
 \end{itemize}
 
 \textbf{Factores económicos de macrolocalización:}
@@ -133,9 +146,9 @@ A continuación se brinda una breve descripción de los macrofactores selecciona
 
 \item Remuneración real de los trabajadores registrados del sector privado: Este dato, que tiene como fuente al Observatorio de Empleo y Dinámicas Empresariales del Ministerio de Trabajo, Empleo y Seguridad Social, indica el valor relativo que tiene el trabajo de las personas que trabajan en las distintas provincias.
 
-\item Porcentaje de empleados en los distintos sectores de actividad: esta variable que tiene como fuente al Observatorio de Empleo y Dinámicas Empresariales del Ministerio de Trabajo, Empleo y Seguridad Social demuestra el peso de los distintos sectores de actividad como generadores de empleo en las provincias. Esto demarca las diferencias en las estructuras productivas que existen entre ellas, lo que significa que en algunas puede existir un mayor porcentaje de empleo proveniente de la Agricultura, ganadería, pesca y actividades extractivas (sector primario extractivo), en otras del sector de Comercio, servicios, electricidad, gas, agua y construcción (sector terciario de servicios) y en otras del sector industrial (sector secundario).
+\item Porcentaje de empleados en los distintos sectores de actividad: Esta variable que tiene como fuente al Observatorio de Empleo y Dinámicas Empresariales del Ministerio de Trabajo, Empleo y Seguridad Social demuestra el peso de los distintos sectores de actividad como generadores de empleo en las provincias. Esto demarca las diferencias en las estructuras productivas que existen entre ellas, lo que significa que en algunas puede existir un mayor porcentaje de empleo proveniente de la Agricultura, ganadería, pesca y actividades extractivas (sector primario extractivo), en otras del sector de Comercio, servicios, electricidad, gas, agua y construcción (sector terciario de servicios) y en otras del sector industrial (sector secundario).
 
-\item Porcentaje en el total de Recursos Tributarios de Origen Nacional (RON) y Provincial (TOP): este indicador que tiene como fuente la Dirección de Asuntos Provinciales dependiente de la Secretaría de Hacienda en la órbita del Ministerio de Economía de la Nación. La importancia de incluir esta variable radica en las diferencias en los patrones de gastos de los recursos públicos, por parte de los estados provinciales, dependiendo de si son obtenidos por recaudación propia o ajena.
+\item Porcentaje en el total de Recursos Tributarios de Origen Nacional (RON) y Provincial (TOP): Este indicador que tiene como fuente la Dirección de Asuntos Provinciales dependiente de la Secretaría de Hacienda en la órbita del Ministerio de Economía de la Nación. La importancia de incluir esta variable radica en las diferencias en los patrones de gastos de los recursos públicos, por parte de los estados provinciales, dependiendo de si son obtenidos por recaudación propia o ajena.
 \end{itemize}
 
 \textbf{Factores geográficos de macrolocalización:}
@@ -202,20 +215,15 @@ Estas regiones las denominaremos de aquí en adelante Región Norte, Región Cen
 Se puede ver claramente la diferencia en la similitud de los tres grupos, calculada a través del análisis de componentes principales de los macrofactores, siendo solamente la Ciudad Autónoma de Buenos Aires la única que presenta mayor disimilitud con respecto a su región.
 Esto indica que CABA  lleva una dinámica socio-económica muy peculiar con respecto al promedio de las provincias argentinas, inclusive considerablemente distinta a las provincias con la cual ostenta mayor similitud.
 
-En el Cuadro \ref{cuadro:indicadores} se presenta un resumen de los macrofactores que representan en promedio a cada región, es decir, cuales son las características compartidas entre las provincias que provocaron que sean parte de un mismo aglomerado.
+En la Tabla \ref{cuadro:indicadores} se presenta un resumen de los macrofactores que representan en promedio a cada región, es decir, cuales son las características compartidas entre las provincias que provocaron que sean parte de un mismo aglomerado.
 
-La \textbf{región Sur} se caracteriza en términos sociales por una tasa de promoción secundaria moderada, en comparación con las otras regiones, una leve mortalidad infantil y una elevada tasa de violaciones cada 100.000 habitantes. En términos económicos, esta región se caracteriza por tener la segunda mayor integración a los mercados internacionales con respecto a la cantidad de exportaciones per-cápita en millones de dolares. Las provincias de estas región tienen un nivel de participación considerablemente similar en la percepción de recursos de origen Nacional y Provincial, siendo la región que menor participación en promedio posee de los RON.
-
-En cuanto al nivel de actividad, posee elevados niveles de consumo  de energía electrica per-cápita, la tasa de actividad promedio y la cantidad relativa de empresas es la segunda más elevada de las tres regiones, el salario real es el más alto, con amplia diferencia, de las tres regiones y la tasa de pobreza es la más baja de las tres. Por último, se caracteriza por una predominancia del sector terciario, seguido del sector primario (Agricultura, ganadería, pesca y actividades extractivas) y por último, con un porcentaje considerablemente menor, el sector secundario (industrial).
+La \textbf{región Sur} se caracteriza en términos sociales por una tasa de promoción secundaria moderada, en comparación con las otras regiones, una leve mortalidad infantil y una elevada tasa de violaciones cada 100.000 habitantes. En términos económicos, esta región se caracteriza por tener la segunda mayor integración a los mercados internacionales con respecto a la cantidad de exportaciones per-cápita en millones de dolares. Las provincias de estas región tienen un nivel de participación considerablemente similar en la percepción de recursos de origen Nacional y Provincial, siendo la región que menor participación en promedio posee de los RON. En cuanto al nivel de actividad, posee elevados niveles de consumo  de energía electrica per-cápita, la tasa de actividad promedio y la cantidad relativa de empresas es la segunda más elevada de las tres regiones, el salario real es el más alto, con amplia diferencia, de las tres regiones y la tasa de pobreza es la más baja de las tres. Por último, se caracteriza por una predominancia del sector terciario, seguido del sector primario (Agricultura, ganadería, pesca y actividades extractivas) y por último, con un porcentaje considerablemente menor, el sector secundario (industrial).
 
 La \textbf{región Norte} se caracteriza en términos sociales por una baja tasa de promoción secundaria, en comparación con las otras regiones, una elevada tasa mortalidad infantil, una baja tasa de robos (agravados y no agravados) y homocidios dolosos cada 100.000 habitantes.
 En cuanto a factores económicos, esta región se caracteriza por tener una pésima integración a los mercados internacionales con la más baja cantidad de exportaciones per-cápita, en cuanto a los niveles de actividad, posee los menores niveles de consumo  de energía electrica per-cápita, la menor tasa de actividad promedio, la menor cantidad relativa de empresas, el salario real es el más bajo de las tres regiones y la tasa de pobreza es la más alta de las tres, dejandola en el último puesto en términos de desempeño económico en relación a las otras dos regiones. 
-En esta región la participación en la percepción de los RON es casi cuatro veces superior a la participación que poseen en el total de recursos tributarios de origen provincial, lo que denota un elevado desequilibrio vertical por parte de estas provincias, sumado a esto es la región que menor participación en los recursos TOP posee.
-Por último, se caracteriza, al igual que las otras dos regiones, por una predominancia del sector terciario, seguido del sector secundario (industrial) y dejando en último lugar al sector primario (Agricultura, ganadería, pesca y actividades extractivas).
+En esta región la participación en la percepción de los RON es casi cuatro veces superior a la participación que poseen en el total de recursos tributarios de origen provincial, lo que denota un elevado desequilibrio vertical por parte de estas provincias, sumado a esto es la región que menor participación en los recursos TOP posee. Por último, se caracteriza, al igual que las otras dos regiones, por una predominancia del sector terciario, seguido del sector secundario (industrial) y dejando en último lugar al sector primario (Agricultura, ganadería, pesca y actividades extractivas).
 
-La \textbf{región Centro} se caracteriza en términos sociales por una elevada tasa de promoción secundaria, en comparación con las otras regiones, una moderada tasa mortalidad infantil, muy similar a la Región Sur , y una elevada tasa de robos agravados y no agravados. Las provincias de esta región tienen una mayor participación en los recursos tributarios de origen provincial que en los de origen nacional, siendo la región que mayor participación ostenta tanto en los RON como en los TOP.
-
-En cuanto a factores económicos, esta región se caracteriza por tener el mejor desempeño en términos de integración a los mercados internacionales, con la mayor cantidad de exportaciones per-cápita en dolares de las tres regiones. En cuanto a los niveles de actividad, posee el segundo mayor nivel de consumo  de energía electrica per-cápita, la mayor tasa de actividad promedio, la mayor cantidad relativa de empresas cada 100.000 habitantes, un nivel intermedio de salario real  y una tasa de pobreza que se encuentra como la segunda más baja de las tres regiones. Por último, se caracteriza, al igual que las otras dos regiones, por una predominancia del sector terciario, seguido del sector secundario (industrial) y dejando en último lugar, con amplia diferencia, al sector primario (Agricultura, ganadería, pesca y actividades extractivas).
+La \textbf{región Centro} se caracteriza en términos sociales por una elevada tasa de promoción secundaria, en comparación con las otras regiones, una moderada tasa mortalidad infantil, muy similar a la Región Sur , y una elevada tasa de robos agravados y no agravados. Las provincias de esta región tienen una mayor participación en los recursos tributarios de origen provincial que en los de origen nacional, siendo la región que mayor participación ostenta tanto en los RON como en los TOP.En cuanto a factores económicos, esta región se caracteriza por tener el mejor desempeño en términos de integración a los mercados internacionales, con la mayor cantidad de exportaciones per-cápita en dolares de las tres regiones. En cuanto a los niveles de actividad, posee el segundo mayor nivel de consumo  de energía electrica per-cápita, la mayor tasa de actividad promedio, la mayor cantidad relativa de empresas cada 100.000 habitantes, un nivel intermedio de salario real  y una tasa de pobreza que se encuentra como la segunda más baja de las tres regiones. Por último, se caracteriza, al igual que las otras dos regiones, por una predominancia del sector terciario, seguido del sector secundario (industrial) y dejando en último lugar, con amplia diferencia, al sector primario (Agricultura, ganadería, pesca y actividades extractivas).
 
 
 \begin{table}[!htbp] 
@@ -287,12 +295,12 @@ Región & Porcentaje \\
 \begin{scriptsize}
 Fuente: Elaboración propia en base a EPH.\\
 Nota: Los migrantes están definidos como personas que vivían hace cinco años en otra provincia.\\
-Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.
+Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.\\
 \end{scriptsize}
 \end{flushleft}
 \end{table} 
 
-En el Cuadro \ref{cuadro:origen_mig} se puede notar que las provincias de la  \textbf{Región Norte} son las que mayor nivel de expulsión poseen, seguidas por las provincias pertenecientes a la Región Centro, y por úlitmo se encuentran las pertenecientes a la Región Sur.
+En la Tabla \ref{cuadro:origen_mig} se puede notar que las provincias de la  \textbf{Región Norte} son las que mayor nivel de expulsión poseen, seguidas por las provincias pertenecientes a la Región Centro, y por úlitmo se encuentran las pertenecientes a la Región Sur.
 
 \begin{table}[!htbp] \centering 
 \footnotesize
@@ -313,12 +321,12 @@ Centro & 55.28\%\\
 \begin{scriptsize}
 Fuente: Elaboración propia en base a EPH.\\
 Nota: Los migrantes están definidos como personas que vivían hace cinco años en otra provincia.\\
-Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.
+Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.\\
 \end{scriptsize}
 \end{flushleft}
 \end{table} 
 
-Sin embargo, analizando cuales son las regiones de destino  con mayor porcentaje  de migrantes, se puede encontrar en el Cuadro \ref{cuadro:destino_mig} que la \textbf{Región Centro} es la que mayor nivel de atracción posee por elevada diferencia (55.28\%), seguida por la Región Norte y en último lugar la Región Sur.
+Sin embargo, analizando cuales son las regiones de destino  con mayor porcentaje  de migrantes, se puede encontrar en la Tabla \ref{cuadro:destino_mig} que la \textbf{Región Centro} es la que mayor nivel de atracción posee por elevada diferencia (55.28\%), seguida por la Región Norte y en último lugar la Región Sur.
 
 Esta relación entre regiones con mayor atracción y expulsión de migrantes tambien puede ser vista a nivel provincial. Para ello se definen la tasa de emigración, que es el cociente entre la cantidad de emigrantes nativos de la provincia ``$x$'' sobre la cantidad de residentes de la provincia ``$x$'' y la tasa de inmigración que indica la cantidad de inmigrantes que habitan la provincia ``$x$'' sobre la cantidad de residentes de la provincia ``$x$''.
 
@@ -354,13 +362,13 @@ Estas diferencias entre tasa de emigración e inmigración pueden ser vistas des
 \begin{scriptsize}
 Fuente: Elaboración propia en base a EPH.\\
 Nota: Los migrantes están definidos como personas que vivían hace cinco años en otra provincia.\\
-Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.
+Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.\\
 \end{scriptsize}
 \end{flushleft}
 \end{figure}
 \newpage
 \section{Migrantes}
-Un migrante es toda persona que se traslada fuera de su localidad de residencia habitual de manera temporal o permanente. En este trabajo se tendra en cuenta solamente los casos en los que éste movimiento migratorio se realice dentro del mismo país, siempre y cuando la migración haya sido hace cinco años o menos. El último punto es importante para que las características que se tomen como determinantes de la migración tengan un correlato con la decisión migratoria.
+Un migrante es toda persona que se traslada fuera de su localidad de residencia habitual de manera temporal o permanente. En este trabajo se tendra en cuenta solamente los casos en los que éste movimiento migratorio se realice dentro del mismo país, siempre y cuando la migración haya sido hace cinco años o menos. El último punto es importante para que las características que se tomen como determinantes de la migración tengan un correlato con la decisión migratoria. Un nativo, como figura contrapuesta al migrante, será la persona que haya nacido y este viviendo en la misma provincia en los últimos cinco años desde el reelvamiento.
 
 Las características individuales o familiares de las personas que toman la decisión de emprender un proceso migratorio forman parte de los microdeterminantes de las migraciones. Si bien estos no deben ser tomados como los principales impulsores de la decisión del éxodo, funcionan como mediadores en la decisión migratoria y tienen una elevada influencia en la auto-selección de los migrantes para cada una de las regiones.
 
@@ -382,7 +390,7 @@ En la Figura \ref{figure:sexo_mig_} se puede ver el género de los migrantes y n
 \begin{flushleft}
 \begin{scriptsize}
 Fuente: Elaboración propia en base a EPH.\\
-Nota: Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.
+Nota: Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.\\
 \end{scriptsize}
 \end{flushleft}
 \end{center}
@@ -403,14 +411,14 @@ La mayoría de los migrantes se encuentran dentro del rango etario de la Poblaci
 \begin{flushleft}
 \begin{scriptsize}
 Fuente: Elaboración propia en base a EPH.\\
-Nota: Solamente se tienen en cuenta nativos y migrantes mayores a 18 años. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.
+Nota: Solamente se tienen en cuenta nativos y migrantes mayores a 18 años. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.\\
 \end{scriptsize}
 \end{flushleft}
 \end{center}
 \end{figure}
 
 \newpage
-Como se puede observar en el Cuadro \ref{cuadro:edad_mig}, la mitad de los migrantes en las regiones Norte y Sur tienen menos de 30 o 31 años. Si se observa a la Región Centro la mitad de los migrantes tienen 26 años o menos, siendo considerablemente menor a la edad mediana de la población nativa, la cual gira en torno a los 39 a 42 años.
+Como se puede observar en la Tabla \ref{cuadro:edad_mig}, la mitad de los migrantes en las regiones Norte y Sur tienen menos de 30 o 31 años. Si se observa a la Región Centro la mitad de los migrantes tienen 26 años o menos, siendo considerablemente menor a la edad mediana de la población nativa, la cual gira en torno a los 39 a 42 años.
 
 La diferencia de edad entre los nativos y migrantes no presenta, en este caso, una dimensión distinta dependiendo del género de la persona. Para los hombres y las mujeres de todas las regiones la edad mediana de los migrantes es considerablemente inferior que la de los nativos. 
 
@@ -444,7 +452,7 @@ Región & Condición & Género & Mediana de Edad \\
 \begin{flushleft}
 \begin{scriptsize}
 Fuente: Elaboración propia en base a EPH.\\
-Nota: Solamente se tienen en cuenta nativos y migrantes mayores a 18 años. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.
+Nota: Solamente se tienen en cuenta nativos y migrantes mayores a 18 años. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.\\
 \end{scriptsize}
 \end{flushleft}
 \end{table}
@@ -459,7 +467,7 @@ En la Figura \ref{figure:pobre_mig} se puede observar como la incidencia en la p
 La percepción de subsidios y la contribución a las arcas públicas por parte de la población migrante posee mucha relevancia en la literatura de migraciones. Esto puede ser analizado al nivel de migraciones regionales considerando la recepción de ingresos no laborales (subsidios) de los migrantes y nativos para cada región. 
 
 
-El acceso a transferencias o subsidios puede actuar como un determinante para la migración de las personas. Se puede observar en el Cuadro \ref{cuadro:subsidio_mig} que es más probable que un nativo reciba algun tipo de subsidio que un migrante, siendo estos los que menor participación en la percepción de subsidios poseen en promedio. En la región Norte es en donde la brecha entre los nativos y migrantes que reciben subsidios es más amplia.
+El acceso a transferencias o subsidios puede actuar como un determinante para la migración de las personas. Se puede observar en la Tabla \ref{cuadro:subsidio_mig} que es más probable que un nativo reciba algun tipo de subsidio que un migrante, siendo estos los que menor participación en la percepción de subsidios poseen en promedio. En la región Norte es en donde la brecha entre los nativos y migrantes que reciben subsidios es más amplia.
 
 \newpage
 \begin{figure}[ht!]
@@ -471,7 +479,7 @@ El acceso a transferencias o subsidios puede actuar como un determinante para la
 \begin{flushleft}
 \begin{scriptsize}
 Fuente: Elaboración propia en base a EPH.\\
-Nota: Se consideran pobres las personas que viven en un hogar en donde el ingreso total familiar es menor a la canasta básica total. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.
+Nota: Se consideran pobres las personas que viven en un hogar en donde el ingreso total familiar es menor a la canasta básica total. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.\\
 \end{scriptsize}
 \end{flushleft}
 \end{figure}
@@ -491,7 +499,7 @@ Sur                        & 89.12\%        & 10.88\%     & 88.37\%       & 11.6
 \begin{flushleft}
 \begin{scriptsize}
 Fuente: Elaboración propia en base a EPH.\\
-Nota: Se considera que las personas reciben subsidios si en los últimos tres meses desde el día del relevamiento el hogar recibio subsidios o ayuda social en dinero. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.
+Nota: Se considera que las personas reciben subsidios si en los últimos tres meses desde el día del relevamiento el hogar recibio subsidios o ayuda social en dinero. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.\\
 \end{scriptsize}
 \end{flushleft}
 \end{table}
@@ -507,7 +515,8 @@ En la Figura \ref{figure:vivienda_mig} se encuentran las diferencias en el acces
 \begin{flushleft}
 \begin{scriptsize}
 Fuente: Elaboración propia en base a EPH.\\
-Nota: Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.\end{scriptsize}
+Nota: Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.\\
+\end{scriptsize}
 \end{flushleft}
 \end{figure}
  
@@ -528,7 +537,7 @@ Nota: Los migrantes están definidos como personas que vivían hace cinco años 
 \subsection{Ocupación y calificación}
 La busqueda de acceso a oportunidades laborales o una mayor demanda laboral para determinados niveles de calificación funcionan como incentivos para abandonar la localidad de origen de las personas.
 
-En el cuadro \ref{cuadro:tasaactiv_mig} se pude ver la tasa de actividad de  los migrantes y nativos para las distintas regiones. Los migrantes de la región Sur tienen una tasa de actividad superior a la de los nativos, sin embargo en la región Centro y Norte esta situación es inversa, en donde los nativos forman parte de la fuerza de trabajo en una en una mayor proporción que los migrantes.
+En la Tabla \ref{cuadro:tasaactiv_mig} se pude ver la tasa de actividad de  los migrantes y nativos para las distintas regiones. Los migrantes de la región Sur tienen una tasa de actividad superior a la de los nativos, sin embargo en la región Centro y Norte esta situación es inversa, en donde los nativos forman parte de la fuerza de trabajo en una en una mayor proporción que los migrantes.
 \begin{table}[htbp!]
 \centering
 \caption{\\Tasa de actividad de nativos y migrantes} 
@@ -545,7 +554,7 @@ Sur & 55.81\%  & 42.82\% \\
 \begin{flushleft}
 \begin{scriptsize}
 Fuente: Elaboración propia en base a EPH.\\
-Nota: Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.
+Nota: Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.\\
 \end{scriptsize}
 \end{flushleft}
 \end{table}
@@ -559,7 +568,7 @@ Nota: Los migrantes están definidos como personas que vivían hace cinco años 
 \begin{flushleft}
 \begin{scriptsize}
 Fuente: Elaboración propia en base a EPH.\\
-Nota: Los profesionales y técnicos son considerados de calificación alta mientras que los operativos y no calificados son considerados de calificación baja. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.
+Nota: Los profesionales y técnicos son considerados de calificación alta mientras que los operativos y no calificados son considerados de calificación baja. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.\\
 \end{scriptsize}
 \end{flushleft}
 \end{figure}
@@ -590,7 +599,7 @@ Por último, los No calificados, Operativos y Técnicos que nacieron y viven en 
 \begin{flushleft}
 \begin{scriptsize}
 Fuente: Elaboración propia en base a EPH.\\
-Nota: Los profesionales y técnicos son considerados de calificación alta mientras que los operativos y no calificados son considerados de calificación baja. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.
+Nota: Los profesionales y técnicos son considerados de calificación alta mientras que los operativos y no calificados son considerados de calificación baja. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.\\
 \end{scriptsize}
 \end{flushleft}
 \end{figure}
@@ -609,7 +618,7 @@ El estado civil y la organización familiar de las personas impacta directamente
 \begin{flushleft}
 \begin{scriptsize}
 Fuente: Elaboración propia en base a EPH.\\
-Nota: Solamente se tienen en cuenta nativos y migrantes mayores a 18 años. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.
+Nota: Solamente se tienen en cuenta nativos y migrantes mayores a 18 años. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.\\
 \end{scriptsize}
 \end{flushleft}
 \end{figure}
@@ -631,7 +640,7 @@ El nivel educativo de las personas es un factor extremadamente importante en la 
 \begin{flushleft}
 \begin{scriptsize}
 Fuente: Elaboración propia en base a EPH.\\
-Nota: El nivel educativo bajo está compuesto por las personas sin intrucción o con primaria completa, el nivel educativo medio por personas con secundario completo, y el nivel educativo alto por personas con nivel terciario o universitario. Solamente se tienen en cuenta nativos y migrantes mayores a 25 años. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.
+Nota: El nivel educativo bajo está compuesto por las personas sin intrucción o con primaria completa, el nivel educativo medio por personas con secundario completo, y el nivel educativo alto por personas con nivel terciario o universitario. Solamente se tienen en cuenta nativos y migrantes mayores a 25 años. Los migrantes están definidos como personas que vivían hace cinco años en otra provincia. Los nativos están definidos como personas que nacieron y viven en la misma provincia. Las estimaciones corresponden al período desde el segundo trimestre de 2016 hasta el cuarto trimestre de 2019.\\
 \end{scriptsize}
 \end{flushleft}
 \end{figure}
@@ -753,7 +762,7 @@ En la estimación de los determinantes de la migración se procedera a un aborda
 
 En las siguientes subsecciones se estiman dos modelos de probabilidad no lineal. Para el caso de los determinantes generales de la migración se utiliza el modelo Logit Binomial, mientras que para los determinantes de la migración diferenciados por regiones de destino se utiliza un modelo Logit Multinomial.
 \subsubsection{Determinantes generales de la migración}
-El resultado de las estimación de los parámetros del modelo se encuentra resumido en el Cuadro \ref{cuadro:estimacion_general} a través de tres submodelos.
+El resultado de las estimación de los parámetros del modelo se encuentra resumido en la Tabla \ref{cuadro:estimacion_general} a través de tres submodelos.
 Los tres submodelos comparten la misma variable dependiente, se diferencian entre ellos en la cantidad y generalidad de los regresores.
 
 En el \textit{``Modelo A''} se incluyen los determinantes más amplios de las migraciones, que son el sexo de la persona, la edad y su organización familiar.
@@ -850,7 +859,7 @@ Akaike Inf. Crit. & 35,442.020 & 32,843.050 & 31,677.320 \\
 \subsubsection{Determinantes regionales de la migración}
 Este modelo de determinantes regionales es una variante del modelo general pero con un mayor nivel de especificidad, por esta razón es esperable que muchos factores determinantes mantengan su dirección y significatividad estimada. En el análisis de estos resultados se prestará mayor atención a los impactos heterogeneos que se presenten entre regiones con respecto al caso general.
 
-El resultado de las estimación de los parámetros del modelo se encuentra resumido en el Cuadro \ref{cuadro:estimacion_regional}, en el se puede ver los coeficientes estimados para cada una de las alternativas del éxodo. Cabe aclarar que en la interpretación de los mismos se utiliza implicitamente o explicitamente la comparación contra el grupo base, que está conformado por la alternativa de no migrar, es decir, se entiende de la alternativa de migrar hacia la región $j$ en comparación con la opción de no migrar.
+El resultado de las estimación de los parámetros del modelo se encuentra resumido en la Tabla \ref{cuadro:estimacion_regional}, en el se puede ver los coeficientes estimados para cada una de las alternativas del éxodo. Cabe aclarar que en la interpretación de los mismos se utiliza implicitamente o explicitamente la comparación contra el grupo base, que está conformado por la alternativa de no migrar, es decir, se entiende de la alternativa de migrar hacia la región $j$ en comparación con la opción de no migrar.
 
 \textbf{Resultados}
 
@@ -864,7 +873,7 @@ Estar en pareja tiene un impacto diferente en la probabilidad de ser migrante de
 Por último se analiza el efecto que tiene la educación media en la probabilidad de ser migrante. Tener un nivel educativo medio no impacta en la probabilidad de ser migrante con destino a la Región Sur en relación con una persona con un nivel educativo bajo (en adelante grupo base). Para la región Norte y Centro el efecto y la significatividad de poseer un nivel educativo medio se mantiene al igual que en el caso general, en donde este aumenta la probabilidad de ser migrante con respecto al grupo base.
 
 \begin{table}[!htbp] \centering \footnotesize 
-  \caption{Estimación de los determinantes regionales de la migración} 
+  \caption{\\Estimación de los determinantes regionales de la migración} 
   \label{cuadro:estimacion_regional} 
 \begin{tabular}{@{\extracolsep{5pt}}lccc} 
 \\[-1.8ex]\hline 
@@ -929,91 +938,137 @@ En general las características de los migrantes internos son muy similares para
 
 La incidencia en la pobreza de estos migrantes es relativamente baja en relación a los nativos. No obstante, es mucho menos frecuente que tengan acceso a una vivienda propia, sobre todo si se toma en consideración a aquellos que habitan la región Sur.
 
-La estimación del modelo de determinantes generales de la migración sugiere que existen factores que impactan de manera positiva y negativa en la decisión del éxodo.  Entre aquellos determinantes que aumentan la probabilidad de ser migrante resaltan el ser una persona de sexo masculino, jóven y con un nivel eduativo medio u alto. Dentro de los determinantes que reducen la probabilidad de ser un migrante interno, se encuentran la incidencia en la pobreza, la posibilidad de estar ocupado laboralmente y el ser propietario de la vivienda. 
+La estimación del modelo de determinantes generales de la migración sugiere que existen factores que impactan de manera positiva y negativa en la decisión del éxodo.  Entre aquellos determinantes que aumentan la probabilidad de ser migrante resaltan el ser una persona de sexo masculino, jóven y con un nivel eduativo medio u alto. Dentro de los determinantes que reducen la probabilidad de ser un migrante interno, se encuentran la incidencia en la pobreza, tener hijos a cargo, la posibilidad de estar ocupado laboralmente y el ser propietario de la vivienda. 
 
 Pasando a la estimación del modelo de determinantes regionales de la migración, se puede encontrar mucha correspondencia entre los determinantes generales y regionales de las migraciones.
 
 Los únicos determinantes que presentaron particularidades con respecto a la región que se tome como destino de la migración son la recepción de subsidios, el estado civil y el nivel educativo medio de la persona. Ser beneficiario de algun tipo de subsidio aumenta la propensión de ser migrante con destino a la región Norte. Las personas que estan en pareja tienen una menor probabilidad de ser migrantes con destino a la región Norte y Centro, y una mayor probabilidad de ser migrantes si la región de destino es la Sur. La educación media, por otro lado, no tiene ningun efecto significativo en la probabilidad de ser migrante si la región de destino es la Sur.
 
-
-%%%%
 \newpage
-\printbibliography[title={Bibliografía}, heading=bibintoc]
-
-\newpage
-\section{Anexo}
-
+\appendix
+\clearpage
+\addappheadtotoc
+\appendixpage
+\section{Anexo I: Preguntas de migrantes y nativos de la EPH}
+\begin{table}[!htbp]
+\caption{}
+\centering
+\begin{tabular}{lc}
+\hline
+\hline
+Pregunta                             & Campo EPH Individual \\ \hline
+¿Dónde nació?                        & CH15                 \\
+¿En qué provincia nació?             & CH15\_COD            \\
+¿Dónde vivía hace 5 años?            & CH16                 \\
+¿En que provincia vivía hace 5 años? & CH16\_COD            \\ \hline
+\end{tabular}
+\end{table}
+\section{Anexo II: Códigos de provincias del INDEC}
+\begin{table}[!htbp]
+\caption{}
+\centering
+\scriptsize
+\begin{tabular}{lc}
+\hline
+Provincia           & Código \\ \hline
+CABA                & 02     \\
+Buenos Aires        & 06     \\
+Catamarca           & 10     \\
+Córdoba             & 14     \\
+Corrientes          & 18     \\
+Chaco               & 22     \\
+Chubut              & 26     \\
+Entre Ríos          & 30     \\
+Formosa             & 34     \\
+Jujuy               & 38     \\
+La Pampa            & 42     \\
+La Rioja            & 46     \\
+Mendoza             & 50     \\
+Misiones            & 54     \\
+Neuquén             & 58     \\
+Río Negro           & 62     \\
+Salta               & 66     \\
+San Juan            & 70     \\
+San Luis            & 74     \\
+Santa Cruz          & 78     \\
+Santa Fe            & 82     \\
+Santiago del Estero & 86     \\
+Tucumán             & 90     \\
+Tierra del Fuego    & 94    
+\end{tabular}
+\end{table}
+\section{Anexo III: Macrofactores de aglomeración por provincias}
 \begin{sidewaystable}[!htbp] \centering \tiny
  \centering 
-  \caption{Macrofactores de aglomeración por provincia} 
+  \caption{} 
   \label{} 
 \begin{tabular}{@{\extracolsep{5pt}} lcccccccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
- & Buenos Aires & Catamarca & Chaco & Chubut & CABA & Córdoba & Corrientes & Entre Ríos \\ 
+Macrofactores & Buenos Aires & Catamarca & Chaco & Chubut & Ciudad Autónoma de Buenos Aires & Córdoba & Corrientes & Entre Ríos \\ 
 \hline \\[-1.8ex] 
-Habitantes (2010) & $15625084$ & $367,828$ & $1,055,259$ & $509,108$ & $2,890,151$ & $3,308,876$ & $992,595$ & $1,235,994$ \\ 
-Tasa promocion efectiva secundaria (2017) & $80.800$ & $82.500$ & $75.700$ & $81$ & $83.300$ & $83.400$ & $80.600$ & $77.400$ \\ 
-Mortalidad infantil promedio 2016-2019 & $9.400$ & $9.600$ & $10.700$ & $8$ & $6.800$ & $8.500$ & $13$ & $9.400$ \\ 
-Homicidios dolosos C/ 100.000 hab. (2016-2019) & $6.300$ & $3$ & $5.900$ & $9.600$ & $4.400$ & $3.500$ & $2.900$ & $4.800$ \\ 
-Muertes en Accidentes V. C/ 100.000  hab.  (2016-2019) & $6.600$ & $20$ & $14.900$ & $8.200$ & $4.400$ & $10.900$ & $8.500$ & $12.300$ \\ 
-Robos (no agravados) C/ 100.000 hab. (2016-2019) & $639.100$ & $1,537.200$ & $563.300$ & $864.800$ & $2,362.800$ & $1,878.300$ & $559.200$ & $633.400$ \\ 
-Robos agravados C/ 100.000 hab. (2016-2019) & $8.300$ & $0$ & $0$ & $21$ & $7.200$ & $10.700$ & $2.400$ & $4.700$ \\ 
-Violaciones  C/ 100.000 hab. (2016-2019) & $9$ & $4.400$ & $7.700$ & $29.400$ & $8.500$ & $6$ & $8.800$ & $5.200$ \\ 
-Exportaciones per-cápita en USD (2016-2019) & $1,312.900$ & $1,382$ & $366.400$ & $4,968.200$ & $112.500$ & $2,522.400$ & $217.600$ & $1,046.900$ \\ 
-Demanda de MwH energía elec. Per cápita (2016) & $2.100$ & $5.100$ & $2.100$ & $7.100$ & $4.600$ & $2.500$ & $1.700$ & $2.600$ \\ 
-Pobreza Promedio (2017-2019) & $28.400$ & $33.100$ & $38.200$ & $26$ & $13$ & $31.500$ & $40.400$ & $34.800$ \\ 
-Tasa actividad Promedio (2017-2019) & $46.300$ & $44.900$ & $38.400$ & $43$ & $55.100$ & $47.100$ & $42.300$ & $42.400$ \\ 
-Empresas  C/ 100.000 hab. (2016-2017) & $1,209.760$ & $809.074$ & $838.183$ & $1,735.977$ & $4,330.881$ & $1,775.467$ & $855.737$ & $1,335.362$ \\ 
-Remuneracion  real de trabajadores reg. (priv.) (2016-2019) & $18,644.530$ & $15,116.950$ & $14,208.120$ & $30,099.060$ & $22,439.720$ & $16,670.890$ & $13,881.020$ & $14,973.060$ \\ 
-\% de empleados en sector primario(2016-2019) & $0.042$ & $0.108$ & $0.095$ & $0.201$ & $0.011$ & $0.061$ & $0.163$ & $0.145$ \\ 
-\% de empleados en sector terciario (2016-2019) & $0.711$ & $0.703$ & $0.803$ & $0.676$ & $0.869$ & $0.738$ & $0.692$ & $0.655$ \\ 
-\% de empleados en sector secundario (2016-2019) & $0.247$ & $0.189$ & $0.102$ & $0.124$ & $0.120$ & $0.201$ & $0.145$ & $0.201$ \\ 
-\% de percepción de Recursos de Origen Nacional (2016-2019) & $0.201$ & $0.025$ & $0.047$ & $0.015$ & $0.050$ & $0.086$ & $0.035$ & $0.045$ \\ 
-\% de percepción de Recursos de Origen Provincial  (2016-2019) & $0.367$ & $0.004$ & $0.012$ & $0.014$ & $0.224$ & $0.073$ & $0.009$ & $0.025$ \\ 
-NOA & $0$ & $1$ & $0$ & $0$ & $0$ & $0$ & $0$ & $0$ \\ 
-NEA & $0$ & $0$ & $1$ & $0$ & $0$ & $0$ & $1$ & $0$ \\ 
-NUEVO CUYO & $0$ & $0$ & $0$ & $0$ & $0$ & $0$ & $0$ & $0$ \\ 
-CENTRO Y GBA & $1$ & $0$ & $0$ & $0$ & $1$ & $1$ & $0$ & $1$ \\ 
-PATAGONIA & $0$ & $0$ & $0$ & $1$ & $0$ & $0$ & $0$ & $0$ \\ 
+Habitantes (2010) & 15$,$625$,$084 &   367$,$828 &  1$,$055$,$259 &   509$,$108 &  2$,$890$,$151 &  3$,$308$,$876 &   992$,$595 &  1$,$235$,$994 \\ 
+Tasa promocion efectiva secundaria (2017) & 80.8 & 82.5 & 75.7 & 81.0 & 83.3 & 83.4 & 80.6 & 77.4 \\ 
+Mortalidad infantil promedio 2016-2019 &  9.4 &  9.6 & 10.7 &  8.0 &  6.8 &  8.5 & 13.0 &  9.4 \\ 
+Homicidios dolosos C/ 100.000 hab. (2016-2019) & 6.3 & 3.0 & 5.9 & 9.6 & 4.4 & 3.5 & 2.9 & 4.8 \\ 
+Muertes en Accidentes V. C/ 100.000  hab.  (2016-2019) &  6.6 & 20.0 & 14.9 &  8.2 &  4.4 & 10.9 &  8.5 & 12.3 \\ 
+Robos (no agravados) C/ 100.000 hab. (2016-2019) &  639.1 & 1$,$537.2 &  563.3 &  864.8 & 2$,$362.8 & 1$,$878.3 &  559.2 &  633.4 \\ 
+Robos agravados C/ 100.000 hab. (2016-2019) &   8.3 &   0.0 &   0.0 &  21.0 &   7.2 &  10.7 &   2.4 &   4.7 \\ 
+Violaciones  C/ 100.000 hab. (2016-2019) &  9.0 &  4.4 &  7.7 & 29.4 &  8.5 &  6.0 &  8.8 &  5.2 \\ 
+Exportaciones per-cápita en USD (2016-2019) & 1$,$312.9 & 1$,$382.0 &  366.4 & 4$,$968.2 &  112.5 & 2$,$522.4 &  217.6 & 1$,$046.9 \\ 
+Demanda de MwH energía elec. Per cápita (2016) & 2.1 & 5.1 & 2.1 & 7.1 & 4.6 & 2.5 & 1.7 & 2.6 \\ 
+Pobreza Promedio (2017-2019) & 28.4 & 33.1 & 38.2 & 26.0 & 13.0 & 31.5 & 40.4 & 34.8 \\ 
+Tasa actividad Promedio (2017-2019) & 46.3 & 44.9 & 38.4 & 43.0 & 55.1 & 47.1 & 42.3 & 42.4 \\ 
+Empresas  C/ 100.000 hab. (2016-2017) & 1$,$209.75 &  809.07 &  838.18 & 1$,$735.97 & 4330.88 & 1775.46 &  855.73 & 1$,$335.36 \\ 
+Remuneracion  real de trabajadores reg. (priv.) (2016-2019) & 18$,$644.53 & 15$,$116.95 & 14$,$208.12 & 30$,$099.05 & 22$,$439.72 & 16$,$670.89 & 13$,$881.02 & 14$,$973.06 \\ 
+\%  de empleados en sector primario(2016-2019) & 41.80 & 10.76 & 9.54 & 20.07 & 1.10 & 6.05 & 16.34 & 14.47 \\ 
+\%  de empleados en sector terciario (2016-2019) & 71.08 & 70.33 & 80.27 & 67.56 & 86.86 & 73.81 & 69.18 & 65.46 \\ 
+\%  de empleados en sector secundario (2016-2019) & 24.73 & 18.89 & 10.17 & 12.35 & 12.03 & 20.13 & 14.46 & 20.05 \\ 
+\%  de percepción de RON (2016-2019) & 20.14 &  2.48 & 4.66 & 1.51 & 4.98 & 8.64 & 3.54 & 4.50 \\ 
+\%  de percepción de TOP  (2016-2019) & 36.6858414 & 0.43 & 1.16 & 1.36 & 22.38 & 7.27 & 0.85 & 2.50 \\ 
+Noroeste & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+NEA & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 \\ 
+Nuevo Cuyo & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+Centro y GBA & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 1 \\ 
+Patagonia & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\ 
 \hline \\[-1.8ex] 
-\end{tabular}  
+\end{tabular} 
 
 \end{sidewaystable} 
 
 \begin{sidewaystable}[!htbp] \centering \tiny
  \centering 
-  \caption{Macrofactores de aglomeración por provincia} 
+  \caption{} 
 
-\begin{tabular}{@{\extracolsep{5pt}} lccccccc} 
+\begin{tabular}{@{\extracolsep{5pt}} cccccccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
- & Formosa & Jujuy & La Pampa & La Rioja & Mendoza & Misiones & Neuquén \\ 
+Macrofactores & Formosa & Jujuy & La Pampa & La Rioja & Mendoza & Misiones & Neuquén \\ 
 \hline \\[-1.8ex] 
-Habitantes (2010) & $16,155,246$ & $16,298,391$ & $15,944,035$ & $15,958,726$ & $17,364,013$ & $16,726,677$ & $16,176,350$ \\ 
-Tasa promocion efectiva secundaria (2017) & $159.400$ & $157.300$ & $159.700$ & $169.400$ & $160$ & $155.400$ & $156.400$ \\ 
-Mortalidad infantil promedio 2016-2019 & $23.500$ & $19.800$ & $18$ & $19.300$ & $17.400$ & $18.100$ & $16.300$ \\ 
-Homicidios dolosos C/ 100.000 hab. (2016-2019) & $13.500$ & $9.600$ & $8.900$ & $8.800$ & $12.500$ & $10.900$ & $12.600$ \\ 
-Muertes en Accidentes V. C/ 100.000  hab.  (2016-2019) & $23.900$ & $17.400$ & $19.800$ & $27.600$ & $15$ & $26$ & $20$ \\ 
-Robos (no agravados) C/ 100.000 hab. (2016-2019) & $1,257.700$ & $1,680.400$ & $1,074.700$ & $1,315.400$ & $2,392.600$ & $1,174.200$ & $3,025$ \\ 
-Robos agravados C/ 100.000 hab. (2016-2019) & $8.800$ & $30.400$ & $8.300$ & $8.300$ & $130.200$ & $21.400$ & $42.900$ \\ 
-Violaciones  C/ 100.000 hab. (2016-2019) & $24.500$ & $30.900$ & $17.700$ & $24$ & $26.300$ & $36.300$ & $15.900$ \\ 
-Exportaciones per-cápita en USD (2016-2019) & $1,407.800$ & $2,072.400$ & $2,829.800$ & $1,963.600$ & $2,125.300$ & $1,644.800$ & $1,592$ \\ 
-Demanda de MwH energía elec. Per cápita (2016) & $4.100$ & $3.600$ & $4.400$ & $5.800$ & $5.500$ & $3.900$ & $5.900$ \\ 
-Pobreza Promedio (2017-2019) & $60.400$ & $59$ & $59.100$ & $55.400$ & $60.500$ & $62.300$ & $54.500$ \\ 
-Tasa actividad Promedio (2017-2019) & $80.200$ & $91.400$ & $89.300$ & $88.900$ & $92$ & $90.400$ & $91.200$ \\ 
-Empresas  C/ 100.000 hab. (2016-2017) & $1,703.571$ & $1,945.086$ & $3,195.331$ & $1,945.878$ & $2,660.538$ & $2,105.100$ & $2,833.114$ \\ 
-Remuneracion  real de trabajadores reg. (priv.) (2016-2019) & $33,666.520$ & $33,712.460$ & $35,403.750$ & $32,656.280$ & $33,842.910$ & $31,706.490$ & $48,379.820$ \\ 
-\% de empleados en sector primario(2016-2019) & $0.118$ & $0.240$ & $0.170$ & $0.198$ & $0.177$ & $0.157$ & $0.253$ \\ 
-\% de empleados en sector terciario (2016-2019) & $1.566$ & $1.318$ & $1.462$ & $1.258$ & $1.393$ & $1.397$ & $1.432$ \\ 
-\% de empleados en sector secundario (2016-2019) & $0.316$ & $0.441$ & $0.368$ & $0.544$ & $0.430$ & $0.446$ & $0.315$ \\ 
-\% de percepción de Recursos de Origen Nacional (2016-2019) & $0.235$ & $0.228$ & $0.219$ & $0.220$ & $0.240$ & $0.233$ & $0.218$ \\ 
-\% de percepción de Recursos de Origen Provincial  (2016-2019) & $0.371$ & $0.373$ & $0.376$ & $0.370$ & $0.405$ & $0.384$ & $0.396$ \\ 
-NOA & $0$ & $1$ & $0$ & $1$ & $0$ & $0$ & $0$ \\ 
-NEA & $1$ & $0$ & $0$ & $0$ & $0$ & $1$ & $0$ \\ 
-NUEVO CUYO & $0$ & $0$ & $0$ & $0$ & $1$ & $0$ & $0$ \\ 
-CENTRO Y GBA & $1$ & $1$ & $1$ & $1$ & $1$ & $1$ & $1$ \\ 
-PATAGONIA & $0$ & $0$ & $1$ & $0$ & $0$ & $0$ & $1$ \\ 
+Habitantes (2010) &   530$,$162 &   673$,$307 &   318$,$951 &   333$,$642 &  1$,$738$,$929 &  1$,$101$,$593 &   551$,$266 \\ 
+Tasa promocion efectiva secundaria (2017) & 78.6 & 76.5 & 78.9 & 88.6 & 79.2 & 74.6 & 75.6 \\ 
+Mortalidad infantil promedio 2016-2019 & 14.1 & 10.4 &  8.6 &  9.9 &  8.0 &  8.7 &  6.9 \\ 
+Homicidios dolosos C/ 100.000 hab. (2016-2019) & 7.2 & 3.3 & 2.6 & 2.5 & 6.2 & 4.6 & 6.3 \\ 
+Muertes en Accidentes V. C/ 100.000  hab.  (2016-2019) & 17.3 & 10.8 & 13.2 & 21.0 &  8.4 & 19.4 & 13.4 \\ 
+Robos (no agravados) C/ 100.000 hab. (2016-2019) &  618.6 & 1$,$041.3 &  435.6 &  676.3 & 1$,$753.5 &  535.1 & 2$,$385.9 \\ 
+Robos agravados C/ 100.000 hab. (2016-2019) &   0.5 &  22.1 &   0.0 &   0.0 & 121.9 &  13.1 &  34.6 \\ 
+Violaciones  C/ 100.000 hab. (2016-2019) & 15.5 & 21.9 &  8.7 & 15.0 & 17.3 & 27.3 &  6.9 \\ 
+Exportaciones per-cápita en USD (2016-2019) &   94.9 &  759.5 & 1$,$516.9 &  650.7 &  812.4 &  331.9 &  279.1 \\ 
+Demanda de MwH energía elec. Per cápita (2016) & 2.0 & 1.5 & 2.3 & 3.7 & 3.4 & 1.8 & 3.8 \\ 
+Pobreza Promedio (2017-2019) & 32.0 & 30.6 & 30.7 & 27.0 & 32.1 & 33.9 & 26.1 \\ 
+Tasa actividad Promedio (2017-2019) & 33.9 & 45.1 & 43.0 & 42.6 & 45.7 & 44.1 & 44.9 \\ 
+Empresas  C/ 100.000 hab. (2016-2017) &  493.81 &  735.32 & 1$,$985.57 &  736.11 & 1$,$450.77 &  895.33 & 1$,$623.35 \\ 
+Remuneracion  real de trabajadores reg. (priv.) (2016-2019) & 15$,$021.98 & 15$,$067.92 & 16$,$759.22 & 14$,$011.75 & 15$,$198.38 & 13$,$061.96 & 29$,$735.29 \\ 
+\% de empleados en sector primario(2016-2019) & 7.64 & 19.84 & 12.86 & 15.61 & 13.55 & 11.52 & 21.14 \\ 
+\% de empleados en sector terciario (2016-2019) & 85.46 &  60.73 & 75.06 & 54.68 & 68.19 & 68.58 & 72.06 \\ 
+\% de empleados en sector secundario (2016-2019) & 6.88 & 19.41 & 12.06 & 29.70 & 18.24 & 19.89 & 6.79 \\ 
+\% de percepción de RON (2016-2019) & 3.37 & 2.64 & 1.72 & 1.89 & 3.86 & 3.17 & 1.67 \\ 
+\% de percepción de TOP (2016-2019) & 0.37 & 0.61 & 0.93 & 0.28 & 3.79 & 1.76 & 2.88 \\ 
+Noroeste & 0 & 1 & 0 & 1 & 0 & 0 & 0 \\ 
+Noreste & 1 & 0 & 0 & 0 & 0 & 1 & 0 \\ 
+Nuevo Cuyo & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\ 
+Centro y GBA & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+Patagonia & 0 & 0 & 1 & 0 & 0 & 0 & 1 \\ 
 \hline \\[-1.8ex] 
 \end{tabular} 
 
@@ -1023,42 +1078,48 @@ PATAGONIA & $0$ & $0$ & $1$ & $0$ & $0$ & $0$ & $1$ \\
 
 \begin{sidewaystable}[!htbp] \centering \tiny
  \centering 
-  \caption{Macrofactores de aglomeración por provincia} 
+  \caption{} 
   \label{} 
 \begin{tabular}{@{\extracolsep{5pt}} lccccccccc} 
 \\[-1.8ex]\hline 
 \hline \\[-1.8ex] 
- & Río Negro & Salta & San Juan & San Luis & Santa Cruz & Santa Fe & Santiago del Estero & Tierra del Fuego & Tucumán \\ 
+Macrofactores & Río Negro & Salta & San Juan & San Luis & Santa Cruz & Santa Fe & Santiago del Estero & Tierra del Fuego & Tucumán \\ 
 \hline \\[-1.8ex] 
-Habitantes (2010) & $16,263,729$ & $16,839,525$ & $16,306,139$ & $16,057,394$ & $15,899,048$ & $18,819,621$ & $16,499,090$ & $15,752,289$ & $17,073,272$ \\ 
-Tasa promocion efectiva secundaria (2017) & $159.400$ & $155.300$ & $159.700$ & $165.800$ & $150.100$ & $156.900$ & $157.800$ & $167.200$ & $157.700$ \\ 
-Mortalidad infantil promedio 2016-2019 & $17.600$ & $20.300$ & $18.700$ & $18.300$ & $17.800$ & $17.900$ & $18.700$ & $16.400$ & $20.600$ \\ 
-Homicidios dolosos C/ 100.000 hab. (2016-2019) & $10.600$ & $12.400$ & $8.700$ & $9.200$ & $11.400$ & $16.200$ & $10.500$ & $8.900$ & $14.500$ \\ 
-Muertes en Accidentes V. C/ 100.000  hab.  (2016-2019) & $18.200$ & $19.500$ & $19.300$ & $25$ & $18$ & $17.700$ & $32$ & $12.300$ & $25.200$ \\ 
-Robos (no agravados) C/ 100.000 hab. (2016-2019) & $1,875.200$ & $2,077.400$ & $1,656.200$ & $1,103.800$ & $1,553.200$ & $2,019.500$ & $1,549.100$ & $1,241.300$ & $1,671.800$ \\ 
-Robos agravados C/ 100.000 hab. (2016-2019) & $8.300$ & $19.700$ & $89.700$ & $14.300$ & $23.700$ & $25.100$ & $9.300$ & $10.500$ & $207.300$ \\ 
-Violaciones  C/ 100.000 hab. (2016-2019) & $19.500$ & $34.900$ & $12.600$ & $20.800$ & $26.600$ & $15.200$ & $20.900$ & $31.400$ & $22.300$ \\ 
-Exportaciones per-cápita en USD (2016-2019) & $1,952.200$ & $2,141.800$ & $3,108.100$ & $2,480.600$ & $9,533.800$ & $5,657.900$ & $2,334.500$ & $2,841.100$ & $2,059.100$ \\ 
-Demanda de MwH energía elec. Per cápita (2016) & $4.800$ & $3.600$ & $5.100$ & $5.500$ & $5.900$ & $5.400$ & $3.700$ & $5.800$ & $4.100$ \\ 
-Pobreza Promedio (2017-2019) & $59.500$ & $62.300$ & $57.500$ & $56.500$ & $47.300$ & $58.700$ & $71.300$ & $46.100$ & $58.400$ \\ 
-Tasa actividad Promedio (2017-2019) & $87$ & $93.100$ & $86.900$ & $89.300$ & $90.900$ & $90.900$ & $86.900$ & $90$ & $90.800$ \\ 
-Empresas  C/ 100.000 hab. (2016-2017) & $2,954.391$ & $2,046.771$ & $2,327.291$ & $2,426.942$ & $2,725.652$ & $2,978.185$ & $1,830.923$ & $3,476.966$ & $2,054.678$ \\ 
-Remuneracion  real de trabajadores reg. (priv.) (2016-2019) & $36,935.440$ & $33,108.490$ & $34,052.900$ & $36,134.100$ & $54,194.100$ & $36,272.140$ & $31,336.600$ & $32,277.290$ & $48,536.010$ \\ 
-\% de empleados en sector primario(2016-2019) & $0.273$ & $0.234$ & $0.166$ & $0.100$ & $0.362$ & $0.091$ & $0.120$ & $0.092$ & $0.244$ \\ 
-\% de empleados en sector terciario (2016-2019) & $1.377$ & $1.382$ & $1.422$ & $1.345$ & $1.333$ & $1.416$ & $1.531$ & $1.356$ & $1.365$ \\ 
-\% de empleados en sector secundario (2016-2019) & $0.350$ & $0.383$ & $0.412$ & $0.555$ & $0.305$ & $0.494$ & $0.350$ & $0.553$ & $0.390$ \\ 
-\% de percepción de RON (2016-2019) & $0.225$ & $0.238$ & $0.232$ & $0.224$ & $0.216$ & $0.291$ & $0.240$ & $0.213$ & $0.246$ \\ 
-\% de percepción de TOP  (2016-2019) & $0.381$ & $0.383$ & $0.375$ & $0.376$ & $0.378$ & $0.436$ & $0.374$ & $0.374$ & $0.392$ \\ 
-NOA & $0$ & $1$ & $0$ & $0$ & $0$ & $0$ & $1$ & $0$ & $1$ \\ 
-NEA & $0$ & $0$ & $0$ & $0$ & $0$ & $0$ & $0$ & $0$ & $0$ \\ 
-NUEVO CUYO & $0$ & $0$ & $1$ & $1$ & $0$ & $0$ & $0$ & $0$ & $0$ \\ 
-CENTRO Y GBA & $1$ & $1$ & $1$ & $1$ & $1$ & $2$ & $1$ & $1$ & $1$ \\ 
-PATAGONIA & $1$ & $0$ & $0$ & $0$ & $1$ & $0$ & $0$ & $1$ & $0$ \\ 
-cluster & $4$ & $5$ & $5$ & $5$ & $4$ & $6$ & $5$ & $4$ & $5$ \\ 
+Habitantes (2010) &   638$,$645 &  1$,$214$,$441 &   681$,$055 &   432$,$310 &   273$,$964 &  3$,$194$,$537 &   874$,$006 &   127$,$205 &  1$,$448$,$188 \\ 
+Tasa promocion efectiva secundaria (2017) & 78.6 & 74.5 & 78.9 & 85.0 & 69.3 & 76.1 & 77.0 & 86.4 & 76.9 \\ 
+Mortalidad infantil promedio 2016-2019 &  8.2 & 10.9 &  9.3 &  8.9 &  8.4 &  8.5 &  9.3 &  7.0 & 11.2 \\ 
+Homicidios dolosos C/ 100.000 hab. (2016-2019) & 4.3 & 6.1 & 2.4 & 2.9 & 5.1 & 9.9 & 4.2 & 2.6 & 8.2 \\ 
+Muertes en Accidentes V. C/ 100.000  hab.  (2016-2019) & 11.6 & 12.9 & 12.7 & 18.4 & 11.4 & 11.1 & 25.4 &  5.7 & 18.6 \\ 
+Robos (no agravados) C/ 100.000 hab. (2016-2019) & 1$,$236.1 & 1$,$438.3 & 1$,$017.1 &  464.7 &  914.1 & 1$,$380.4 &  910.0 &  602.2 & 1$,$032.7 \\ 
+Robos agravados C/ 100.000 hab. (2016-2019) &   0 &  11.4 &  81.4 &   6.0 &  15.4 &  16.8 &   1.0 &   2.2 & 199 \\ 
+Violaciones  C/ 100.000 hab. (2016-2019) & 10.5 & 25.9 &  3.6 & 11.8 & 17.6 &  6.2 & 11.9 & 22.4 & 13.3 \\ 
+Exportaciones per-cápita en USD (2016-2019) &  639.3 &  828.9 & 1$,$795.2 & 1$,$167.7 & 8$,$220.9 & 4$,$345.0 & 1$,$021.6 & 1$,$528.2 &  746.2 \\ 
+Demanda de MwH energía elec. Per cápita (2016) & 2.7 & 1.5 & 3.0 & 3.4 & 3.8 & 3.3 & 1.6 & 3.7 & 2.0 \\ 
+Pobreza Promedio (2017-2019) & 31.1 & 33.9 & 29.1 & 28.1 & 18.9 & 30.3 & 42.9 & 17.7 & 30.0 \\ 
+Tasa actividad Promedio (2017-2019) & 40.7 & 46.8 & 40.6 & 43.0 & 44.6 & 44.6 & 40.6 & 43.7 & 44.5 \\ 
+Empresas  C/ 100.000 hab. (2016-2017) & 1$,$744.63 &  837.01 & 1$,$117.53 & 1$,$217.18 & 1$,$515.89 & 1$,$768.42 &  621.16 & 2$,$267.20 &  844.91 \\ 
+Remuneracion  real de trabajadores reg. (priv.) (2016-2019) & 18$,$290.91 & 14$,$463.96 & 15$,$408.37 & 17$,$489.57 & 35$,$549.57 & 17$,$627.60 & 12$,$692.06 & 13$,$632.76 & 29$,$891.48 \\ 
+\% de empleados en sector primario(2016-2019) & 23.09 & 19.25 & 12.39 & 5.84 & 32.01 & 4.89 & 7.77 & 4.98 & 20.26 \\ 
+\% de empleados en sector terciario (2016-2019) & 66.58 & 67.15 & 71.08 & 63.36 & 62.22 & 70.48 & 82 & 64.48 & 65.45 \\ 
+\% de empleados en sector secundario (2016-2019) & 10.31 & 13.58 & 16.51 & 30.79 & 5.75 & 24.62 & 10.22 & 30.52 & 14.28 \\ 
+\% de percepción de RON (2016-2019) & 2.34 & 3.66 & 3.09 & 2.22 & 1.48 & 8.91 & 3.85 & 1.14 & 4.42 \\ 
+\% de percepción de TOP  (2016-2019) & 1.42 & 1.57 & 0.79 & 0.93 & 1.08 & 6.93 & 0.66 & 0.74 & 2.51 \\ 
+Noroeste & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 1 \\ 
+Noreste & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+Nuevo Cuyo & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 \\ 
+Centro y GBA & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\ 
+Patagonia & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\ 
 \hline \\[-1.8ex] 
-\end{tabular}
+\end{tabular} 
 
 \end{sidewaystable} 
+
+
+%%%%
+\newpage
+\printbibliography[title={Bibliografía}, heading=bibintoc]
+
+
 
 
 \end{document}
