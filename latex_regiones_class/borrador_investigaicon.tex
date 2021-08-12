@@ -103,17 +103,17 @@ Las dimensiones del género en la migración son tratadas en la investigación h
 \newpage
 \section{Regiones}
 
+La elevada cantidad de provincias de origen y destino que surgen de la combinación de los movimientos migratorios imponen  ciertas limitaciones para realizar un análisis pormenorizado de las migraciones interprovinciales en la Argentina. Estas barreras surgen por la dificultad de encontrar determinantes aislados para cada una de las provincias, tanto por la disponibilidad y volumen de los datos, como por el hecho de que se volvería tedioso y desordenado el análisis pormenorizado de ciertas combinaciones migratorias.
+
+Una de las soluciones a esta problemática es realizar una división regional de las provincias y analizar los movimientos migratorios que se producen entre las mismas.
+
 Una región es una zona territorial de un país que comparten determinadas características homogéneas. Las características elegidas para realizar la división van a determinar directamente que provincias integran cada una de las regiones.
 
-Cuando se estudian a los determinantes de las migraciones interprovinciales se pueden encontrar distintos niveles de factores según la generalidad de su impacto. Por un lado se encuentran factores que son comunes a toda la población de una determinada comunidad, que son conocidos como macrofactores y estan conformados por aspectos políticos, sociales, económicos y demográficos. Por el otro se puden encontrar los microfactores, estos son características individuales que actúan como “mediadores” en la decisión migratoria e impactan de manera distinta dependiendo de los macrofactores que configuran los potenciales destinos u orígenes de migración.
+Esta solución trae ligado el interrogante sobre cuales son los determinantes óptimos compartidos por las provincias que permiten configurar un macro-entorno en donde se pueda observar dinámicas migratorias similares. Una primera respuesta podría ser la división regional del país propuesta por el Instituto Nacional de Estadísticas y Censos (INDEC), pero esta misma peca de ponderar con mayor peso a cuestiones geográficas, y no brinda tanta importancia a las consideraciones desde el punto de vista socio-económico.
 
-El proceso de decisión migratoria consta de una interrelación constante entre los macrofactores y microfactores, que deben ser considerados a la hora de definir los determinantes que llevan a la decisión del éxodo interprovincial.
+Para morigerar el sesgo geográfico de la división regional tradicional, se pueden incluir ciertos macrofactores socioeconómicos y realizar una división  de provincias por zonas geográficas que  sean consistentes con la teoría de la aglomeración espacial de la nueva geografía económica.
 
-Existen ciertas limitaciones para realizar un análisis pormenorizado de las migraciones interprovinciales en la Argentina debido a la elevada cantidad de provincias de origen y destino que surgen de la combinación de los movimientos migratorios. Una de las principales limitaciones es la dificultad de encontrar determinantes aislados para cada una de las provincias, tanto por la disponibilidad y volumen de los datos, como por el hecho de que se volvería tedioso y desordenado el análisis pormenorizado de ciertas combinaciones migratorias.
-
-Este problema trae ligado el cuestionante sobre cuales son los  determinantes óptimos compartidos por las  provincias  que permiten configurar un macro-entorno en donde se pueda  observar dinámicas migratorias similares. Una primera respuesta podría ser la  división regional del país propuesta por el Instituto Nacional de Estadísticas y Censos (INDEC), pero esta misma peca de ponderar con mayor peso a cuestiones geográficas, y no brinda tanta importancia a las consideraciones desde el punto de vista socio-económico.
- 
-Tomando como base la teoría de la aglomeración espacial de la nueva geografía económica esta teoría, la problemática del análisis pormenorizado de la migraciones interprovinciales puede ser morigerado a través de una aglomeración de las provincias en regiones, considerando determinados macrofactores socio-económicos que serán definidos posteriormente en este trabajo. 
+A lo largo de esta sección se explicarán y desarrollaran los macrofactores socioeconómicos seleccionados, sus fuentes, los diferentes métodos cuantitativos elegidos para realizar la aglomeración de las regiones, las particularidades de las provincias en términos migratorios y las regiones resultantes que serán utilizadas para el posterior análisis de migración interregional. 
 
 \subsection{Macrofactores}
 Los macrofactores son aquellos determinantes que impactan de igual manera a toda la población que habite el territorio en cuestión.
@@ -168,14 +168,13 @@ Para comenzar con la división en regiones de las provincias argentinas, es nece
 
 Para esta aglomeración se utilizará el algoritmo de K-medias \parencite{macqueen_methods_1967}, particularmente el desarrollado por \textcite{hartigan_k-means_1979} que utiliza la distancia euclidiana para la medición de las discrepancias entre los objetos y los grupos. El indicador a utilizar para definir el numero de regiones óptimas será el \textit{Within-cluster sum of square (WSS)}.
 
-\vspace{5mm}
+ %\vspace{5mm}
 \begin {center}
 \begin{equation}\label{eq:wss}
 WSS=\sum_{i=1}^{N_{C}} \sum_{\textbf{x}\in Ci} distancia(\textbf{x},\bar{\textbf{x}}_{\tiny{\textit{Ci}}})^{2}
 \end{equation}
 \end {center}
-\vspace{5mm}
-
+%\vspace{5mm}
 
 El WSS (\ref{eq:wss}) es un indicador que mide la suma de las distancias al cuadrado entre las variables dentro de  los cluster (regiones) y sus centroides($\bar{\textbf{x}}_{\tiny{\textit{Ci}}}$). El objetivo es minimizar la discrepancia dentro de cada grupo para distintos números de clusters $k$, teniendo en cuenta el \textit{trade-off} que implica cuando éste disminuye. 
 
@@ -183,7 +182,7 @@ Este indicador encuentra su mínimo en el caso en que el número de clusters (re
 
 Este \textit{trade-off} provoca que se tenga que tomar una decisión en el numero de clusters óptimos (regiones óptimas), tal que las provincias dentro de cada cluster (región) sean lo más similares posibles en términos de los factores de macrolocalización, pero teniendo en cuenta que una división muy extensa en clusters (regiones) pierde utilidad analítica a los efectos de definir zonas con caracterísiticas similares para un posterior análisis de movilidad regional.
 
-\begin{figure}[h!]
+\begin{figure}[htbp!]
 \begin{center}
 	\caption{\\Número de regiones óptimas}
  	\input{./graficos/regiones_optimas.tex}
@@ -201,16 +200,15 @@ Para la división regional se utilizará el algoritmo de K-Medias, en donde se d
 Una vez ejecutado el algoritmo, se obtiene la division de las provincias de Argentina en tres regiones bien definidas (Figura \ref{figure:reg_resultantes}), las cuales comparten similitudes en los parámetros definidos en la macrolocalización.
 
 
-\begin{figure}[ht!]
+\begin{figure}[htbp!]
 \begin{center}
 \caption{\\Regiones resultantes de la aglomeración}
 \input{./graficos/regiones_resultantes.tex}
 \label{figure:reg_resultantes}
 \end{center}
 \end{figure}
-\newpage
 
-Estas regiones las denominaremos de aquí en adelante Región Norte, Región Centro y Región Sur.
+Estas regiones serán denominadas de aquí en adelante Región Norte, Región Centro y Región Sur.
 
 Se puede ver claramente la diferencia en la similitud de los tres grupos, calculada a través del análisis de componentes principales de los macrofactores, siendo solamente la Ciudad Autónoma de Buenos Aires la única que presenta mayor disimilitud con respecto a su región.
 Esto indica que CABA  lleva una dinámica socio-económica muy peculiar con respecto al promedio de las provincias argentinas, inclusive considerablemente distinta a las provincias con la cual ostenta mayor similitud.

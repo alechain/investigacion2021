@@ -1,16 +1,16 @@
 [0] Config.pm:304> INFO - This is Biber 2.14 (beta)
 [0] Config.pm:307> INFO - Logfile is 'borrador_investigaicon.blg'
-[91] biber:322> INFO - === mar jul 20, 2021, 19:37:37
-[108] Biber.pm:415> INFO - Reading 'borrador_investigaicon.bcf'
-[194] Biber.pm:943> INFO - Found 20 citekeys in bib section 0
-[209] Biber.pm:4256> INFO - Processing section 0
-[209] Utils.pm:75> INFO - Globbing data source 'Bibliography.bib'
-[209] Utils.pm:91> INFO - Globbed data source 'Bibliography.bib' to Bibliography.bib
-[219] Biber.pm:4455> INFO - Looking for bibtex format file 'Bibliography.bib' for section 0
-[226] bibtex.pm:1653> INFO - LaTeX decoding ...
-[324] bibtex.pm:1471> INFO - Found BibTeX data source 'Bibliography.bib'
-[584] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[584] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'variable = shifted' with 'variable = non-ignorable'
-[584] Biber.pm:4084> INFO - Sorting list 'apa/global//global/global' of type 'entry' with template 'apa' and locale 'es-ES'
-[642] bbl.pm:652> INFO - Writing 'borrador_investigaicon.bbl' with encoding 'UTF-8'
-[668] bbl.pm:755> INFO - Output to borrador_investigaicon.bbl
+[85] biber:322> INFO - === jue ago 12, 2021, 10:05:10
+[103] Biber.pm:415> INFO - Reading 'borrador_investigaicon.bcf'
+[189] Biber.pm:943> INFO - Found 20 citekeys in bib section 0
+[207] Biber.pm:4256> INFO - Processing section 0
+[207] Utils.pm:75> INFO - Globbing data source 'Bibliography.bib'
+[208] Utils.pm:91> INFO - Globbed data source 'Bibliography.bib' to Bibliography.bib
+[222] Biber.pm:4455> INFO - Looking for bibtex format file 'Bibliography.bib' for section 0
+[227] bibtex.pm:1653> INFO - LaTeX decoding ...
+[315] bibtex.pm:1471> INFO - Found BibTeX data source 'Bibliography.bib'
+[486] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'variable = shifted' with 'variable = non-ignorable'
+[486] UCollate.pm:68> INFO - Overriding locale 'es-ES' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[486] Biber.pm:4084> INFO - Sorting list 'apa/global//global/global' of type 'entry' with template 'apa' and locale 'es-ES'
+[514] bbl.pm:652> INFO - Writing 'borrador_investigaicon.bbl' with encoding 'UTF-8'
+[529] bbl.pm:755> INFO - Output to borrador_investigaicon.bbl
