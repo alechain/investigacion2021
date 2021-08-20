@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.11) (preloaded format=xelatex 2021.1.20)  17 AUG 2021 20:05
+This is XeTeX, Version 3.14159265-2.6-0.999992 (MiKTeX 20.11) (preloaded format=xelatex 2021.1.20)  20 AUG 2021 16:20
 entering extended mode
 **./borrador_investigaicon.tex
 (borrador_investigaicon.tex
@@ -1008,6 +1008,10 @@ LaTeX Info: Redefining \% on input line 12.
 )
 
 LaTeX Warning: There were multiply-defined labels.
+
+
+Package biblatex Warning: Please rerun LaTeX.
+(biblatex)                Page breaks have changed.
 
 Package logreq Info: Writing requests to 'borrador_investigaicon.run.xml'.
 \openout1 = `borrador_investigaicon.run.xml'.

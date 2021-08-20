@@ -196,9 +196,6 @@ Una vez obtenido el número de regiones óptimas se procede a asignar a las prov
 
 Para la división regional se utilizará el algoritmo de K-Medias, en donde se definen aleatoriamente los centroides iniciales del algoritmo y se procede a realizar el cálculo de los clusters a través de 1.000 iteraciones, siendo seleccionada aquella  que arroje un menor numero del indicador de la suma de las distancias al cuadrado entre las variables dentro de  los cluster y sus centroides, tambien conocido como \textit{WSS}.
 
-Una vez ejecutado el algoritmo, se obtiene la division de las provincias de Argentina en tres regiones bien definidas (Figura \ref{figure:reg_resultantes}), las cuales comparten similitudes en los parámetros definidos en la macrolocalización.
-
-
 \begin{figure}[htbp!]
 \begin{center}
 \caption{\\Regiones resultantes de la aglomeración}
@@ -206,6 +203,8 @@ Una vez ejecutado el algoritmo, se obtiene la division de las provincias de Arge
 \label{figure:reg_resultantes}
 \end{center}
 \end{figure}
+
+Una vez ejecutado el algoritmo, se obtiene la division de las provincias de Argentina en tres regiones bien definidas (Figura \ref{figure:reg_resultantes}), las cuales comparten similitudes en los parámetros definidos en la macrolocalización.
 
 Estas regiones serán denominadas de aquí en adelante Región Norte, Región Centro y Región Sur.
 
