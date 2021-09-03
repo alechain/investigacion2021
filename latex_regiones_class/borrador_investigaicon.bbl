@@ -312,6 +312,58 @@
       \field{title}{Is migration good for the economy?}
       \field{year}{2014}
     \endentry
+    \entry{ferrero_patrones_2020}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=f303cdaa2078fee82b3e13dcbcaf9942}{%
+           family={Ferrero},
+           familyi={F\bibinitperiod},
+           given={Lucas},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1cf5dd7711ea153bd69c928ff482c0cc}{%
+           family={San\bibnamedelima José},
+           familyi={S\bibinitperiod\bibinitdelim J\bibinitperiod},
+           given={Alejandro},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {es}%
+      }
+      \strng{namehash}{235ed18225ddf299a810dd59fe9957fc}
+      \strng{fullhash}{235ed18225ddf299a810dd59fe9957fc}
+      \strng{bibnamehash}{235ed18225ddf299a810dd59fe9957fc}
+      \strng{authorbibnamehash}{235ed18225ddf299a810dd59fe9957fc}
+      \strng{authornamehash}{235ed18225ddf299a810dd59fe9957fc}
+      \strng{authorfullhash}{235ed18225ddf299a810dd59fe9957fc}
+      \field{sortinit}{F}
+      \field{sortinithash}{fb0c0faa89eb6abae8213bf60e6799ea}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \true{uniqueprimaryauthor}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Resumen Este documento realiza una descripción y análisis de las estructuras y dinámicas de aglomeración y expulsión existentes en la periferia argentina. El desarrollo se integra a marcos de diagnóstico, planificación y diseño de políticas desde la perspectiva de las regiones rezagadas. Se utilizan principalmente datos de los últimos tres censos poblacionales (1990-2010).En las aplicaciones se establecen categorías jerárquicas urbanas en función de integraciones a marcos de planificación y sistemas de información complementarios. El trabajo caracteriza las estructuras urbanas y territoriales y su evolución reciente. Se inicia desde la perspectiva a nivel país, para enfocarse gradualmente en el nivel regional NEA-NOA y terminando con una aplicación al provincial periférico, con la provincia del Chaco. Las provincias del NEA, excluida Misiones, presentan los más altos índices de expulsión. A nivel intra-provincial existe un patrón marcado de expulsión agregado, con dos etapas. En 1990-2001 se da con fuerza desde el interior hacia la capital de provincia, y en 2001-2010 de todo el territorio hacia otras provincias. Complementariamente, se observa una tendencia más acelerada en la reducción de la población rural dispersa. El trabajo contribuye a la comprensión de las dificultades que plantea el desarrollo regional periférico dentro de los marcos de planificación territorial.}
+      \field{issn}{2362-2105}
+      \field{journaltitle}{Revista Perspectivas de Políticas Públicas}
+      \field{month}{6}
+      \field{note}{Number: 18}
+      \field{number}{18}
+      \field{title}{Patrones de aglomeración-expulsión y estructuras jerárquicas urbanas en la periferia argentina}
+      \field{volume}{9}
+      \field{year}{2020}
+      \field{pages}{289\bibrangedash 317}
+      \range{pages}{29}
+      \verb{file}
+      \verb Full Text PDF:/home/alejandrochain/Zotero/storage/3SHYKEZZ/Ferrero y José - 2020 - Patrones de aglomeración-expulsión y estructuras j.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://revistas.unla.edu.ar/perspectivas/article/view/2936
+      \endverb
+      \verb{url}
+      \verb http://revistas.unla.edu.ar/perspectivas/article/view/2936
+      \endverb
+    \endentry
     \entry{greene_econometric_2018}{book}{}
       \name{author}{1}{}{%
         {{un=0,uniquepart=base,hash=6aeaa164d917d0657b4f141378594e78}{%
