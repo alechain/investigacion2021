@@ -168,9 +168,7 @@ A continuación, se brinda una descripción de los macrofactores seleccionados:
 
 Para comenzar con la división en regiones de las provincias argentinas, es necesario definir el nivel óptimo de aglomeración de acuerdo con los macrofactores elegidos, es decir, definir el número de regiones en que serán divididas las provincias argentinas.
 
-Para la regionalización se utilizo el algoritmo de K-medias \parencite{macqueen_methods_1967}, particularmente el desarrollado por \textcite{hartigan_k-means_1979}. Este algoritmo utiliza la distancia euclidiana para la medición de las discrepancias entre los objetos y los grupos. El indicador utilizado para definir el número de regiones óptimas es el \textit{Within-cluster sum of square (WSS)}.
-
- %\vspace{5mm}
+Para la regionalización se utilizo el algoritmo de K-medias \parencite{macqueen_methods_1967}, particularmente el desarrollado por \textcite{hartigan_k-means_1979}. Este algoritmo utiliza la distancia euclidiana para la medición de las discrepancias entre los objetos y los grupos. El indicador utilizado para definir el número de regiones óptimas es el \textit{Within-cluster sum of square (WSS)}.%\vspace{5mm}
 \begin {center}
 \begin{equation}\label{eq:wss}
 WSS=\sum_{i=1}^{N_{C}} \sum_{\textbf{x}\in Ci} distancia(\textbf{x},\bar{\textbf{x}}_{\tiny{\textit{Ci}}})^{2}
@@ -178,11 +176,9 @@ WSS=\sum_{i=1}^{N_{C}} \sum_{\textbf{x}\in Ci} distancia(\textbf{x},\bar{\textbf
 \end {center}
 %\vspace{5mm}
 
-El WSS (\ref{eq:wss}) es un indicador que mide la suma de las distancias al cuadrado entre las variables dentro de  los cluster (regiones) y sus centroides($\bar{\textbf{x}}_{\tiny{\textit{Ci}}}$). El objetivo es minimizar la discrepancia dentro de cada grupo para distintos números de clusters $N_c$, teniendo en cuenta el \textit{trade-off} que implica cuando éste disminuye. 
+El WSS (\ref{eq:wss}) es un indicador que mide la suma de las distancias al cuadrado entre las variables dentro de  los cluster (regiones) y sus centroides($\bar{\textbf{x}}_{\tiny{\textit{Ci}}}$). El objetivo es minimizar la discrepancia dentro de cada grupo para distintos números de clusters $N_c$, teniendo en cuenta el \textit{trade-off} que implica cuando éste disminuye. Este indicador encuentra su mínimo en el caso en que el número de clusters (regiones) es igual al número de objetos (provincias) a clusterizar, en donde si tenemos $j$ provincias, el número de clusters $N_c$ sería tal que $j=k$, y no se estaría dando ninguna información relevante a los efectos de poder resumir características comunes entre los grupos. 
 
-Este indicador encuentra su mínimo en el caso en que el número de clusters (regiones) es igual al número de objetos (provincias) a clusterizar, en donde si tenemos $j$ provincias, el número de clusters $N_c$ sería tal que $j=k$, y no se estaría dando ninguna información relevante a los efectos de poder resumir características comunes entre los grupos. 
-
-\begin{figure}[htbp!]
+\begin{figure}[htp!]
 \begin{center}
 	\caption{\\Número de regiones óptimas}
  	\input{./graficos/regiones_optimas.tex}
@@ -194,7 +190,7 @@ Fuente: Elaboración propia a partir de base de datos del Anexo III.\\
 \end{scriptsize}
 \end{flushleft}
 \end{figure}
-
+\newpage
 Este \textit{trade-off} provoca que se tenga que tomar una decisión en el número de clusters óptimos (regiones óptimas), tal que las provincias dentro de cada cluster (región) sean lo más similares posibles en términos de los factores de macrolocalización, pero teniendo en cuenta que una división muy extensa en clusters (regiones) pierde utilidad analítica a los efectos de definir zonas con caracterísiticas similares para un posterior análisis de movilidad regional.
 
 Como se puede ver en la Figura \ref{figure:optimas}, luego de realizar el cálculo del \textit{WSS} se obtiene que el numero óptimo de regiones se encuentra en torno a \textbf{tres}. Esta conclusión surge debido a que la contribución marginal de aumentar el número de regiones a cuatro no aportaría una reducción muy elevada al \textbf{WSS} y se seguiría perdiendo generalidad en la regionalización de las provincias sin una ganancia significativa de similitud dentro de las regiones.
@@ -216,9 +212,7 @@ Fuente: Elaboración propia a partir de base de datos del Anexo III.\\
 \end{flushleft}
 \end{figure}
 
-Una vez ejecutado el algoritmo, se obtiene la división de las provincias de Argentina en tres regiones bien definidas (Figura \ref{figure:reg_resultantes}), las cuales comparten similitudes en los parámetros definidos en la macrolocalización.
-
-Estas regiones serán denominadas de aquí en adelante Región Norte, Región Centro y Región Sur.
+Una vez ejecutado el algoritmo, se obtiene la división de las provincias de Argentina en tres regiones bien definidas (Figura \ref{figure:reg_resultantes}), las cuales comparten similitudes en los parámetros definidos en la macrolocalización. Estas regiones serán denominadas de aquí en adelante Región Norte, Región Centro y Región Sur.
 
 Se puede ver claramente la diferencia en la similitud de los tres grupos, calculada a través del análisis de componentes principales de los macrofactores, siendo la Ciudad Autónoma de Buenos Aires la única que presenta una mayor disimilitud con respecto a su región.
 Esto indica que CABA  lleva una dinámica socioeconómica muy peculiar con respecto al promedio de las provincias argentinas, inclusive considerablemente distinta a las provincias con la cual ostenta mayor similitud.
@@ -347,6 +341,15 @@ Las estimaciones corresponden al período desde el segundo trimestre de 2016 has
 
 Esta relación entre regiones con mayor atracción y expulsión de migrantes también puede ser vista a nivel provincial. Para ello se definen la tasa de emigración, que es el cociente entre la cantidad de emigrantes nativos de la provincia ``$x$'' sobre la cantidad de residentes de la provincia ``$x$'' y la tasa de inmigración, que indica la cantidad de inmigrantes que habitan la provincia ``$x$'' sobre la cantidad de residentes de la provincia ``$x$''.
 
+
+En la Figura \ref{figure:emig_inmig_prov} se puede observar la relación entre la tasa de emigración e inmigración de las provincias, diferenciadas por la región a la cual pertenecen.
+
+La bisectriz divide el plano en dos zonas, todas las provincias que se encuentran por encima de ella son aquellas en la que la tasa de emigración es superior a la tasa de inmigración, mientras que las que se encuentran por debajo son aquellas en la que existe una mayor tasa de inmigración que de emigración. 
+
+Las provincias pertenecientes a la Región Norte se ubican en casi su totalidad por encima de la bisectriz, indicando que son provincias en donde la expulsión de migrantes es mucho mayor que la atracción de los mismos. Las provincias de la Región Sur tienen una mayor tendencia a ubicarse por encima de la linea diagonal, con excepción de Neuquén y Tierra del Fuego. Por último, en la Región Centro todas las provincias se encuentran por debajo de la diagonal, en donde la atracción de migrantes es mayor que su nivel de expulsión.
+
+Estas diferencias entre tasa de emigración e inmigración pueden ser vistas desde un punto de vista geográfico en la Figura \ref{figure:emig_inmig_prov_mapa}. Se observa la diferencia en la distribución de las provincias con mayor tasa de migración e inmigración, las provincias de Rio Negro, Santa Cruz y La Pampa son las que mayores tasas de emigración poseen, mientras que Tierra del Fuego, Santa Cruz y Neuquén son  las provincias en donde la tasa de inmigración es más elevada.
+
 \begin{figure}[htbp!]
 \begin{center}
 \caption{\\Tasa de inmigración y emigración por provincia}
@@ -362,14 +365,8 @@ Las estimaciones corresponden al período desde el segundo trimestre de 2016 has
 \end{flushleft}
 \end{figure}
 
-En la Figura \ref{figure:emig_inmig_prov} se puede observar la relación entre la tasa de emigración e inmigración de las provincias, diferenciadas por la región a la cual pertenecen.
 
-La bisectriz divide el plano en dos zonas, todas las provincias que se encuentran por encima de ella son aquellas en la que la tasa de emigración es superior a la tasa de inmigración, mientras que las que se encuentran por debajo son aquellas en la que existe una mayor tasa de inmigración que de emigración. 
-
-Las provincias pertenecientes a la Región Norte se ubican en casi su totalidad por encima de la bisectriz, indicando que son provincias en donde la expulsión de migrantes es mucho mayor que la atracción de los mismos. Las provincias de la Región Sur tienen una mayor tendencia a ubicarse por encima de la linea diagonal, con excepción de Neuquén y Tierra del Fuego. Por último, en la Región Centro todas las provincias se encuentran por debajo de la diagonal, en donde la atracción de migrantes es mayor que su nivel de expulsión.
-
-Estas diferencias entre tasa de emigración e inmigración pueden ser vistas desde un punto de vista geográfico en la Figura \ref{figure:emig_inmig_prov_mapa}. Se observa la diferencia en la distribución de las provincias con mayor tasa de migración e inmigración, las provincias de Rio Negro, Santa Cruz y La Pampa son las que mayores tasas de emigración poseen, mientras que Tierra del Fuego, Santa Cruz y Neuquén son  las provincias en donde la tasa de inmigración es más elevada.
-\begin{figure}[htbp!]
+\begin{figure}[hbp!]
 \begin{center}
 \caption{\\Mapa de tasas de emigración e inmigración por provincia}
 \includegraphics[scale=1.1]{./graficos/emig_inmig_por_prov.pdf}
@@ -1136,6 +1133,7 @@ Patagonia & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
 
 %%%%
 \newpage
+\nocite{*}
 \printbibliography[title={Bibliografía}, heading=bibintoc]
 
 
