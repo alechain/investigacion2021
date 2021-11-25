@@ -10,7 +10,8 @@ fontsize: 11pt
 indent: TRUE
 ---
 ```{r echo = FALSE, warning=FALSE, error=FALSE, message=FALSE, include=FALSE}
-setwd("/home/alejandrochain/Documentos/GitHub/investigacion2021/macrolocalizacion")
+#setwd("/home/alejandrochain/Documentos/GitHub/investigacion2021/macrolocalizacion")
+setwd('/Users/achain/Documents/github/investigacion2021/macrolocalizacion')
 knitr::opts_chunk$set(echo = FALSE, dev="cairo_pdf", fig.cap = TRUE)
 library(readr)
 library(tidyverse)
@@ -193,6 +194,10 @@ datos4<- datos3
 #Ahora normalizamos la base de datos para lograr coherencia en la aplicación de K-means, debido a quen trabajamos con distintas escalas de #datos.
 datos3<-datos3 %>% select(-c(`Densidad poblacional: Hab/km² (2010)`))
 datos_norm<- scale(datos3)
+
+
+tibble(datos_norm=c(datos_norm[,6])) %>% 
+  ggplot(mapping=aes(x=datos_norm)) + geom_histogram(bins = 12) + labs(title = 'Pruebita')
 ```
 
 ```{r echo = FALSE, warning=FALSE, error=FALSE, fig.align='center',fig.cap="Numero óptimo de clusters"}
@@ -288,6 +293,22 @@ repel = TRUE, # Avoid label overplotting (slow)
 
 ```
 
+```{r}
+# probando a manopla pca
+svd_datos<- svd(datos_norm)
+u_matrix<- svd_datos$u
+u_matrix_2d<- u_matrix[1:24,1:2]
+u_matrix_2d_t<- t(u_matrix_2d)
+x_matrix<- datos_norm
+
+dot_prod<- u_matrix_2d_t%*%x_matrix
+dot_prod<- as.data.frame(t(dot_prod))
+dot_prod<-dot_prod %>% remove_rownames()
+dot_prod$provincia<-datos$Provincia
+dot_prod %>% ggplot(mapping = aes(x=V1,y=V2, label=provincia)) +geom_point() + geom_text()
+
+```
+
 
 Una vez ejecutado el algoritmo, se obtiene la division de las provincias de Argentina en tres regiones bien definidas, las cuales comparten similitudes en los parámetros definidos en la macrolozalización.
 
@@ -342,12 +363,25 @@ prov_aglo<- prov_por_aglo %>% rename(provincia=provincia_destino)
 ephtotal<- left_join(ephtotal, prov_aglo)
 prov_cluster<- clustersprov %>% mutate(Provincia=case_when(Provincia=="Tierra del Fuego, Antártida e Islas del Atlántico Sur (4)"~ "Tierra del Fuego, Antártida e Islas del Atlántico Sur",                              TRUE ~ Provincia))
 #######
-cuadro_7<- ephtotal %>% group_by("Provincia"=provincia) %>% summarise("Poblacion"=sum(PONDERA))
+cuadro_7<- ephtotal %>% group_by("Provincia"=provincia) %>% summarise("Poblacion"=sum(PONDERA)) 
 cuadro_8<- left_join(cuadro_6,cuadro_7)
 cuadro_8<- left_join(cuadro_8,prov_cluster)
 cuadro_8<- cuadro_8 %>% mutate(tasa_inmigracion=Inmigrantes/Poblacion, tasa_emigracion=Emigrantes/Poblacion, tasa_neta=tasa_inmigracion-tasa_emigracion)
 cuadro_8$cluster<- factor(cuadro_8$cluster, levels = c("1","2","3"))
 ```
+
+
+```{r}
+cantidad_migrantes<-ephtotal  %>% group_by(ANO4,TRIMESTRE) %>% summarise(migrantes_int=sum(PONDERA[CH16==3]), total_pob=sum(PONDERA))
+cantidad_migrantes %>% mutate(tasa_mig=formattable::percent(migrantes_int/total_pob))
+provin_migs<-ephtotal %>% filter(ANO4==2016 & TRIMESTRE==2) %>% group_by(provincia) %>% summarise(sum(PONDERA))
+provin_migs %>% summarise(sum(`sum(PONDERA)`))
+mean(cantidad_migrantes$`sum(PONDERA[CH16 == 3])`)
+  summarise(sum(PONDERA)) %>% pull()/ephtotal%>% filter(CH15  %in% c(1,2,3))  %>% summarise(sum(PONDERA)) %>% pull()
+ephtotal %>% filter(CH15  %in% c(1,2,3)) %>% summarise(sum(PONDERA)) %>% pull()
+```
+
+
 
 ```{r include=FALSE}
 ### Mapa de migraciony emigracion por provincia
